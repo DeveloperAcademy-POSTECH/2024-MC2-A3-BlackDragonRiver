@@ -10,13 +10,18 @@ import SwiftUI
 
 /// 애플 뮤직 권한 받기 View
 struct MusicAuthorizationView: View {
-    private var musicAuthModel = MusicAuthorizationModel(musicAuthorizationStatus: .notDetermined)
+    private var musicAuthModel = MusicAuthorizationModel()
 
     var body: some View {
+        let musicAuthorizationStatus = musicAuthModel.readMusicAccessStatus()
+        
         VStack {
-            if musicAuthModel.musicAuthorizationStatus == .notDetermined || musicAuthModel.musicAuthorizationStatus == .denied {
+            /* 240517 Yu:D
+             View 구현 덜 했음. 수정해야 함.
+             */
+            if musicAuthorizationStatus == .notDetermined || musicAuthorizationStatus == .denied {
                 Button(action: musicAuthModel.requestMusicAuthorizationStatus) {
-                    Text("\(musicAuthModel.musicAuthorizationStatus)")
+                    Text("\(musicAuthorizationStatus)")
                         .padding([.leading, .trailing], 10)
                 }
             }

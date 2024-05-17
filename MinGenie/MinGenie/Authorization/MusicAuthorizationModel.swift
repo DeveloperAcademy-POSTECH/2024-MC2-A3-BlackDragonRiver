@@ -10,7 +10,7 @@ import SwiftUI
 
 /// 애플 뮤직 권한 받기 Model
 struct MusicAuthorizationModel {
-    @State var musicAuthorizationStatus: MusicAuthorization.Status
+    @State private var musicAuthorizationStatus: MusicAuthorization.Status = .notDetermined
     
     /// 애플 뮤직 접근 권한 요청
     func requestMusicAuthorizationStatus() {
