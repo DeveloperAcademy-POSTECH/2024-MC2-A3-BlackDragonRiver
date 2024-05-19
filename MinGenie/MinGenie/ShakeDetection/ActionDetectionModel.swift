@@ -17,7 +17,7 @@ final class ShakeDetectionModel: ObservableObject {
     private let maxZAccelerationThreshold = 1.1
     private let minZAccelerationThreshold = 0.9
     
-    private var isFaceDown = false
+    private var isScreenDown = false
     private var isDetectingShake = false // Shake 감지 중인지 여부 확인
     private var isChangingMusicByShake = false  // 흔들기로 인해 음악이 바뀌는 중인지 여부 확인
     
@@ -34,6 +34,11 @@ final class ShakeDetectionModel: ObservableObject {
         
         motionManager.deviceMotionUpdateInterval = motionTimeInterval
         motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { [weak self] motionData, error in
+            if let error {
+                print("Error: \(error.localizedDescription)")
+                return
+            } 
+            
             guard let self = self, let motionData else { return }
             self.detectFaceDown(motionData)
         }
@@ -44,15 +49,15 @@ final class ShakeDetectionModel: ObservableObject {
         
         // 디바이스가 엎어진 상태를 roll 값으로 확인
         if roll > minRollThreshold {
-            if !isFaceDown { // 다른 상태에 있다가 엎어질 때
-                self.isFaceDown = true
+            if !isScreenDown { // 다른 상태에 있다가 엎어질 때
+                self.isScreenDown = true
                 self.startAccelerometer()
                 
                 print("✅ 뒤집어진 상태 oo")
             }
         } else {
-            if isFaceDown {  // 엎어져 있다가 상태가 변경될 떄
-                self.isFaceDown = false
+            if isScreenDown {  // 엎어져 있다가 상태가 변경될 떄
+                self.isScreenDown = false
                 self.stopShakeDetection()
                 
                 print("❌ 뒤집어진 상태 xx")
@@ -68,6 +73,11 @@ final class ShakeDetectionModel: ObservableObject {
         
         motionManager.accelerometerUpdateInterval = motionTimeInterval
         motionManager.startAccelerometerUpdates(to: OperationQueue.main) { [weak self] (accelerationData, error) in
+            if let error {
+                print("Error: \(error.localizedDescription)")
+                return
+            }
+            
             guard let self = self, let accelerationData else { return }
             
             self.detectShake(accelerationData)
@@ -110,7 +120,7 @@ final class ShakeDetectionModel: ObservableObject {
         self.shakeDetected = false
         
         // 다시 엎어진 상태라면 가속도계 다시 시작
-        if self.isFaceDown {
+        if self.isScreenDown {
             self.startAccelerometer()
         }
     }
