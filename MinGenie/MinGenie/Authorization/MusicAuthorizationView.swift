@@ -21,7 +21,7 @@ struct MusicAuthorizationView: View {
              */
             if musicAuthorizationStatus == .notDetermined || musicAuthorizationStatus == .denied {
                 Button(action: musicAuthModel.requestMusicAuthorizationStatus) {
-                    Text("\(musicAuthorizationStatus)")
+                    Text("\(musicAuthorizationStatus.rawValue)")
                         .padding([.leading, .trailing], 10)
                 }
             }
