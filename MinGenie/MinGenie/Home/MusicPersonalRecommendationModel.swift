@@ -10,7 +10,7 @@ import SwiftUI
 
 class MusicPersonalRecommendationModel: ObservableObject {
     private var personalRecommendations: MusicItemCollection<MusicPersonalRecommendation> = []
-    @Published var tracks: MusicItemCollection<Track>?
+    @Published var tracks: MusicItemCollection<Track> = []
     
     var playlist: Playlist?
     
@@ -41,7 +41,13 @@ class MusicPersonalRecommendationModel: ObservableObject {
         }
         
         let detailedAlbum = try await playlist.with([.tracks])
-        await update(tracks: detailedAlbum.tracks)
+        
+        guard let tracks = detailedAlbum.tracks else { 
+            print("🚫 Tracks Problem")
+            return
+        }
+        
+        await update(tracks: tracks)
     }
     
     private func findPlaylist(_ response: MusicPersonalRecommendationsResponse) async {
@@ -55,7 +61,7 @@ class MusicPersonalRecommendationModel: ObservableObject {
     }
     
     @MainActor
-    private func update(tracks: MusicItemCollection<Track>?) {
+    private func update(tracks: MusicItemCollection<Track>) {
         withAnimation {
             self.tracks = tracks
         }
