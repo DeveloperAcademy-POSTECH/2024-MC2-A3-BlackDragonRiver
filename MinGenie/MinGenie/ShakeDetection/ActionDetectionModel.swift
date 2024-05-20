@@ -6,6 +6,7 @@
 //
 
 import CoreMotion
+import AudioToolbox
 
 final class ShakeDetectionModel: ObservableObject {
     private let motionManager = CMMotionManager()
@@ -94,12 +95,13 @@ final class ShakeDetectionModel: ObservableObject {
             && accZ < maxZAccelerationThreshold
             && accZ > minZAccelerationThreshold {
             print("🐯 Device was shaken while face down")
-            
+            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate) //진동 주기
             self.shakeDetected = true // 흔들림 감지 여부 업데이트
             self.stopShakeDetection()
         }
     }
     
+
     private func stopShakeDetection() {
         isDetectingShake = false
         motionManager.stopAccelerometerUpdates() // 흔들기 측정 멈추기
