@@ -30,7 +30,7 @@ class MusicSearchModel: ObservableObject {
                     
                     print("🙌🏻 응답 :: \(searchResponse)")
                     
-                    await self.apply(searchResponse, for: searchTerm)
+                    await self.apply(searchResponse)
                 } catch {
                     print("Search request failed with error: \(error).")
                     await self.reset()
@@ -41,7 +41,7 @@ class MusicSearchModel: ObservableObject {
     
     /// Safely updates the `albums` property on the main thread.
     @MainActor
-    private func apply(_ searchResponse: MusicCatalogSearchResponse, for searchTerm: String) {
+    private func apply(_ searchResponse: MusicCatalogSearchResponse) {
             self.albums = searchResponse.albums
             self.songs = searchResponse.songs
     }

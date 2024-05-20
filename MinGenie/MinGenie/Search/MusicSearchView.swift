@@ -44,9 +44,9 @@ struct MusicSearchView: View {
             }
             .searchable(text: $searchTerm, prompt: "아티스트, 노래")
         }
-        .onChange(of: searchTerm, { _, _ in
+        .onChange(of: searchTerm) { _, _ in
             model.requestUpdatedSearchResults(for: searchTerm)
-        })
+        }
     }
 }
 
@@ -63,7 +63,7 @@ struct categoryButton: View {
                 .frame(width: 54, height: 33)
                 .overlay {
                     Text(category.rawValue)
-                        .font(.system(size: 16))
+                        .font(.callout)
                         .foregroundColor(selectedCategory == category ? .white : .gray) // color 수정
                 }
         }
@@ -89,11 +89,11 @@ struct SongResultRowView: View {
                 
                 VStack(alignment: .leading) {
                     Text("\(song.title)")
-                        .font(.system(size: 17))
+                        .font(.body)
                         .foregroundStyle(.black) // color 수정
                     
                     Text("\(song.artistName)")
-                        .font(.system(size: 15))
+                        .font(.subheadline)
                         .foregroundStyle(.secondary) // color 수정
                     
                     Divider()
@@ -124,8 +124,7 @@ struct AlbumResultRowView: View {
                 
                 VStack(alignment: .leading) {
                     Text("\(album.title)")
-                        .font(.system(size: 17))
-                        .lineLimit(1)
+                        .font(.body)
                         .foregroundStyle(.black) // color 수정
                     
                     HStack {
@@ -138,7 +137,7 @@ struct AlbumResultRowView: View {
                         }
                     }
                     .lineLimit(1)
-                    .font(.system(size: 15))
+                    .font(.subheadline)
                     .foregroundStyle(.secondary) // color 수정
                     
                     Divider()
