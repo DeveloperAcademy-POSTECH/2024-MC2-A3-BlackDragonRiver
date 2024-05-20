@@ -62,8 +62,6 @@ class MusicPersonalRecommendationModel: ObservableObject {
     
     @MainActor
     private func update(tracks: MusicItemCollection<Track>) {
-        withAnimation {
             self.tracks = tracks
-        }
     }
 }
