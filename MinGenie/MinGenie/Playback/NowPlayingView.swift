@@ -15,15 +15,13 @@ struct NowPlayingView: View{
         NavigationView{
             ZStack{
                 VStack{
-                    HStack{
-                        /// ✅ 디자인 세부 조정 필요
-                        VStack(alignment: .leading){
-                            Text("(애플 id님,)")
-                                .font(.title3)
-                                .foregroundStyle(.black)
+                    HStack {
+                        VStack(alignment: .leading) {
                             Text("못할 것도 없지🔥")
-                                .font(.title.bold())
-                                .foregroundStyle(.blue)
+                                .font(.system(size: 34, weight: .bold, design: .default))
+                                .foregroundColor(Color.blue)
+                                .lineSpacing(44 - 34)
+                                .tracking(-0.4)
                         }
                         Spacer()
                     }
@@ -52,7 +50,7 @@ struct NowPlayingView: View{
                 }
             }
         )
-
+        
     }
     
     

@@ -117,6 +117,8 @@ class MusicPlayerModel: ObservableObject {
     /// 1만 넣으면 개별곡 재생되고 끝남!
     /// 1,2 넣으면 2 상의 1의 곡 index부터 시작해서 연속재생
     
+    
+    
     func play(_ track: Track, in trackList: MusicItemCollection<Track>?, with parentCollectionID: MusicItemID?) {
         let musicPlayer = self.musicPlayer
         

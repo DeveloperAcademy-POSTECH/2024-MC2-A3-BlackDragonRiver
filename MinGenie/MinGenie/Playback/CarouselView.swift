@@ -1,3 +1,4 @@
+import MusicKit
 import SwiftUI
 
 struct Item2: Identifiable, Hashable {
@@ -7,21 +8,36 @@ struct Item2: Identifiable, Hashable {
 }
 
 struct CarouselView: View {
+    
+    /// 현재 index
     @State private var currentIndex: Int = 0
+    /// drag변화 감지할 수치
     @GestureState private var dragOffset: CGFloat = 0
     @State var songs: [Item2] = []
     
     private let colors: [Color] = [.gray, .purple, .red, .yellow, .orange]
     
+    /// 5개씩 표시하고, 마지막인 경우에만 흰색을 올릴 예정
+    
     var body: some View {
+        
         NavigationStack {
             VStack {
                 ZStack {
                     ForEach(0..<colors.count, id: \.self) { index in
+                        
                         Rectangle()
                             .foregroundColor(colors[index])
-                            .frame(width: 250, height: 250)
-                            .opacity(1.0 - Double(abs(index - currentIndex)) * 0.2)
+                            .frame(width: 264, height: 264)
+                            .cornerRadius(16)
+                            .scaleEffect(1.0 - CGFloat(abs(index - currentIndex)) * 0.1)
+                            .zIndex(1.0 - Double(abs(index - currentIndex)) * 0.1)
+                            .offset(x: CGFloat(index - currentIndex) * 50 * (1 - CGFloat(abs(index - currentIndex)) * 0.1) + dragOffset, y: 0)
+                        
+                        Rectangle()
+                            .foregroundColor(.black)
+                            .opacity(0.3)
+                            .frame(width: 264, height: 264)
                             .cornerRadius(16)
                             .scaleEffect(1.0 - CGFloat(abs(index - currentIndex)) * 0.1)
                             .zIndex(1.0 - Double(abs(index - currentIndex)) * 0.1)
@@ -45,21 +61,24 @@ struct CarouselView: View {
                 )
                 .padding(.top, 40)
                 
-                
                 ScrollViewReader { proxy in
                     List(songs) { song in
                         HStack {
                             Rectangle()
                                 .foregroundColor(song.color)
-                                .frame(width: 75, height: 75, alignment: .center)
+                                .cornerRadius(11)
+                                .frame(width: 51, height: 51, alignment: .center)
                             VStack(alignment: .leading) {
                                 Text("Song " + song.name)
                                     .font(.title3)
-                                Text("Artist " + song.name) // 더미 데이터이므로 같은 이름을 두 번 표시합니다.
+                                Text("Artist " + song.name)
                                     .font(.footnote)
                             }
                         }
+                        .frame(height: 42)
+                        .listRowSeparator(.hidden)
                     }
+                    .listStyle(PlainListStyle())    /// List 배경 지우기
                     .onChange(of: currentIndex) { newIndex in
                         withAnimation {
                             proxy.scrollTo(songs[newIndex].id, anchor: .top)
@@ -76,32 +95,6 @@ struct CarouselView: View {
                 
             }
             .navigationTitle("Carousel")
-            .toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                    HStack {
-                        Button {
-                            withAnimation {
-                                currentIndex = max(0, currentIndex - 1)
-                            }
-                        } label: {
-                            Image(systemName: "arrow.left")
-                                .font(.title)
-                        }
-                        
-                        Spacer()
-                        
-                        Button {
-                            withAnimation {
-                                currentIndex = min(colors.count - 1, currentIndex + 1)
-                            }
-                        } label: {
-                            Image(systemName: "arrow.right")
-                                .font(.title)
-                        }
-                    }
-                    .padding()
-                }
-            }
         }
     }
 }

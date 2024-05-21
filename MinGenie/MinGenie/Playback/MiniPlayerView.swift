@@ -43,13 +43,14 @@ struct MiniPlayerView: View {
                         subtitleVerticalOffset: -4.0
                     )
                     Spacer()
+                    /// ✅ 디자인 세부 조정 필요
                     HStack{
                         pauseButton
                             .padding()
                     }
                 }.background {
                     /// ✅ 디자인 세부 조정 필요
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
                         .fill(.blue)
                         .padding([.leading, .trailing])
                 }

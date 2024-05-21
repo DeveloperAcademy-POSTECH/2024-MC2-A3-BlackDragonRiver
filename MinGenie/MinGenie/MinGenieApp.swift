@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MusicKit
 
 @main
 struct MinGenieApp: App {
@@ -13,6 +14,7 @@ struct MinGenieApp: App {
         WindowGroup {
             //ContentView()
             PlaybackView()
+            
         }
     }
 }
