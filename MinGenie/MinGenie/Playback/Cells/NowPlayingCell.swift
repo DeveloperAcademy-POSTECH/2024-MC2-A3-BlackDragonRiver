@@ -1,5 +1,9 @@
 import MusicKit
 import SwiftUI
+
+/// ✏️ 현재 재생 화면 정사각형 곡 cell ✏️
+///  ✅ 디자인 세부 조정 필요
+
 struct NowPlayingCell: View {
     
     // MARK: - Initialization

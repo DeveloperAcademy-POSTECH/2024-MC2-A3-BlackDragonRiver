@@ -8,6 +8,8 @@ A button style the play button uses.
 import SwiftUI
 
 // MARK: - Play button style
+/// ✏️ 아직 뜯어보지 못했는데, playButton관련 cutom 디자인인듯 ✏️
+///  ✅ 디자인 세부 조정 필요
 
 /// A custom button style that encapsulates all the common modifiers for prominent buttons in the user interface.
 struct PlayButtonStyle: ButtonStyle {

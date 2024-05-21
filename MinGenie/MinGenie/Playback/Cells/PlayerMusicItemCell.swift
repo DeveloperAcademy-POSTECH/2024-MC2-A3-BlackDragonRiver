@@ -5,18 +5,21 @@ Abstract:
 A cell that displays information about a music item.
 */
 
+/// ✏️ 가로 길쭉이 곡 표시 cell ✏️
+///  ✅ 디자인 세부 조정 필요
+
 import MusicKit
 import SwiftUI
 
 /// A view that displays information about a music item.
-struct MusicItemCell2: View {
+struct PlayerMusicItemCell: View {
     
     // MARK: - Initialization
     
     init(
         artwork: Artwork? = nil,
-        artworkSize: CGFloat = Self.defaultArtworkSize,
-        artworkCornerRadius: CGFloat = Self.defaultArtworkCornerRadius,
+        artworkSize: CGFloat = PlayerMusicItemCell.defaultArtworkSize,
+        artworkCornerRadius: CGFloat = PlayerMusicItemCell.defaultArtworkCornerRadius,
         title: String,
         subtitle: String? = nil,
         subtitleVerticalOffset: CGFloat = 0.0

@@ -5,16 +5,18 @@ import SwiftUI
 ///  애플 예제에서 사용할 부분만 추려 온 건데, custom한 부분들 표시해두겠습니다!
 
 struct NowPlayingView: View{
-    @Environment(\.presentationMode) var presentation
+    
+    /// queue 상태 받아와서 표시할 것
     @ObservedObject var playbackQueue: ApplicationMusicPlayer.Queue
-    @State private var artist: String = ""
+    /// miniPlayerView와 전환되기 위한 bool
+    @Environment(\.presentationMode) var presentation
     
     var body: some View{
-        NavigationView{ // 이거 안쓰고 싶은디? 이걸 써야 작동하는 이유가 머지
+        NavigationView{
             ZStack{
-                
                 VStack{
                     HStack{
+                        /// ✅ 디자인 세부 조정 필요
                         VStack(alignment: .leading){
                             Text("(애플 id님,)")
                                 .font(.title3)
@@ -28,13 +30,12 @@ struct NowPlayingView: View{
                     .padding(.top,30)
                     .padding(.leading,30)
                     
-                    // subtitle이 가수명임..
                     NowPlayingCell(playbackQueue: playbackQueue, artwork: playbackQueue.currentEntry?.artwork, title: playbackQueue.currentEntry?.title, artist: playbackQueue.currentEntry?.subtitle )
-                    //.navigationTitle("현재 재생중")
                     
                 }
                 
                 VStack{
+                    /// grabber 버튼 - dismiss 동작 넘겨줌
                     DismissButton { dismiss() }
                     Spacer()
                 }
@@ -42,9 +43,10 @@ struct NowPlayingView: View{
                 
             }
         }
-        /// drag 구현한 방법!
         .gesture(
+            /// fullScreenCover에서 드래그로 dismiss하기 위해선 커스텀이 필요함
             DragGesture().onEnded { value in
+                /// 세로로 150 이상 움직이면 dismiss
                 if value.translation.height > 150 {
                     dismiss()
                 }
@@ -60,6 +62,8 @@ struct NowPlayingView: View{
     
     
     public struct DismissButton: View {
+        ///이거 선언할 때, dismiss 동작 받아옴.
+        ///버튼을 눌렀을 때 수행할 동작(dismiss)을 담아 초기화
         var action: () -> ()
         
         public init(_ action: @escaping () -> ()) {
@@ -68,6 +72,7 @@ struct NowPlayingView: View{
         
         public var body: some View {
             Button(action: action) {
+                /// grabber 버튼 그림
                 RoundedRectangle(cornerRadius: 16)
                     .fill(Color.gray)
                     .frame(width: 50, height: 5)
@@ -76,17 +81,17 @@ struct NowPlayingView: View{
         }
     }
     
-    // 아직 미사용
+    
+    /// 👇아래는 미사용중이긴 한데, 재생대기목록 띄우려면 나중에 쓸 거 같아서 남겨둠
     @ViewBuilder
     private var content: some View{
         list(for: playbackQueue)
     }
     
-    // 아직 미사용
     private func list(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View{
         List{
             ForEach(playbackQueue.entries){ entry in
-                MusicItemCell2(
+                PlayerMusicItemCell(
                     artwork: entry.artwork,
                     artworkSize: 44,
                     artworkCornerRadius: 4,
