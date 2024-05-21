@@ -1,20 +1,15 @@
-/*
-See LICENSE folder for this sample’s licensing information.
-
-Abstract:
-A SwiftUI view that implements a mini music player.
-*/
-
 import MusicKit
 import SwiftUI
 
-/// A view that implements a music player at the bottom of another view.
+/// ✏️ 하단에 띄워 둘 미니플레이어 View입니다 ✏️
+///  애플 예제에서 사용할 부분만 추려 온 건데, custom한 부분들 표시해두겠습니다!
+
 struct MiniPlayerView: View {
     
     // MARK: - Properties
     
     @ObservedObject var playbackQueue = ApplicationMusicPlayer.shared.queue
-    @ObservedObject private var musicPlayer = MusicPlayer.shared
+    @ObservedObject private var musicPlayer = MusicPlayerModel.shared
     @State var isShowingNowPlaying = false
     @State var isShowingMusic = false
     
@@ -24,21 +19,13 @@ struct MiniPlayerView: View {
         content
             .frame(height: 80)
             .frame(maxWidth: .infinity)
-//            .sheet(isPresented: $isShowingNowPlaying) {
-//                NowPlayingView(playbackQueue: playbackQueue)
-//            }
             .fullScreenCover(isPresented: $isShowingNowPlaying){
                 NowPlayingView(playbackQueue: playbackQueue)
             }
-        
-
-            
             .background {
                 RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    //.fill(Color(UIColor.systemBackground))
                     .fill(.blue)
                     .padding([.leading, .trailing])
-                    //.standardShadow()
             }
     }
     
@@ -87,22 +74,13 @@ struct MiniPlayerView: View {
         }
     }
     
-//    var seeQueueView: some View {
-//        Button {
-//            isShowingNowPlaying = true
-//        } label: {
-//            Image(systemName: "list.bullet")
-//                .font(.system(size: 18))
-//                .foregroundColor(.black)
-//        }
-//    }
-    
     // MARK: - Methods
     
     private func pausePlay() {
         musicPlayer.togglePlaybackStatus()
     }
     
+    /// MiniPlayer Tap하면  fullScreen(NowPlayingView)으로 넘어가기 위한 bool들 true 시켜주는 함수
     private func handleTap() {
         isShowingMusic = true
         isShowingNowPlaying = true

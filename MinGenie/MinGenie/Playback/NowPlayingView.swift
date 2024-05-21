@@ -1,6 +1,9 @@
 import MusicKit
 import SwiftUI
 
+/// ✏️ 현재 재생 (full Screen) View입니다 ✏️
+///  애플 예제에서 사용할 부분만 추려 온 건데, custom한 부분들 표시해두겠습니다!
+
 struct NowPlayingView: View{
     @Environment(\.presentationMode) var presentation
     @ObservedObject var playbackQueue: ApplicationMusicPlayer.Queue
@@ -39,7 +42,7 @@ struct NowPlayingView: View{
                 
             }
         }
-        
+        /// drag 구현한 방법!
         .gesture(
             DragGesture().onEnded { value in
                 if value.translation.height > 150 {
@@ -51,11 +54,10 @@ struct NowPlayingView: View{
     }
     
     
-    
-    
     private func dismiss() {
         presentation.wrappedValue.dismiss()
     }
+    
     
     public struct DismissButton: View {
         var action: () -> ()
@@ -84,7 +86,7 @@ struct NowPlayingView: View{
     private func list(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View{
         List{
             ForEach(playbackQueue.entries){ entry in
-                MusicItemCell(
+                MusicItemCell2(
                     artwork: entry.artwork,
                     artworkSize: 44,
                     artworkCornerRadius: 4,
