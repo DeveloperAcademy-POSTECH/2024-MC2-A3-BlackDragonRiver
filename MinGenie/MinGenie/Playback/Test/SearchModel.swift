@@ -6,9 +6,66 @@
 //
 
 /// ❌ 아직 HomeView와 연동하기 전이라 임의로 만들어둔 RequestModel입니다 ❌
-
-import SwiftUI
 import MusicKit
+import SwiftUI
+
+class MusicPersonalRecommendationModel: ObservableObject {
+    private var personalRecommendations: MusicItemCollection<MusicPersonalRecommendation> = []
+    @Published var tracks: MusicItemCollection<Track> = []
+    @Published var playlist: Playlist?
+    
+    
+    init() {
+        self.requestMusicPersonalRecommendation()
+    }
+    
+    private func requestMusicPersonalRecommendation() {
+        Task {
+            do {
+                let request = MusicPersonalRecommendationsRequest()
+                let response = try await request.response()
+                await self.findPlaylist(response)
+                try? await loadTracks()
+                
+            } catch {
+                print("Personal recommendation request failed with error: \(error)")
+            }
+        }
+    }
+    
+    /// Loads tracks asynchronously.
+    private func loadTracks() async throws {
+        guard let playlist = self.playlist else {
+            print("🚫 Playlist Problem")
+            return
+        }
+        
+        let detailedAlbum = try await playlist.with([.tracks])
+        
+        guard let tracks = detailedAlbum.tracks else {
+            print("🚫 Tracks Problem")
+            return
+        }
+        await update(tracks: tracks)
+    }
+    
+    private func findPlaylist(_ response: MusicPersonalRecommendationsResponse) async {
+        self.personalRecommendations = response.recommendations
+        for recommendation in self.personalRecommendations {
+            if !recommendation.playlists.isEmpty {
+                self.playlist = recommendation.playlists.first
+                break
+            }
+        }
+    }
+    
+    @MainActor
+    private func update(tracks: MusicItemCollection<Track>) {
+            self.tracks = tracks
+    }
+}
+
+
 
 /// 요청해서 받아온 정보들을 Item 구조체 모양으로 정리할 겁니다.
 struct Item: Identifiable, Hashable {
@@ -16,7 +73,6 @@ struct Item: Identifiable, Hashable {
     let name: String
     let artist: String
     let imageUrl: URL?
-    let song: Song
 }
 
 class SearchModel: ObservableObject {
@@ -30,8 +86,11 @@ class SearchModel: ObservableObject {
         
         /// 실리카겔 검색결과를 Song타입으로 25개 가져왔어요.
         var request = MusicCatalogSearchRequest(term: "Silicagel", types: [Song.self])
+        //var request = MusicCatalogSearchRequest(term: "Silicagel", types: [Playlist.self])
         request.limit = 25
+        
         return request
+        
     }()
     
     /// SearchModel Class가 생성될 때, 바로 요청을 받아올 거예요.
@@ -54,8 +113,7 @@ class SearchModel: ObservableObject {
                         self.songs = result.songs.compactMap({
                             return .init(name: $0.title,
                                          artist: $0.artistName,
-                                         imageUrl: $0.artwork?.url(width: 75, height: 75),
-                                         song: $0.self)
+                                         imageUrl: $0.artwork?.url(width: 75, height: 75))
                         })
                     }
                 /// 거절되면, 에러 메세지를 띄워 줄게요!

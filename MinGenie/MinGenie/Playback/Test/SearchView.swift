@@ -14,6 +14,8 @@ struct SearchView: View {
     @ObservedObject var searchModel = SearchModel()
     @ObservedObject var musicPlayer = MusicPlayerModel()
 
+    @ObservedObject var model = MusicPersonalRecommendationModel()
+    
     var body: some View {
         VStack {
             Text("실리카겔 검색 결과")
@@ -38,7 +40,8 @@ struct SearchView: View {
                         /// searchView에서 눌러서 선택된 Song을 MusicPlayer에 넣기 위한 Converter
                         /// parameter1 :  재생 시작할 곡
                         /// parameter2: 트랙리스트 << 곡 배열로 안넣어봤어요..
-                        musicPlayer.sendToMusicPlayer(song.song, in: nil)
+//                        musicPlayer.sendToMu/*sicPlayer(song.song, in: nil)*/
+                        musicPlayer.play(model.tracks[0], in: model.tracks, with: nil)
                     }
                 }
             }

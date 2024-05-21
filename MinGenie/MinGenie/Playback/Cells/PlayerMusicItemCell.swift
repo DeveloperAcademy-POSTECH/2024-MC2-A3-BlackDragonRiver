@@ -14,33 +14,14 @@ import SwiftUI
 /// A view that displays information about a music item.
 struct PlayerMusicItemCell: View {
     
-    // MARK: - Initialization
+    // MARK: - Properties 선언과 Initialization
     
-    init(
-        artwork: Artwork? = nil,
-        artworkSize: CGFloat = PlayerMusicItemCell.defaultArtworkSize,
-        artworkCornerRadius: CGFloat = PlayerMusicItemCell.defaultArtworkCornerRadius,
-        title: String,
-        subtitle: String? = nil,
-        subtitleVerticalOffset: CGFloat = 0.0
-    ) {
-        
-        self.artwork = artwork
-        self.artworkSize = artworkSize
-        self.artworkCornerRadius = artworkCornerRadius
-        self.title = title
-        self.subtitle = (subtitle ?? "")
-        self.subtitleVerticalOffset = subtitleVerticalOffset
-    }
-    
-    // MARK: - Properties
-    
-    let artwork: Artwork?
-    let artworkSize: CGFloat
-    let artworkCornerRadius: CGFloat
-    let title: String
-    let subtitle: String
-    let subtitleVerticalOffset: CGFloat
+    var artwork: Artwork? = nil
+    var artworkSize: CGFloat = PlayerMusicItemCell.defaultArtworkSize
+    var artworkCornerRadius: CGFloat = PlayerMusicItemCell.defaultArtworkCornerRadius
+    var title: String = "Unknown Title"
+    var subtitle: String = "Unknown Artist"
+    var subtitleVerticalOffset: CGFloat = 0.0
     
     // MARK: - View
     

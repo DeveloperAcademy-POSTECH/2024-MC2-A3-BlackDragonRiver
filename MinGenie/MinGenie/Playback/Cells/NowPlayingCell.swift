@@ -5,39 +5,21 @@ import SwiftUI
 ///  ✅ 디자인 세부 조정 필요
 
 struct NowPlayingCell: View {
+    // MARK: - Constants
+    private static let defaultArtworkSize = 250.0
+    private static let defaultArtworkCornerRadius = 6.0
     
-    // MARK: - Initialization
-    
-    init(
-        playbackQueue: ApplicationMusicPlayer.Queue,
-        artwork: Artwork? = nil,
-        artworkSize: CGFloat = Self.defaultArtworkSize,
-        artworkCornerRadius: CGFloat = Self.defaultArtworkCornerRadius,
-        title: String? = nil,
-        subtitle: String? = nil,
-        subtitleVerticalOffset: CGFloat = 0.0,
-        artist: String? = nil
-    ) {
-        self.playbackQueue = playbackQueue
-        self.artwork = artwork
-        self.artworkSize = artworkSize
-        self.artworkCornerRadius = artworkCornerRadius
-        self.title = (title ?? "")
-        self.subtitle = (subtitle ?? "")
-        self.subtitleVerticalOffset = subtitleVerticalOffset
-        self.artist = (artist ?? "")
-    }
-    
-    // MARK: - Properties
+    // MARK: - Properties선언과 Initialization
     @ObservedObject var playbackQueue: ApplicationMusicPlayer.Queue
     
-    let artwork: Artwork?
-    let artworkSize: CGFloat
-    let artworkCornerRadius: CGFloat
-    let title: String
-    let subtitle: String
-    let subtitleVerticalOffset: CGFloat
-    let artist: String
+      var artwork: Artwork? = nil
+      var title: String = "Unknown Title"
+      var artist: String = "Unknown Artist"
+      var subtitle: String = ""
+      var artworkSize: CGFloat = defaultArtworkSize
+      var artworkCornerRadius: CGFloat = defaultArtworkCornerRadius
+      var subtitleVerticalOffset: CGFloat = 0.0
+        
     
     // MARK: - View
     
@@ -92,7 +74,5 @@ struct NowPlayingCell: View {
         }
     }
     
-    // MARK: - Constants
-    private static let defaultArtworkSize = 250.0
-    private static let defaultArtworkCornerRadius = 6.0
+    
 }

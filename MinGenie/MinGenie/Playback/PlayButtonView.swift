@@ -24,21 +24,15 @@ struct PlayButton<MusicItemType: PlayableMusicItem>: View {
         
         /// 버튼 누를 때 재생상태 toggle
         Button(action: { musicPlayer.togglePlaybackStatus(for: item) }) {
-            ZStack {
-                Image(systemName: (musicPlayer.isPlaying ? "pause.fill" : "play.fill"))
-                    .resizable()
-                    .frame(width: 40, height: 40)
-                    .foregroundColor(.white)
-                
-                /// ✅ 사이즈 세부 조정 필요
-                Circle()
-                    .stroke(Color.white, lineWidth: 2)
-                    .frame(width: 100, height: 100)
-            }.shadow(radius: 5)
+            
+            Image(systemName: (musicPlayer.isPlaying ? "pause.circle" : "play.circle"))
+                .font(.system(size: 60, weight: .light))
+                .foregroundColor(.white)
+                .shadow(radius: 2)
             
         }
         .buttonStyle(.playStyle)    /// extension으로 넣어줌!
         .animation(.easeInOut(duration: 0.1), value: musicPlayer.isPlaying)
     }
-
+    
 }
