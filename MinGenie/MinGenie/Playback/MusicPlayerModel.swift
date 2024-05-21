@@ -155,9 +155,9 @@ class MusicPlayerModel: ObservableObject {
     
     /// 👉🏻 method 5 (custom)
     /// method 3 play의 파라미터 Track은 song, musicVideo 모두를 포괄하는 enum타입이라 case를 song으로 지정해서 넘겨줘야할 필요가 있음.
-    func convertToMusicPlayer(_ song: Song) {
+    func sendToMusicPlayer(_ song: Song, in trackList: MusicItemCollection<Track>?) {
         let track = Track.song(song)
-        play(track, in: nil, with: nil)
+        play(track, in: trackList, with: nil)
     }
     
 }

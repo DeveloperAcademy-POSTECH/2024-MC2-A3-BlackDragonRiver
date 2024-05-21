@@ -36,7 +36,9 @@ struct SearchView: View {
                     }
                     .onTapGesture {
                         /// searchView에서 눌러서 선택된 Song을 MusicPlayer에 넣기 위한 Converter
-                        musicPlayer.convertToMusicPlayer(song.song)
+                        /// parameter1 :  재생 시작할 곡
+                        /// parameter2: 트랙리스트 << 곡 배열로 안넣어봤어요..
+                        musicPlayer.sendToMusicPlayer(song.song, in: nil)
                     }
                 }
             }
