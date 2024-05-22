@@ -15,6 +15,11 @@
 		26B6F5262BFA2D07000B2340 /* MusicItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B6F5252BFA2D07000B2340 /* MusicItemCell.swift */; };
 		26B6F5292BFA36AC000B2340 /* MusicItemRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B6F5282BFA36AC000B2340 /* MusicItemRowView.swift */; };
 		26B6F52B2BFA436E000B2340 /* MusicPersonalRecommendationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B6F52A2BFA436E000B2340 /* MusicPersonalRecommendationModel.swift */; };
+		452B00992BFE14B4002F4560 /* headphone.gif in Resources */ = {isa = PBXBuildFile; fileRef = 452B00952BFE14B4002F4560 /* headphone.gif */; };
+		452B009C2BFE14B4002F4560 /* notebook.gif in Resources */ = {isa = PBXBuildFile; fileRef = 452B00982BFE14B4002F4560 /* notebook.gif */; };
+		452B009E2BFE1C68002F4560 /* shaking.gif in Resources */ = {isa = PBXBuildFile; fileRef = 452B009D2BFE1C68002F4560 /* shaking.gif */; };
+		452B00A22BFE1FA8002F4560 /* iphone.gif in Resources */ = {isa = PBXBuildFile; fileRef = 452B00A12BFE1FA8002F4560 /* iphone.gif */; };
+		452B00A42BFE21CB002F4560 /* shaking2.gif in Resources */ = {isa = PBXBuildFile; fileRef = 452B00A32BFE21CB002F4560 /* shaking2.gif */; };
 		866AB69A2BFD6B3C00332FB9 /* Test_PlaylistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866AB6992BFD6B3C00332FB9 /* Test_PlaylistView.swift */; };
 		866AB69C2BFD8A1B00332FB9 /* Test_TrackListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866AB69B2BFD8A1B00332FB9 /* Test_TrackListView.swift */; };
 		86D8FD032BFB2B3C008FD1AD /* MiniPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D8FD022BFB2B3C008FD1AD /* MiniPlayerView.swift */; };
@@ -48,6 +53,11 @@
 		26B6F5252BFA2D07000B2340 /* MusicItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicItemCell.swift; sourceTree = "<group>"; };
 		26B6F5282BFA36AC000B2340 /* MusicItemRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicItemRowView.swift; sourceTree = "<group>"; };
 		26B6F52A2BFA436E000B2340 /* MusicPersonalRecommendationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPersonalRecommendationModel.swift; sourceTree = "<group>"; };
+		452B00952BFE14B4002F4560 /* headphone.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = headphone.gif; sourceTree = "<group>"; };
+		452B00982BFE14B4002F4560 /* notebook.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = notebook.gif; sourceTree = "<group>"; };
+		452B009D2BFE1C68002F4560 /* shaking.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = shaking.gif; sourceTree = "<group>"; };
+		452B00A12BFE1FA8002F4560 /* iphone.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = iphone.gif; sourceTree = "<group>"; };
+		452B00A32BFE21CB002F4560 /* shaking2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = shaking2.gif; sourceTree = "<group>"; };
 		866AB6992BFD6B3C00332FB9 /* Test_PlaylistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_PlaylistView.swift; sourceTree = "<group>"; };
 		866AB69B2BFD8A1B00332FB9 /* Test_TrackListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_TrackListView.swift; sourceTree = "<group>"; };
 		86D8FD022BFB2B3C008FD1AD /* MiniPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniPlayerView.swift; sourceTree = "<group>"; };
@@ -203,6 +213,11 @@
 				D8184EFB2BF650CB00CBA736 /* Info.plist */,
 				D8672FEA2BF2444600E9E242 /* MinGenieApp.swift */,
 				D8672FEC2BF2444600E9E242 /* ContentView.swift */,
+				452B00952BFE14B4002F4560 /* headphone.gif */,
+				452B00A32BFE21CB002F4560 /* shaking2.gif */,
+				452B009D2BFE1C68002F4560 /* shaking.gif */,
+				452B00982BFE14B4002F4560 /* notebook.gif */,
+				452B00A12BFE1FA8002F4560 /* iphone.gif */,
 				D8672FEE2BF2444600E9E242 /* Assets.xcassets */,
 				D8672FF02BF2444700E9E242 /* Preview Content */,
 			);
@@ -285,8 +300,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				452B00992BFE14B4002F4560 /* headphone.gif in Resources */,
 				D8672FF22BF2444700E9E242 /* Preview Assets.xcassets in Resources */,
 				D8672FEF2BF2444600E9E242 /* Assets.xcassets in Resources */,
+				452B00A42BFE21CB002F4560 /* shaking2.gif in Resources */,
+				452B00A22BFE1FA8002F4560 /* iphone.gif in Resources */,
+				452B009E2BFE1C68002F4560 /* shaking.gif in Resources */,
+				452B009C2BFE14B4002F4560 /* notebook.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
