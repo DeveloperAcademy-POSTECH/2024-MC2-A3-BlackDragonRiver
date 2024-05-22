@@ -10,13 +10,16 @@ import SwiftUI
 
 class MusicPersonalRecommendationModel: ObservableObject {
     private var personalRecommendations: MusicItemCollection<MusicPersonalRecommendation> = []
-    @Published var tracks: MusicItemCollection<Track>?
     
-    var playlist: Playlist?
+    @Published var mainTracks: MusicItemCollection<Track>?
+    @Published var randomTracks: MusicItemCollection<Track>?
     
+    private var playlists: MusicItemCollection<Playlist> = []
     
     init() {
-        self.requestMusicPersonalRecommendation()
+        Task {
+            self.requestMusicPersonalRecommendation()
+        }
     }
     
     private func requestMusicPersonalRecommendation() {
@@ -24,44 +27,65 @@ class MusicPersonalRecommendationModel: ObservableObject {
             do {
                 let request = MusicPersonalRecommendationsRequest()
                 let response = try await request.response()
-                await self.findPlaylist(response)
-                try? await loadTracks()
                 
+                await self.findPlaylist(response)
             } catch {
                 print("Personal recommendation request failed with error: \(error)")
             }
         }
     }
     
-    /// Loads tracks asynchronously.
-    private func loadTracks() async throws {
-        guard let playlist = self.playlist else {
-            print("🚫 Playlist Problem")
-            return
+    private func findPlaylist(_ response: MusicPersonalRecommendationsResponse) async {
+        self.personalRecommendations = response.recommendations
+        for recommendation in personalRecommendations {
+            if !recommendation.playlists.isEmpty {
+                playlists += recommendation.playlists
+                
+                if !playlists.isEmpty {  // 플리를 한 개라도 찾으면
+                    try? await loadMainTracks()
+                }
+            }
         }
+        print("❗️: \(playlists)")
+    }
+    
+    /// Loads tracks asynchronously.
+    private func loadMainTracks() async throws {
+        let detailedPlaylist = try await playlists[0].with([.tracks])
         
-        let detailedAlbum = try await playlist.with([.tracks])
-        
-        guard let tracks = detailedAlbum.tracks else { 
+        guard let tracks = detailedPlaylist.tracks else {
             print("🚫 Tracks Problem")
             return
         }
         
-        await update(tracks: tracks)
+        await mainTracksUpdate(tracks)
     }
     
-    private func findPlaylist(_ response: MusicPersonalRecommendationsResponse) async {
-        self.personalRecommendations = response.recommendations
-        for recommendation in self.personalRecommendations {
-            if !recommendation.playlists.isEmpty {
-                self.playlist = recommendation.playlists.first
-                break
-            }
+
+    
+    func loadRandomTracks() async throws {
+        guard let playlist = playlists.randomElement() else {
+            print("🚫 Random Playlists Problem")
+            return
         }
+                
+        let detailedPlaylist = try await playlist.with([.tracks])
+        
+        guard let tracks = detailedPlaylist.tracks else {
+            print("🚫 Tracks Problem")
+            return
+        }
+        
+        await randomTracksUpdate(tracks)
     }
     
     @MainActor
-    private func update(tracks: MusicItemCollection<Track>) {
-            self.tracks = tracks
+    private func mainTracksUpdate(_ tracks: MusicItemCollection<Track>) {
+            mainTracks = tracks
+    }
+    
+    @MainActor
+    private func randomTracksUpdate(_ tracks: MusicItemCollection<Track>) {
+        randomTracks = tracks
     }
 }
