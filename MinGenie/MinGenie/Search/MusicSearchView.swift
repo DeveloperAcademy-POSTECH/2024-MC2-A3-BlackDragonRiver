@@ -59,12 +59,12 @@ struct categoryButton: View {
             selectedCategory = category
         } label: {
             RoundedRectangle(cornerRadius: 100)
-                .fill(selectedCategory == category ? .blue : .gray) // color 수정
+                .fill(selectedCategory == category ? Color("shape/Blue") : Color("shape/Gray10"))
                 .frame(width: 54, height: 33)
                 .overlay {
                     Text(category.rawValue)
                         .font(.callout)
-                        .foregroundColor(selectedCategory == category ? .white : .gray) // color 수정
+                        .foregroundColor(selectedCategory == category ? Color("text/White100") : Color("text/Gray50"))
                 }
         }
     }
@@ -90,12 +90,12 @@ struct SongResultRowView: View {
                 VStack(alignment: .leading) {
                     Text("\(song.title)")
                         .font(.body)
-                        .foregroundStyle(.black) // color 수정
-                    
+                        .foregroundStyle(Color("text/Black"))
+
                     Text("\(song.artistName)")
                         .font(.subheadline)
-                        .foregroundStyle(.secondary) // color 수정
-                    
+                        .foregroundStyle(Color("text/Gray60"))
+
                     Divider()
                 }
                 .lineLimit(1)
@@ -113,7 +113,7 @@ struct AlbumResultRowView: View {
     
     var body: some View {
         NavigationLink {
-//            AlbumDetailView(album: album)
+            DetailedAlbumView(album: album)
         } label: {
             HStack {
                 if let artwork = album.artwork {
@@ -125,8 +125,8 @@ struct AlbumResultRowView: View {
                 VStack(alignment: .leading) {
                     Text("\(album.title)")
                         .font(.body)
-                        .foregroundStyle(.black) // color 수정
-                    
+                        .foregroundStyle(Color("text/Black"))
+
                     HStack {
                         Text("\(album.artistName)")
                         
@@ -136,12 +136,13 @@ struct AlbumResultRowView: View {
                             Text("\(releaseDate, style: .date)")
                         }
                     }
-                    .lineLimit(1)
                     .font(.subheadline)
-                    .foregroundStyle(.secondary) // color 수정
+                    .foregroundStyle(Color("text/Gray60"))
                     
                     Divider()
                 }
+                .lineLimit(1)
+
                 Spacer()
                 
                 Image(systemName: "chevron.right")
