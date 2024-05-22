@@ -27,7 +27,6 @@
 		86D8FD192BFB661E008FD1AD /* Test_PlaybackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D8FD182BFB661E008FD1AD /* Test_PlaybackView.swift */; };
 		C7D27B472BFDE47400E76800 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D27B462BFDE47400E76800 /* HomeView.swift */; };
 		C7D27B492BFDED9E00E76800 /* GifImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D27B482BFDED9E00E76800 /* GifImage.swift */; };
-		C7D27B4B2BFDEF7F00E76800 /* headphone.gif in Resources */ = {isa = PBXBuildFile; fileRef = C7D27B4A2BFDEF7F00E76800 /* headphone.gif */; };
 		D8184EFD2BF6516C00CBA736 /* MusicAuthorizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8184EFC2BF6516C00CBA736 /* MusicAuthorizationView.swift */; };
 		D8184F012BF70F1900CBA736 /* MusicAuthorizationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8184F002BF70F1900CBA736 /* MusicAuthorizationModel.swift */; };
 		D85D2AB42BFDD024003803C0 /* DetailedAlbumModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85D2AB32BFDD024003803C0 /* DetailedAlbumModel.swift */; };
@@ -61,7 +60,6 @@
 		86D8FD182BFB661E008FD1AD /* Test_PlaybackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_PlaybackView.swift; sourceTree = "<group>"; };
 		C7D27B462BFDE47400E76800 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		C7D27B482BFDED9E00E76800 /* GifImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifImage.swift; sourceTree = "<group>"; };
-		C7D27B4A2BFDEF7F00E76800 /* headphone.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = headphone.gif; path = ../../../GIF/headphone.gif; sourceTree = "<group>"; };
 		D8184EFB2BF650CB00CBA736 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D8184EFC2BF6516C00CBA736 /* MusicAuthorizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicAuthorizationView.swift; sourceTree = "<group>"; };
 		D8184F002BF70F1900CBA736 /* MusicAuthorizationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicAuthorizationModel.swift; sourceTree = "<group>"; };
@@ -197,15 +195,14 @@
 			isa = PBXGroup;
 			children = (
 				130D52832BFDD67F0010BAE2 /* OnboardingViews */,
+				26B6F5272BFA3662000B2340 /* Home */,
 				86D8FCFF2BFB2A92008FD1AD /* Playback */,
 				D8E776BE2BFA6A5200CA94A2 /* Search */,
-				26B6F5272BFA3662000B2340 /* Home */,
 				269FDD532BF88F9200715CB4 /* ShakeDetection */,
 				D8184EFF2BF70EE300CBA736 /* Authorization */,
 				D8184EFB2BF650CB00CBA736 /* Info.plist */,
 				D8672FEA2BF2444600E9E242 /* MinGenieApp.swift */,
 				D8672FEC2BF2444600E9E242 /* ContentView.swift */,
-				C7D27B4A2BFDEF7F00E76800 /* headphone.gif */,
 				D8672FEE2BF2444600E9E242 /* Assets.xcassets */,
 				D8672FF02BF2444700E9E242 /* Preview Content */,
 			);
@@ -288,7 +285,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7D27B4B2BFDEF7F00E76800 /* headphone.gif in Resources */,
 				D8672FF22BF2444700E9E242 /* Preview Assets.xcassets in Resources */,
 				D8672FEF2BF2444600E9E242 /* Assets.xcassets in Resources */,
 			);

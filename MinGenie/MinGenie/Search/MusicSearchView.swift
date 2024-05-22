@@ -11,38 +11,35 @@ import SwiftUI
 struct MusicSearchView: View {
     @ObservedObject private var model = MusicSearchModel()
     
-    @State private var searchTerm: String = ""
     @State private var selectedCategory: Category = .song
+    @Binding var searchTerm: String
     
     var body: some View {
-        NavigationView {
-            VStack(alignment: .leading, spacing: 0) {
-                if searchTerm != "" {
-                    HStack {
-                        categoryButton(selectedCategory: $selectedCategory, category: .song)
-                        
-                        categoryButton(selectedCategory: $selectedCategory, category: .album)
-                        
-                        Spacer()
-                    }
-                    .padding(.vertical, 12)
-                    .padding(.horizontal, 16)
+        VStack(alignment: .leading, spacing: 0) {
+            if searchTerm != "" {
+                HStack {
+                    categoryButton(selectedCategory: $selectedCategory, category: .song)
+                    
+                    categoryButton(selectedCategory: $selectedCategory, category: .album)
+                    
+                    Spacer()
                 }
-                                
-                ScrollView {
-                    switch(selectedCategory) {
-                    case .song:
-                        ForEach(model.songs, id: \.self) { song in
-                            SongResultRowView(song: song)
-                        }
-                    case .album:
-                        ForEach(model.albums, id: \.self) { album in
-                            AlbumResultRowView(album: album)
-                        }
+                .padding(.vertical, 12)
+                .padding(.horizontal, 16)
+            }
+            
+            ScrollView {
+                switch(selectedCategory) {
+                case .song:
+                    ForEach(model.songs, id: \.self) { song in
+                        SongResultRowView(song: song)
+                    }
+                case .album:
+                    ForEach(model.albums, id: \.self) { album in
+                        AlbumResultRowView(album: album)
                     }
                 }
             }
-            .searchable(text: $searchTerm, prompt: "아티스트, 노래")
         }
         .onChange(of: searchTerm) { _, _ in
             model.requestUpdatedSearchResults(for: searchTerm)
@@ -154,8 +151,4 @@ struct AlbumResultRowView: View {
             .padding(.bottom, 9)
         }
     }
-}
-
-#Preview {
-    MusicSearchView()
 }
