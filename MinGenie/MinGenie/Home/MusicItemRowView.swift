@@ -6,22 +6,26 @@
 //
 
 
+import MusicKit
 import SwiftUI
 
 struct MusicItemRowView: View {
-    private let sectionTitle = "지난 선곡"
     private let imageSize: CGFloat = 160
     
+    let itemRowTitle: String
+    let tracks: MusicItemCollection<Track>
+    
     var body: some View {
+        
         VStack(alignment: .leading, spacing: 10) {
-            Text(sectionTitle)
+            Text(itemRowTitle)
                 .font(.headline)
                 .padding(.horizontal, 16)
             
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 10) {
-                    ForEach(1...10, id: \.self) { _ in
-                        MusicItemCell(imageSize: imageSize)
+                    ForEach(tracks, id: \.self) { track in
+                        MusicItemCell(track: track, imageSize: imageSize)
                     }
                 }
                 .padding(.horizontal, 16)
@@ -32,6 +36,3 @@ struct MusicItemRowView: View {
     }
 }
 
-#Preview {
-    MusicItemRowView()
-}
