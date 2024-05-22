@@ -10,7 +10,7 @@ import SwiftUI
 
 class MusicPersonalRecommendationModel: ObservableObject {
     private var personalRecommendations: MusicItemCollection<MusicPersonalRecommendation> = []
-    @Published var tracks: MusicItemCollection<Track> = []
+    @Published var tracks: MusicItemCollection<Track>?
     
     var playlist: Playlist?
     

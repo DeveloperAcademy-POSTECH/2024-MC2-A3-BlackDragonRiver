@@ -11,7 +11,7 @@ import SwiftUI
 struct MinGenieApp: App {
     var body: some Scene {
         WindowGroup {
-            PlaybackView()
+            ContentView()
         }
     }
 }
