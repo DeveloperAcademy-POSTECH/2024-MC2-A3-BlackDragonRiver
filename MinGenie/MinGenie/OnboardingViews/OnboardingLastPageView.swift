@@ -10,8 +10,7 @@ import SwiftUI
 struct OnboardingLastPageView: View {
     let title: String
     let imageName: String
-    
-    @Binding var isFirstLaunching: Bool
+    @Binding var hasSeenOnboarding: Bool
     
     var body: some View {
         ZStack {
@@ -24,24 +23,25 @@ struct OnboardingLastPageView: View {
                     .lineSpacing(6)
                     .frame(width: 300, height: 120, alignment: .bottom)
                     .padding(EdgeInsets(top: 100, leading: 0, bottom: 40, trailing: 0))
-                Image(imageName)
-                    .resizable()
+                GifImage(imageName)
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 361, height: 200)
                 Spacer()
             }
             VStack{
                 Spacer()
-                Button { isFirstLaunching.toggle()
-                } label: {
+                Button(action: {
+                    UserDefaults.standard.set(true, forKey: "hasSeenOnboarding")
+                    hasSeenOnboarding = true
+
+                }) {
                     Text("시작하기")
                         .fontWeight(.semibold)
                         .foregroundColor(.white)
                         .frame(width: 361, height: 50)
                         .background(Color.black)
                         .cornerRadius(16)
-                        .padding(.bottom, 160)
-                }
+                        .padding(.bottom, 160)                }
             }
         }
     }
