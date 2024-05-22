@@ -16,7 +16,7 @@ class MusicPlayerModel: ObservableObject {
     // MARK: - Initialization
     static let shared = MusicPlayerModel()
     
-    init() {}
+    private init() {}
     
     // MARK: - Properties
     @Published var isPlaying = false

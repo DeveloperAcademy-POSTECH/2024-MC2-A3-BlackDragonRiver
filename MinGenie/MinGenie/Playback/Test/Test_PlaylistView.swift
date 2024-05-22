@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Test_PlaylistView: View{
-    @ObservedObject var musicPlayer = MusicPlayerModel()
+    @ObservedObject var musicPlayer = MusicPlayerModel.shared
     @ObservedObject var model = MusicPersonalRecommendationModel()
     
     var body: some View{
