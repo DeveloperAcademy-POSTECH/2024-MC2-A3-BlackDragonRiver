@@ -13,7 +13,7 @@ import SwiftUI
 struct PlaybackView: View {
     var body: some View {
         ZStack{
-            SearchView()
+            Test_PlaylistView()
             
             VStack{
                 Spacer()

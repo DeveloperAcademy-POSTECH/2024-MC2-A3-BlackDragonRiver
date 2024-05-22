@@ -5,42 +5,39 @@ Abstract:
 A cell that displays information about a music item.
 */
 
-/// ✏️ 가로 길쭉이 곡 표시 cell ✏️
-///  ✅ 디자인 세부 조정 필요
+/// ✏️ MiniPlayer 곡 표시 cell ✏️
+
 
 import MusicKit
 import SwiftUI
 
 /// A view that displays information about a music item.
-struct PlayerMusicItemCell: View {
+struct MiniPlayerItemCell: View {
+    // MARK: - Constants
+    private static let defaultArtworkSize = 44.0
+    private static let defaultArtworkCornerRadius = 4.0
     
     // MARK: - Initialization
     
     init(
         artwork: Artwork? = nil,
-        artworkSize: CGFloat = PlayerMusicItemCell.defaultArtworkSize,
-        artworkCornerRadius: CGFloat = PlayerMusicItemCell.defaultArtworkCornerRadius,
         title: String,
-        subtitle: String? = nil,
-        subtitleVerticalOffset: CGFloat = 0.0
+        subtitle: String? = nil
     ) {
-        
         self.artwork = artwork
-        self.artworkSize = artworkSize
-        self.artworkCornerRadius = artworkCornerRadius
         self.title = title
         self.subtitle = (subtitle ?? "")
-        self.subtitleVerticalOffset = subtitleVerticalOffset
     }
     
     // MARK: - Properties
     
     let artwork: Artwork?
-    let artworkSize: CGFloat
-    let artworkCornerRadius: CGFloat
     let title: String
     let subtitle: String
-    let subtitleVerticalOffset: CGFloat
+    
+    var artworkSize: CGFloat = defaultArtworkSize
+    var artworkCornerRadius: CGFloat = defaultArtworkCornerRadius
+    var subtitleVerticalOffset: CGFloat = -4
     
     // MARK: - View
     
@@ -49,15 +46,27 @@ struct PlayerMusicItemCell: View {
             if let itemArtwork = artwork {
                 imageContainer(for: itemArtwork)
                     .frame(width: artworkSize, height: artworkSize)
+            }else{
+                ZStack{
+                    Rectangle()
+                        .frame(width: artworkSize, height: artworkSize)
+                        .foregroundColor(.gray)
+                    
+                    Image(systemName: "music.note")
+                        .foregroundColor(.white)
+                }
+                
             }
             VStack(alignment: .leading) {
                 Text(title)
                     .lineLimit(1)
-                    .foregroundColor(.primary)
+                    .foregroundColor(.white)
+                    .font(.system(size:17,weight:.regular))
                 if !subtitle.isEmpty {
                     Text(subtitle)
                         .lineLimit(1)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.white)
+                        .font(.system(size:13,weight:.regular))
                         .padding(.top, (-2.0 + subtitleVerticalOffset))
                 }
             }.padding(.leading, 12)
@@ -73,8 +82,4 @@ struct PlayerMusicItemCell: View {
             Spacer()
         }
     }
-    
-    // MARK: - Constants
-    private static let defaultArtworkSize = 80.0
-    private static let defaultArtworkCornerRadius = 6.0
 }
