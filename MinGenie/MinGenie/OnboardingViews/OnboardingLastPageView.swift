@@ -24,8 +24,6 @@ struct OnboardingLastPageView: View {
                     .frame(width: 300, height: 120, alignment: .bottom)
                     .padding(EdgeInsets(top: 100, leading: 0, bottom: 40, trailing: 0))
                 GifImage(imageName)
-//                Image(imageName)
-//                    .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 361, height: 200)
                 Spacer()

@@ -101,7 +101,7 @@ final class ShakeDetectionModel: ObservableObject {
             self.shakeDetected = true // 흔들림 감지 여부 업데이트
             self.shakeFailed = false
             self.stopShakeDetection()
-        }else {
+        } else {
             print("❌ Shake detection failed")
             self.shakeFailed = true
         }

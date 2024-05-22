@@ -5,9 +5,8 @@
 //  Created by Sunyoung Jeon  on 5/22/24.
 //
 
-import SwiftUI
 import Combine
-
+import SwiftUI
 
 struct OnboardingTabView: View {
     @Binding var hasSeenOnboarding: Bool

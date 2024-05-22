@@ -11,10 +11,6 @@ import WebKit
 struct GifImage: UIViewRepresentable {
     private let name: String
     
-    init(_ name: String) {
-        self.name = name
-    }
-    
     func makeUIView(context: Context) -> WKWebView {
         let webview = WKWebView()
         
@@ -36,5 +32,11 @@ struct GifImage: UIViewRepresentable {
     
     func updateUIView(_ uiView: WKWebView, context: Context) {
         uiView.reload()
+    }
+}
+
+extension GifImage {
+    init(_ name: String) {
+        self.name = name
     }
 }
