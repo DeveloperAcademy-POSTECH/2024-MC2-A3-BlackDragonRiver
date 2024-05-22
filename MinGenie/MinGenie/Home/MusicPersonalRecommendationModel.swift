@@ -10,11 +10,9 @@ import SwiftUI
 
 class MusicPersonalRecommendationModel: ObservableObject {
     private var personalRecommendations: MusicItemCollection<MusicPersonalRecommendation> = []
-    
-    @Published var mainTracks: MusicItemCollection<Track>?
-    @Published var randomTracks: MusicItemCollection<Track>?
-    
     private var playlists: MusicItemCollection<Playlist> = []
+    
+    @Published var personalRecommendationTracks: MusicItemCollection<Track>?
     
     init() {
         Task {
@@ -46,7 +44,6 @@ class MusicPersonalRecommendationModel: ObservableObject {
                 }
             }
         }
-        print("❗️: \(playlists)")
     }
     
     /// Loads tracks asynchronously.
@@ -55,37 +52,33 @@ class MusicPersonalRecommendationModel: ObservableObject {
         
         guard let tracks = detailedPlaylist.tracks else {
             print("🚫 Tracks Problem")
+            
             return
         }
         
         await mainTracksUpdate(tracks)
     }
-    
 
-    
-    func loadRandomTracks() async throws {
+    func loadRandomTracks() async throws -> MusicItemCollection<Track>? {
         guard let playlist = playlists.randomElement() else {
             print("🚫 Random Playlists Problem")
-            return
+            
+            return nil
         }
                 
         let detailedPlaylist = try await playlist.with([.tracks])
         
         guard let tracks = detailedPlaylist.tracks else {
             print("🚫 Tracks Problem")
-            return
+            
+            return nil
         }
         
-        await randomTracksUpdate(tracks)
+        return tracks
     }
     
     @MainActor
     private func mainTracksUpdate(_ tracks: MusicItemCollection<Track>) {
-            mainTracks = tracks
-    }
-    
-    @MainActor
-    private func randomTracksUpdate(_ tracks: MusicItemCollection<Track>) {
-        randomTracks = tracks
+            personalRecommendationTracks = tracks
     }
 }
