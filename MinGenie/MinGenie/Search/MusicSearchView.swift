@@ -11,38 +11,35 @@ import SwiftUI
 struct MusicSearchView: View {
     @ObservedObject private var model = MusicSearchModel()
     
-    @State private var searchTerm: String = ""
     @State private var selectedCategory: Category = .song
+    @Binding var searchTerm: String
     
     var body: some View {
-        NavigationView {
-            VStack(alignment: .leading, spacing: 0) {
-                if searchTerm != "" {
-                    HStack {
-                        categoryButton(selectedCategory: $selectedCategory, category: .song)
-                        
-                        categoryButton(selectedCategory: $selectedCategory, category: .album)
-                        
-                        Spacer()
-                    }
-                    .padding(.vertical, 12)
-                    .padding(.horizontal, 16)
+        VStack(alignment: .leading, spacing: 0) {
+            if searchTerm != "" {
+                HStack {
+                    categoryButton(selectedCategory: $selectedCategory, category: .song)
+                    
+                    categoryButton(selectedCategory: $selectedCategory, category: .album)
+                    
+                    Spacer()
                 }
-                                
-                ScrollView {
-                    switch(selectedCategory) {
-                    case .song:
-                        ForEach(model.songs, id: \.self) { song in
-                            SongResultRowView(song: song)
-                        }
-                    case .album:
-                        ForEach(model.albums, id: \.self) { album in
-                            AlbumResultRowView(album: album)
-                        }
+                .padding(.vertical, 12)
+                .padding(.horizontal, 16)
+            }
+            
+            ScrollView {
+                switch(selectedCategory) {
+                case .song:
+                    ForEach(model.songs, id: \.self) { song in
+                        SongResultRowView(song: song)
+                    }
+                case .album:
+                    ForEach(model.albums, id: \.self) { album in
+                        AlbumResultRowView(album: album)
                     }
                 }
             }
-            .searchable(text: $searchTerm, prompt: "아티스트, 노래")
         }
         .onChange(of: searchTerm) { _, _ in
             model.requestUpdatedSearchResults(for: searchTerm)
@@ -59,12 +56,12 @@ struct categoryButton: View {
             selectedCategory = category
         } label: {
             RoundedRectangle(cornerRadius: 100)
-                .fill(selectedCategory == category ? .blue : .gray) // color 수정
+                .fill(selectedCategory == category ? Color.Shape.blue : Color.Shape.gray10)
                 .frame(width: 54, height: 33)
                 .overlay {
                     Text(category.rawValue)
                         .font(.callout)
-                        .foregroundColor(selectedCategory == category ? .white : .gray) // color 수정
+                        .foregroundColor(selectedCategory == category ? Color.Text.white100 : Color.Text.gray50)
                 }
         }
     }
@@ -72,6 +69,7 @@ struct categoryButton: View {
 
 struct SongResultRowView: View {
     let song: Song
+    private let artworkSize: CGFloat = 44
     
     var body: some View {
         Button {
@@ -82,7 +80,7 @@ struct SongResultRowView: View {
         } label: {
             HStack {
                 if let artwork = song.artwork {
-                    ArtworkImage(artwork, width: 44, height: 44)
+                    ArtworkImage(artwork, width: artworkSize, height: artworkSize)
                         .scaledToFill()
                         .cornerRadius(11)
                 }
@@ -90,12 +88,12 @@ struct SongResultRowView: View {
                 VStack(alignment: .leading) {
                     Text("\(song.title)")
                         .font(.body)
-                        .foregroundStyle(.black) // color 수정
-                    
+                        .foregroundStyle(Color.Text.black)
+
                     Text("\(song.artistName)")
                         .font(.subheadline)
-                        .foregroundStyle(.secondary) // color 수정
-                    
+                        .foregroundStyle(Color.Text.gray60)
+
                     Divider()
                 }
                 .lineLimit(1)
@@ -110,14 +108,15 @@ struct SongResultRowView: View {
 
 struct AlbumResultRowView: View {
     let album: Album
+    private let artworkSize: CGFloat = 44
     
     var body: some View {
         NavigationLink {
-//            AlbumDetailView(album: album)
+            DetailedAlbumView(album: album)
         } label: {
             HStack {
                 if let artwork = album.artwork {
-                    ArtworkImage(artwork, width: 44, height: 44)
+                    ArtworkImage(artwork, width: artworkSize, height: artworkSize)
                         .scaledToFill()
                         .cornerRadius(11)
                 }
@@ -125,8 +124,8 @@ struct AlbumResultRowView: View {
                 VStack(alignment: .leading) {
                     Text("\(album.title)")
                         .font(.body)
-                        .foregroundStyle(.black) // color 수정
-                    
+                        .foregroundStyle(Color.Text.black)
+
                     HStack {
                         Text("\(album.artistName)")
                         
@@ -136,23 +135,20 @@ struct AlbumResultRowView: View {
                             Text("\(releaseDate, style: .date)")
                         }
                     }
-                    .lineLimit(1)
                     .font(.subheadline)
-                    .foregroundStyle(.secondary) // color 수정
+                    .foregroundStyle(Color.Text.gray60)
                     
                     Divider()
                 }
+                .lineLimit(1)
+
                 Spacer()
                 
                 Image(systemName: "chevron.right")
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(Color.Text.gray40)
             }
             .padding(.horizontal, 16)
             .padding(.bottom, 9)
         }
     }
-}
-
-#Preview {
-    MusicSearchView()
 }
