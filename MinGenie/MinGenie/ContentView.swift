@@ -10,8 +10,14 @@ import SwiftUI
 
 
 struct ContentView: View {
+    @State private var hasSeenOnboarding: Bool = UserDefaults.standard.bool(forKey: "hasSeenOnboarding")
+
     var body: some View {
-        Text("dd")
+        if hasSeenOnboarding {
+            HomeView()
+        } else {
+            OnboardingTabView(hasSeenOnboarding: $hasSeenOnboarding)
+        }
     }
 }
 

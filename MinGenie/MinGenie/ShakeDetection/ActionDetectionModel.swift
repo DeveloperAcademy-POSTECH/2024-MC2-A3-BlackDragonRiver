@@ -23,6 +23,8 @@ final class ShakeDetectionModel: ObservableObject {
     private var isChangingMusicByShake = false  // 흔들기로 인해 음악이 바뀌는 중인지 여부 확인
     
     @Published var shakeDetected = false // 흔들림 감지 여부를 알리는 퍼블리시드 프로퍼티
+    @Published var shakeFailed = false // 흔들림 감지 실패 여부 알리는 프로퍼티
+    
     
     func startDetection() {
         startDeviceMotion()
@@ -97,7 +99,11 @@ final class ShakeDetectionModel: ObservableObject {
             print("🐯 Device was shaken while face down")
             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate) //진동 주기
             self.shakeDetected = true // 흔들림 감지 여부 업데이트
+            self.shakeFailed = false
             self.stopShakeDetection()
+        }else {
+            print("❌ Shake detection failed")
+            self.shakeFailed = true
         }
     }
     

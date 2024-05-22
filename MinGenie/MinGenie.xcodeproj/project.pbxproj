@@ -25,6 +25,9 @@
 		86D8FD0E2BFB2BB4008FD1AD /* PlayButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D8FD0D2BFB2BB4008FD1AD /* PlayButtonStyle.swift */; };
 		86D8FD102BFB2BC3008FD1AD /* NowPlayingItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D8FD0F2BFB2BC3008FD1AD /* NowPlayingItemCell.swift */; };
 		86D8FD192BFB661E008FD1AD /* Test_PlaybackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D8FD182BFB661E008FD1AD /* Test_PlaybackView.swift */; };
+		C7D27B472BFDE47400E76800 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D27B462BFDE47400E76800 /* HomeView.swift */; };
+		C7D27B492BFDED9E00E76800 /* GifImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D27B482BFDED9E00E76800 /* GifImage.swift */; };
+		C7D27B4B2BFDEF7F00E76800 /* headphone.gif in Resources */ = {isa = PBXBuildFile; fileRef = C7D27B4A2BFDEF7F00E76800 /* headphone.gif */; };
 		D8184EFD2BF6516C00CBA736 /* MusicAuthorizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8184EFC2BF6516C00CBA736 /* MusicAuthorizationView.swift */; };
 		D8184F012BF70F1900CBA736 /* MusicAuthorizationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8184F002BF70F1900CBA736 /* MusicAuthorizationModel.swift */; };
 		D8672FEB2BF2444600E9E242 /* MinGenieApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8672FEA2BF2444600E9E242 /* MinGenieApp.swift */; };
@@ -54,6 +57,9 @@
 		86D8FD0D2BFB2BB4008FD1AD /* PlayButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayButtonStyle.swift; sourceTree = "<group>"; };
 		86D8FD0F2BFB2BC3008FD1AD /* NowPlayingItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingItemCell.swift; sourceTree = "<group>"; };
 		86D8FD182BFB661E008FD1AD /* Test_PlaybackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_PlaybackView.swift; sourceTree = "<group>"; };
+		C7D27B462BFDE47400E76800 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		C7D27B482BFDED9E00E76800 /* GifImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifImage.swift; sourceTree = "<group>"; };
+		C7D27B4A2BFDEF7F00E76800 /* headphone.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = headphone.gif; path = ../../../GIF/headphone.gif; sourceTree = "<group>"; };
 		D8184EFB2BF650CB00CBA736 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D8184EFC2BF6516C00CBA736 /* MusicAuthorizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicAuthorizationView.swift; sourceTree = "<group>"; };
 		D8184F002BF70F1900CBA736 /* MusicAuthorizationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicAuthorizationModel.swift; sourceTree = "<group>"; };
@@ -84,6 +90,7 @@
 				130D52862BFDD6B60010BAE2 /* OnboardingPageView.swift */,
 				130D52882BFDD6BF0010BAE2 /* OnboardingButtonView.swift */,
 				130D528A2BFDD6CB0010BAE2 /* OnboardingLastPageView.swift */,
+				C7D27B482BFDED9E00E76800 /* GifImage.swift */,
 			);
 			path = OnboardingViews;
 			sourceTree = "<group>";
@@ -107,6 +114,7 @@
 		26B6F5272BFA3662000B2340 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				C7D27B462BFDE47400E76800 /* HomeView.swift */,
 				26B6F5242BFA2CE2000B2340 /* Cells */,
 				26B6F5282BFA36AC000B2340 /* MusicItemRowView.swift */,
 				26B6F52A2BFA436E000B2340 /* MusicPersonalRecommendationModel.swift */,
@@ -184,6 +192,7 @@
 				D8184EFB2BF650CB00CBA736 /* Info.plist */,
 				D8672FEA2BF2444600E9E242 /* MinGenieApp.swift */,
 				D8672FEC2BF2444600E9E242 /* ContentView.swift */,
+				C7D27B4A2BFDEF7F00E76800 /* headphone.gif */,
 				D8672FEE2BF2444600E9E242 /* Assets.xcassets */,
 				D8672FF02BF2444700E9E242 /* Preview Content */,
 			);
@@ -265,6 +274,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7D27B4B2BFDEF7F00E76800 /* headphone.gif in Resources */,
 				D8672FF22BF2444700E9E242 /* Preview Assets.xcassets in Resources */,
 				D8672FEF2BF2444600E9E242 /* Assets.xcassets in Resources */,
 			);
@@ -280,10 +290,12 @@
 				86D8FD032BFB2B3C008FD1AD /* MiniPlayerView.swift in Sources */,
 				86D8FD102BFB2BC3008FD1AD /* NowPlayingItemCell.swift in Sources */,
 				26B6F5262BFA2D07000B2340 /* MusicItemCell.swift in Sources */,
+				C7D27B472BFDE47400E76800 /* HomeView.swift in Sources */,
 				D8E776C02BFA6A6D00CA94A2 /* MusicSearchModel.swift in Sources */,
 				130D52852BFDD6AC0010BAE2 /* OnboardingTabView.swift in Sources */,
 				D8672FED2BF2444600E9E242 /* ContentView.swift in Sources */,
 				130D528B2BFDD6CB0010BAE2 /* OnboardingLastPageView.swift in Sources */,
+				C7D27B492BFDED9E00E76800 /* GifImage.swift in Sources */,
 				D8E776C22BFA6A8E00CA94A2 /* MusicSearchView.swift in Sources */,
 				D8184F012BF70F1900CBA736 /* MusicAuthorizationModel.swift in Sources */,
 				86D8FD072BFB2B61008FD1AD /* NowPlayingView.swift in Sources */,

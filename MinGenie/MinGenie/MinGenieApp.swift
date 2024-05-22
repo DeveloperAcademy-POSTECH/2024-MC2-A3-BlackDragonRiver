@@ -9,6 +9,8 @@ import SwiftUI
 
 @main
 struct MinGenieApp: App {
+    @StateObject private var shakeDetectionModel = ShakeDetectionModel()
+
     var body: some Scene {
         WindowGroup {
             ContentView()
