@@ -40,7 +40,7 @@ struct OnboardingLastPageView: View {
                         .frame(width: 361, height: 50)
                         .background(Color.black)
                         .cornerRadius(16)
-                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 160, trailing: 0))
+                        .padding(.bottom, 160)
                 }
             }
         }
