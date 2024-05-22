@@ -10,9 +10,9 @@ import SwiftUI
 
 struct DetailedAlbumView: View {
     @ObservedObject private var model = DetailedAlbumModel()
-    @State var tracks: MusicItemCollection<Track>?
     
     let album: Album
+    private let artworkSize: CGFloat = 146
     
     var body: some View {
         ScrollView {
@@ -33,7 +33,7 @@ struct DetailedAlbumView: View {
             
             HStack {
                 if let artwork = album.artwork {
-                    ArtworkImage(artwork, width: 146, height: 146)
+                    ArtworkImage(artwork, width: artworkSize, height: artworkSize)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                         .padding(.top, -220)
                 }
@@ -54,7 +54,7 @@ struct DetailedAlbumView: View {
                         .fontWeight(.semibold)
                         .padding(.bottom, 41)
                 }
-                .foregroundStyle(Color("text/Black"))
+                .foregroundStyle(Color.Text.black)
                 
                 Spacer()
                 
@@ -67,7 +67,7 @@ struct DetailedAlbumView: View {
                     Image(systemName: "play.circle")
                         .resizable()
                         .frame(width: 46, height: 46)
-                        .foregroundStyle(Color("shape/Blue"))
+                        .foregroundStyle(Color.Shape.blue)
                 }
             }
             .padding(.top, -55)
@@ -76,14 +76,12 @@ struct DetailedAlbumView: View {
             if let tracks = model.tracks {
                 ForEach(tracks) { track in
                     Divider()
-                        .foregroundStyle(Color("line/Gray40"))
+                        .foregroundStyle(Color.Line.gray40)
                         .padding(.leading, 16)
-                    
 
                     MusicListRowView(track: track)
                 }
             }
-            
         }
         .lineLimit(1)
         .ignoresSafeArea(edges: .top)
@@ -103,9 +101,11 @@ struct MusicListRowView: View {
              */
         } label: {
             HStack(spacing: 0) {
-                Text("\(track.trackNumber!). \(track.title)") // 트랙별 타이틀
-                    .font(.body)
-                    .foregroundStyle(Color("text/Black"))
+                if let trackNumber = track.trackNumber {
+                    Text("\(trackNumber). \(track.title)") // 트랙별 타이틀
+                        .font(.body)
+                        .foregroundStyle(Color.Text.black)
+                }
                 
                 Spacer()
             }

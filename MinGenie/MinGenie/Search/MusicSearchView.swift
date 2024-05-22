@@ -59,12 +59,12 @@ struct categoryButton: View {
             selectedCategory = category
         } label: {
             RoundedRectangle(cornerRadius: 100)
-                .fill(selectedCategory == category ? Color("shape/Blue") : Color("shape/Gray10"))
+                .fill(selectedCategory == category ? Color.Shape.blue : Color.Shape.gray10)
                 .frame(width: 54, height: 33)
                 .overlay {
                     Text(category.rawValue)
                         .font(.callout)
-                        .foregroundColor(selectedCategory == category ? Color("text/White100") : Color("text/Gray50"))
+                        .foregroundColor(selectedCategory == category ? Color.Text.white100 : Color.Text.gray50)
                 }
         }
     }
@@ -72,6 +72,7 @@ struct categoryButton: View {
 
 struct SongResultRowView: View {
     let song: Song
+    private let artworkSize: CGFloat = 44
     
     var body: some View {
         Button {
@@ -82,7 +83,7 @@ struct SongResultRowView: View {
         } label: {
             HStack {
                 if let artwork = song.artwork {
-                    ArtworkImage(artwork, width: 44, height: 44)
+                    ArtworkImage(artwork, width: artworkSize, height: artworkSize)
                         .scaledToFill()
                         .cornerRadius(11)
                 }
@@ -90,11 +91,11 @@ struct SongResultRowView: View {
                 VStack(alignment: .leading) {
                     Text("\(song.title)")
                         .font(.body)
-                        .foregroundStyle(Color("text/Black"))
+                        .foregroundStyle(Color.Text.black)
 
                     Text("\(song.artistName)")
                         .font(.subheadline)
-                        .foregroundStyle(Color("text/Gray60"))
+                        .foregroundStyle(Color.Text.gray60)
 
                     Divider()
                 }
@@ -110,6 +111,7 @@ struct SongResultRowView: View {
 
 struct AlbumResultRowView: View {
     let album: Album
+    private let artworkSize: CGFloat = 44
     
     var body: some View {
         NavigationLink {
@@ -117,7 +119,7 @@ struct AlbumResultRowView: View {
         } label: {
             HStack {
                 if let artwork = album.artwork {
-                    ArtworkImage(artwork, width: 44, height: 44)
+                    ArtworkImage(artwork, width: artworkSize, height: artworkSize)
                         .scaledToFill()
                         .cornerRadius(11)
                 }
@@ -125,7 +127,7 @@ struct AlbumResultRowView: View {
                 VStack(alignment: .leading) {
                     Text("\(album.title)")
                         .font(.body)
-                        .foregroundStyle(Color("text/Black"))
+                        .foregroundStyle(Color.Text.black)
 
                     HStack {
                         Text("\(album.artistName)")
@@ -137,7 +139,7 @@ struct AlbumResultRowView: View {
                         }
                     }
                     .font(.subheadline)
-                    .foregroundStyle(Color("text/Gray60"))
+                    .foregroundStyle(Color.Text.gray60)
                     
                     Divider()
                 }
@@ -146,7 +148,7 @@ struct AlbumResultRowView: View {
                 Spacer()
                 
                 Image(systemName: "chevron.right")
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(Color.Text.gray40)
             }
             .padding(.horizontal, 16)
             .padding(.bottom, 9)
