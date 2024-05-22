@@ -13,9 +13,14 @@ import SwiftUI
 
 /// A view that displays information about a music item.
 struct MiniPlayerItemCell: View {
-    // MARK: - Constants
-    private static let defaultArtworkSize = 44.0
-    private static let defaultArtworkCornerRadius = 4.0
+    // MARK: - Properties
+    private var artworkSize: CGFloat = 44
+    private var artworkCornerRadius: CGFloat = 4
+    private var subtitleVerticalOffset: CGFloat = -6
+    
+    let artwork: Artwork?
+    let title: String
+    let subtitle: String
     
     // MARK: - Initialization
     
@@ -28,26 +33,15 @@ struct MiniPlayerItemCell: View {
         self.title = title
         self.subtitle = (subtitle ?? "")
     }
-    
-    // MARK: - Properties
-    
-    let artwork: Artwork?
-    let title: String
-    let subtitle: String
-    
-    var artworkSize: CGFloat = defaultArtworkSize
-    var artworkCornerRadius: CGFloat = defaultArtworkCornerRadius
-    var subtitleVerticalOffset: CGFloat = -4
-    
+
     // MARK: - View
-    
     var body: some View {
         HStack {
             if let itemArtwork = artwork {
                 imageContainer(for: itemArtwork)
                     .frame(width: artworkSize, height: artworkSize)
-            }else{
-                ZStack{
+            } else {
+                ZStack {
                     Rectangle()
                         .frame(width: artworkSize, height: artworkSize)
                         .foregroundColor(.gray)
@@ -55,21 +49,22 @@ struct MiniPlayerItemCell: View {
                     Image(systemName: "music.note")
                         .foregroundColor(.white)
                 }
-                
             }
             VStack(alignment: .leading) {
                 Text(title)
-                    .lineLimit(1)
-                    .foregroundColor(.white)
-                    .font(.system(size:17,weight:.regular))
+                    
+                    .font(.system(size: 17, weight: .regular))
                 if !subtitle.isEmpty {
                     Text(subtitle)
                         .lineLimit(1)
                         .foregroundColor(.white)
-                        .font(.system(size:13,weight:.regular))
-                        .padding(.top, (-2.0 + subtitleVerticalOffset))
+                        .font(.system(size: 13, weight: .regular))
+                        .padding(.top, subtitleVerticalOffset)
                 }
-            }.padding(.leading, 12)
+            }
+            .padding(.leading, 12)
+            .lineLimit(1)
+            .foregroundColor(.white)
 
         }
     }

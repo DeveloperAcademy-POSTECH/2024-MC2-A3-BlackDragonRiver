@@ -3,12 +3,9 @@ import SwiftUI
 
 /// ✏️ 현재 재생 (full Screen) View입니다 ✏️
 
-struct NowPlayingView: View{
-    
+struct NowPlayingView: View {
     @ObservedObject var playbackQueue: ApplicationMusicPlayer.Queue
     @Environment(\.presentationMode) var presentation
-    
-    
     
     var body: some View{
         NavigationView{
@@ -21,7 +18,7 @@ struct NowPlayingView: View{
                             .foregroundStyle(.blue)
                     }
                     .padding(.leading, -150)
-                    .padding(.top,50)
+                    .padding(.top, 50)
                     
                     /// 2. carousel
                     VStack{
@@ -36,9 +33,8 @@ struct NowPlayingView: View{
                                     }
                                     Spacer()
                                 }
-                                
                             }
-                        }else{
+                        } else {
                             ZStack{
                                 Rectangle()
                                     .frame(width: 264, height: 264)
@@ -79,15 +75,14 @@ struct NowPlayingView: View{
         presentation.wrappedValue.dismiss()
     }
     
-    
-    public struct DismissButton: View {
+    private struct DismissButton: View {
         var action: () -> ()
         
-        public init(_ action: @escaping () -> ()) {
+        init(_ action: @escaping () -> ()) {
             self.action = action
         }
         
-        public var body: some View {
+        var body: some View {
             Button(action: action) {
                 RoundedRectangle(cornerRadius: 16)
                     .fill(Color.gray)
@@ -104,7 +99,7 @@ struct NowPlayingView: View{
         list(for: playbackQueue)
     }
     
-    private func list(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View{
+    private func list(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View {
         List{
             ForEach(playbackQueue.entries){ entry in
                 NowPlayingItemCell(

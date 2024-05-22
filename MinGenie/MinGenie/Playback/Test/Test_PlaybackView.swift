@@ -17,7 +17,7 @@ struct PlaybackView: View {
             
             VStack{
                 Spacer()
-                MiniPlayerView(isShowingNowPlaying: false)
+                MiniPlayerView()
                     .shadow(radius: 5)
             }
         }
