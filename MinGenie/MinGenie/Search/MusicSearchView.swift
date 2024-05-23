@@ -69,13 +69,15 @@ struct categoryButton: View {
 
 struct SongResultRowView: View {
     @ObservedObject private var model = MusicPlayerModel.shared
+    @Environment(\.modelContext) var modelContext
     
-    private let artworkSize: CGFloat = 44
     let song: Song
+    private let artworkSize: CGFloat = 44
     
     var body: some View {
         Button {
             model.sendToMusicPlayer(song)
+            modelContext.insert(StoredTrackID(song))
         } label: {
             HStack {
                 if let artwork = song.artwork {

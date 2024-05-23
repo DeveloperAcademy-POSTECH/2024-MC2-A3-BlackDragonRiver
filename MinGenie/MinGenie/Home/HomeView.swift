@@ -6,26 +6,27 @@
 //
 
 import MusicKit
+import SwiftData
 import SwiftUI
 
 struct HomeView: View {
-    @ObservedObject private var model = MusicPersonalRecommendationModel()
+    @StateObject private var musicPersonalRecommendationModel = MusicPersonalRecommendationModel()
+    @StateObject private var selectedMusicDataModel = SelectedMusicDataModel()
+    
     @State private var searchTerm: String = ""
     
-    // @Query var data: [Type]
+    @Query(sort: \StoredTrackID.timestamp, order: .reverse) private var storedTrackIDs: [StoredTrackID]
     
     var body: some View {
         NavigationView {
             if searchTerm.isEmpty { // 검색어 없을 때
                 VStack() {
-                    /* 240522 Yu:D
-                     지난 선곡 섹션 추가해야 함
-                     if !data.isEmpty {
-                        MusicItemRowView(itemRowTitle: "지난 선곡", tracks: data)
+
+                    if let tracks = selectedMusicDataModel.storedTracks {
+                            MusicItemRowView(itemRowTitle: "지난 선곡", tracks: tracks)
                      }
-                     */
                     
-                    if let tracks = model.personalRecommendationTracks {
+                    if let tracks = musicPersonalRecommendationModel.personalRecommendationTracks {
                             MusicItemRowView(itemRowTitle: "맞춤 랜덤 선곡", tracks: tracks)
                     }
                     
@@ -38,7 +39,14 @@ struct HomeView: View {
             }
         }
         .searchable(text: $searchTerm, prompt: "아티스트, 노래")
+        .onChange(of: storedTrackIDs) {
+            selectedMusicDataModel.loadTracksByID(storedTrackIDs)
+        }
+        .onAppear {
+            selectedMusicDataModel.loadTracksByID(storedTrackIDs)
+        }
     }
+
 }
 
 #Preview {
