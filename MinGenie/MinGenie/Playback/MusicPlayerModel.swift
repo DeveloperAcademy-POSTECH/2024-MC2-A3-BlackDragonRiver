@@ -83,12 +83,46 @@ class MusicPlayerModel: ObservableObject {
         }
     }
     
+    /// 🐯
+    func playMusicWithRecommendedList(_ song: Song) {
+        let model = NextMusicRecommendationModel()
+        let track = fromSongToTrackType(song)
+        
+        // 개별 곡 재생
+        play(track, in: nil, with: nil)
+        
+        
+        // 추천 트랙 추가
+        Task {
+            let recommendedList = try await model.requestNextMusicList()
+            if let recommendedList {
+                try await ApplicationMusicPlayer.shared.queue.insert(recommendedList, position: .tail)
+            }
+        }
+    }
+    
+    /// 🐯 ❗️❗️❗️
+    func playAlbumWithRecommendedList(_ tracks: MusicItemCollection<Track>) {
+        let model = NextMusicRecommendationModel()
+        
+        // 앨범 재생
+        play(tracks[0], in: tracks, with: nil)
+        
+        // 추천 트랙 추가
+        Task {
+            let recommendedList = try await model.requestNextMusicList()
+            if let recommendedList {
+                try await ApplicationMusicPlayer.shared.queue.insert(recommendedList, position: .tail)
+            }
+        }
+    }
+    
     /// ⭐️ 함께 활용할 함수 ⭐️
     /// 파라미터 1: 시작할 곡, 2: 트랙리스트 (곡 리스트), 3: 모르겠음
     func play(_ track: Track, in trackList: MusicItemCollection<Track>?, with parentCollectionID: MusicItemID?) {
         let musicPlayer = self.musicPlayer
         
-        if var specifiedTrackList = trackList {
+        if let specifiedTrackList = trackList {
             /// 개별 재생
             setQueue(for: specifiedTrackList, startingAt: track)
         } else {
@@ -113,6 +147,11 @@ class MusicPlayerModel: ObservableObject {
            play(track, in: nil, with: nil)
        }
     
+    /// 🐰
+    func fromSongToTrackType(_ song: Song) -> Track {
+        Track.song(song)
+       }
+
     /// (추가) 다음곡으로 넘기기!
     func skipToNextEntry() {
             Task {

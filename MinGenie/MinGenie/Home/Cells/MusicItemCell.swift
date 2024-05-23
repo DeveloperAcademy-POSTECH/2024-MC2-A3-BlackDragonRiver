@@ -32,9 +32,8 @@ struct MusicItemCell: View {
             Button {
                 if case .song(let song) = track {
                     modelContext.insert(StoredTrackID(song))
+                    model.playMusicWithRecommendedList(song)
                 }
-                
-                model.play(track, in: nil, with: nil)
             } label: {
                 if let artwort = track.artwork {
                     

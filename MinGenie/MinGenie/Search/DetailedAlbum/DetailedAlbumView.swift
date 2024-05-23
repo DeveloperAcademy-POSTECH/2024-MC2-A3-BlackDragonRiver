@@ -60,16 +60,9 @@ struct DetailedAlbumView: View {
                 Spacer()
                 
                 Button {
-                    /* 240520 Yu:D
-                     앨범 재생 추가해야 함.
-                     */
-                    
-                    if let tracks = model.tracks {
-                        musicModel.play(tracks[0], in: tracks, with: nil)
-
+                  if let tracks = model.tracks {
+                        musicModel.playAlbumWithRecommendedList(tracks)
                     }
-                    
-                    print("노래 재생")
                 } label: {
                     Image(systemName: "play.circle")
                         .resizable()
