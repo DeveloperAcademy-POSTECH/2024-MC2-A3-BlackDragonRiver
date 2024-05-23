@@ -106,6 +106,24 @@ class MusicPlayerModel: ObservableObject {
         }
     }
     
+    /// song -> Track 컨버터
+    func sendToMusicPlayer(_ song: Song) {
+           let track = Track.song(song)
+           play(track, in: nil, with: nil)
+       }
+    
+    /// 다음곡으로 넘기기!
+    func skipToNextEntry() {
+            Task {
+                do {
+                    try await musicPlayer.skipToNextEntry()
+                } catch {
+                    print("Failed to skip to the next entry: \(error)")
+                }
+            }
+        }
+    
+    
     private func setQueue<S: Sequence, PlayableMusicItemType: PlayableMusicItem>(
         for playableItems: S,
         startingAt startPlayableItem: S.Element? = nil

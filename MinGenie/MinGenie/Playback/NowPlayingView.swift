@@ -5,6 +5,7 @@ import SwiftUI
 
 struct NowPlayingView: View {
     @ObservedObject var playbackQueue: ApplicationMusicPlayer.Queue
+    @ObservedObject private var musicPlayer = MusicPlayerModel.shared
     @Environment(\.presentationMode) var presentation
     
     var body: some View{
@@ -26,13 +27,11 @@ struct NowPlayingView: View {
                             ZStack{
                                 NowPlayingItemCell(artwork: playbackQueue.currentEntry?.artwork, title: playbackQueue.currentEntry?.title,
                                                    subtitle: playbackQueue.currentEntry?.subtitle)
-                                VStack{
-                                    if let currentItem = playbackQueue.currentEntry?.item {
-                                        PlayButton(for: currentItem)
-                                            .padding(.top, 95)
-                                    }
-                                    Spacer()
-                                }
+                                //CarouselView()
+                                
+                                pauseButton
+                                    .padding(.bottom,50)
+                                
                             }
                         } else {
                             ZStack{
@@ -40,7 +39,7 @@ struct NowPlayingView: View {
                                     .frame(width: 264, height: 264)
                                     .cornerRadius(16)
                                     .foregroundColor(.gray)
-                                    
+                                
                                 Text("No Item Playing")
                                     .foregroundColor(.black)
                             }
@@ -48,14 +47,13 @@ struct NowPlayingView: View {
                         }
                     }
                     
-                    /// 3. list 나중에 채울 예정
                     VStack{
-                        TrackListView()
+                        QueueView
                     }
                 }
                 
                 VStack{
-                    DismissButton { dismiss() }
+                    DismissButton { FullScreenDismiss() }
                     Spacer()
                 }
             }
@@ -63,15 +61,54 @@ struct NowPlayingView: View {
         .gesture(
             DragGesture().onEnded { value in
                 if value.translation.height > 150 {
-                    dismiss()
+                    FullScreenDismiss()
                 }
             }
         )
         
     }
     
+    @ViewBuilder
+    private var QueueView: some View{
+        list(for: playbackQueue)
+    }
     
-    private func dismiss() {
+    private func list(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View {
+        
+        List{
+            
+            ForEach(playbackQueue.entries, id: \.id) { entry in
+                
+                NowQueueItemCell(
+                    artwork: entry.artwork,
+                    title: entry.title,
+                    subtitle: entry.subtitle
+                ).onTapGesture {
+                    playbackQueue.currentEntry = entry
+                }
+            }
+        }
+    }
+    
+    
+    @ViewBuilder
+    private var pauseButton: some View {
+        Button(action: pausePlay) {
+            Image(systemName: (musicPlayer.isPlaying ? "pause.circle" : "play.circle"))
+                .font(.system(size: 70, weight: .ultraLight))
+                .foregroundColor(.white)
+                .shadow(radius: 5)
+        }
+    }
+    
+    // MARK: - Methods
+    
+    private func pausePlay() {
+        musicPlayer.togglePlaybackStatus()
+    }
+    
+    
+    private func FullScreenDismiss() {
         presentation.wrappedValue.dismiss()
     }
     
@@ -92,34 +129,6 @@ struct NowPlayingView: View {
         }
     }
     
-    
-    /// 👇아래는 미사용중이긴 한데, 재생대기목록 띄우려면 나중에 쓸 거 같아서 남겨둠
-    @ViewBuilder
-    private var content: some View{
-        list(for: playbackQueue)
-    }
-    
-    private func list(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View {
-        List{
-            ForEach(playbackQueue.entries){ entry in
-                NowPlayingItemCell(
-                    artwork: entry.artwork,
-                    title: entry.title,
-                    subtitle: entry.subtitle
-                )
-            }
-            .onDelete{ offsets in
-                playbackQueue.entries.remove(atOffsets: offsets)
-            }
-            .onMove{ source, destination in
-                playbackQueue.entries.move(fromOffsets: source, toOffset: destination)
-            }
-            .animation(.default, value: playbackQueue.entries)
-            .toolbar {
-                EditButton()
-            }
-        }
-    }
 }
 
 

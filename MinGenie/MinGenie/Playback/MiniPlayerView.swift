@@ -1,7 +1,7 @@
 import MusicKit
 import SwiftUI
 
-/// ✏️ 하단에 띄워 둘 미니플레이어 View입니다 ✏️
+/// ✏️ 하단에 띄워 둘 미니플레이어 View입니다 (완성) ✏️
 
 struct MiniPlayerView: View {
     
@@ -70,9 +70,7 @@ struct MiniPlayerView: View {
                 
             }
             .padding(.horizontal, 24)
-            
         }
-        
     }
     
     @ViewBuilder
