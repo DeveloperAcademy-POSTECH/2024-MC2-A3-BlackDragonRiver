@@ -6,11 +6,13 @@
 //
 
 import MusicKit
+import SwiftData
 import SwiftUI
 
 /// 해당 View를 그리기 위해서는 Track 타입 값을 넣어 주어야 합니다.
 struct MusicItemCell: View {
     @ObservedObject private var model = MusicPlayerModel.shared
+    @Environment(\.modelContext) var modelContext
     
     let track: Track
     let imageSize: CGFloat
@@ -28,6 +30,10 @@ struct MusicItemCell: View {
     var body: some View {
         ZStack(alignment: .bottomLeading) {
             Button {
+                if case .song(let song) = track {
+                    modelContext.insert(StoredTrackID(song))
+                }
+                
                 model.play(track, in: nil, with: nil)
             } label: {
                 if let artwort = track.artwork {
