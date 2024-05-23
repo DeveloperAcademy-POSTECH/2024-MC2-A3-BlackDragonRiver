@@ -13,7 +13,8 @@ struct MinGenieApp: App {
     @Environment(\.scenePhase) var phase
     
     @StateObject private var shakeDetectionModel = ShakeDetectionModel()
-
+    @StateObject private var musicModel = MusicPlayerModel.shared
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
@@ -28,10 +29,13 @@ struct MinGenieApp: App {
                     }
                 }
                 .onChange(of: shakeDetectionModel.shakeDetected) { _, newValue in
-                    if newValue {
+                    if newValue && musicModel.isPlaying {
                         print("🎧 Music Change")
                         // 노래 교체가 끝나면 다시 시작
-                        shakeDetectionModel.markActionCompleted()
+                        Task {
+                           await musicModel.playRandomMusic()
+                            shakeDetectionModel.markActionCompleted()
+                        }
                     }
                 }
         }

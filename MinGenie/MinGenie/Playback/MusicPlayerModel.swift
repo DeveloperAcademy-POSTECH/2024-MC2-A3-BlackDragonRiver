@@ -84,14 +84,26 @@ class MusicPlayerModel: ObservableObject {
     }
     
     /// 🐯
+    func playRandomMusic() async {
+        let model = NextMusicRecommendationModel()
+        
+        /// 추천 트랙 추가
+        Task {
+            let recommendedList = try await model.requestNextMusicList()
+            if let recommendedList {
+                play(recommendedList[0], in: recommendedList, with: nil)
+            }
+        }
+    }
+    
+    /// 🐯
     func playMusicWithRecommendedList(_ song: Song) {
         let model = NextMusicRecommendationModel()
         let track = fromSongToTrackType(song)
         
         // 개별 곡 재생
         play(track, in: nil, with: nil)
-        
-        
+
         // 추천 트랙 추가
         Task {
             let recommendedList = try await model.requestNextMusicList()
@@ -107,7 +119,7 @@ class MusicPlayerModel: ObservableObject {
         
         // 앨범 재생
         play(tracks[0], in: tracks, with: nil)
-        
+
         // 추천 트랙 추가
         Task {
             let recommendedList = try await model.requestNextMusicList()

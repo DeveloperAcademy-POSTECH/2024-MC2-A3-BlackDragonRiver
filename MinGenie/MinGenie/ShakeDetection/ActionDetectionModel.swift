@@ -112,8 +112,11 @@ final class ShakeDetectionModel: ObservableObject {
             && accZ < maxZAccelerationThreshold
             && accZ > minZAccelerationThreshold {
             print("🐯 Device was shaken while face down")
-            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate) //진동 주기
+            
+            print("problem❗️❗️❗️: \(shakeDetected)")
             self.shakeDetected = true // 흔들림 감지 여부 업데이트
+            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate) //진동 주기
+            
             self.shakeFailed = false
             self.stopShakeDetection()
         } else {
