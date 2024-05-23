@@ -13,7 +13,8 @@ import SwiftUI
 struct PlaybackView: View {
     var body: some View {
         ZStack{
-            Test_PlaylistView()
+            
+            Test_HomeView()
             
             VStack{
                 Spacer()

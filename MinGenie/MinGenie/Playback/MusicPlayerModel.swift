@@ -3,6 +3,7 @@ import MusicKit
 import SwiftUI
 
 /// ✏️ 재생기 기능을 하는 MusicPlayerModel 스크립트입니다 ✏️
+///
 /// (개념 정리) Combine 비동기처리
 /// Publisher: 값이나 이벤트를 생성하고 방출하는 역할
 /// Subscriber: Publisher로부터 방출된 값을 수신하여 처리하는 역할
@@ -106,13 +107,13 @@ class MusicPlayerModel: ObservableObject {
         }
     }
     
-    /// song -> Track 컨버터
+    /// (추가) song -> Track 컨버터
     func sendToMusicPlayer(_ song: Song) {
            let track = Track.song(song)
            play(track, in: nil, with: nil)
        }
     
-    /// 다음곡으로 넘기기!
+    /// (추가) 다음곡으로 넘기기!
     func skipToNextEntry() {
             Task {
                 do {
@@ -122,7 +123,6 @@ class MusicPlayerModel: ObservableObject {
                 }
             }
         }
-    
     
     private func setQueue<S: Sequence, PlayableMusicItemType: PlayableMusicItem>(
         for playableItems: S,

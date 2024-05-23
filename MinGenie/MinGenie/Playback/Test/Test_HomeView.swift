@@ -4,10 +4,11 @@
 //
 //  Created by dora on 5/22/24.
 //
+/// ❌ 작동 확인용 View입니다 ❌
 
 import SwiftUI
 
-struct Test_PlaylistView: View{
+struct Test_HomeView: View{
     @ObservedObject var musicPlayer = MusicPlayerModel.shared
     @ObservedObject var model = MusicPersonalRecommendationModel()
     
