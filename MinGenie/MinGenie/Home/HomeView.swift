@@ -10,22 +10,23 @@ import SwiftData
 import SwiftUI
 
 struct HomeView: View {
-    @ObservedObject private var model = MusicPersonalRecommendationModel()
+    @StateObject private var musicPersonalRecommendationModel = MusicPersonalRecommendationModel()
+    @StateObject private var selectedMusicDataModel = SelectedMusicDataModel()
+    
     @State private var searchTerm: String = ""
     
-    @Query(sort: \StoredTrackID.timestamp, order: .reverse) var storedTrackIDs: [StoredTrackID]
-    @State private var storedTracks: MusicItemCollection<Track>?
+    @Query(sort: \StoredTrackID.timestamp, order: .reverse) private var storedTrackIDs: [StoredTrackID]
     
     var body: some View {
         NavigationView {
             if searchTerm.isEmpty { // 검색어 없을 때
                 VStack() {
 
-                    if let tracks = storedTracks {
+                    if let tracks = selectedMusicDataModel.storedTracks {
                             MusicItemRowView(itemRowTitle: "지난 선곡", tracks: tracks)
                      }
                     
-                    if let tracks = model.personalRecommendationTracks {
+                    if let tracks = musicPersonalRecommendationModel.personalRecommendationTracks {
                             MusicItemRowView(itemRowTitle: "맞춤 랜덤 선곡", tracks: tracks)
                     }
                     
@@ -39,31 +40,13 @@ struct HomeView: View {
         }
         .searchable(text: $searchTerm, prompt: "아티스트, 노래")
         .onChange(of: storedTrackIDs) {
-            loadTracksByID()
+            selectedMusicDataModel.loadTracksByID(storedTrackIDs)
         }
         .onAppear {
-            loadTracksByID()
+            selectedMusicDataModel.loadTracksByID(storedTrackIDs)
         }
     }
-    
-    private func loadTracksByID() {
-        Task {
-            if !storedTrackIDs.isEmpty {
-                do {
-                    let ids = storedTrackIDs.map { MusicItemID($0.id) }
-                    
-                    let request =  MusicCatalogResourceRequest<Song>(matching: \.id ,memberOf: ids)
-                    let result = try await request.response()
-                    
-                    var tracks: MusicItemCollection<Track> = []
-                    result.items.forEach { tracks += [Track.song($0)] }
-                    storedTracks = tracks
-                } catch {
-                    print("Music ID request failed with error: \(error)")
-                }
-            } else { return }
-        }
-    }
+
 }
 
 #Preview {
