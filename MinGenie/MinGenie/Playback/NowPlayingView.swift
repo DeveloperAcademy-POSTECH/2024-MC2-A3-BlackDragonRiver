@@ -50,7 +50,7 @@ struct NowPlayingView: View {
                     
                     /// 3. list 나중에 채울 예정
                     VStack{
-                        TrackListView()
+//                        TrackListView()
                     }
                 }
                 
