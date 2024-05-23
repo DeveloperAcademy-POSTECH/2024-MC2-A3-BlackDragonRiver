@@ -137,7 +137,6 @@
 		86D8FCFF2BFB2A92008FD1AD /* Playback */ = {
 			isa = PBXGroup;
 			children = (
-				86D8FD152BFB3945008FD1AD /* Test */,
 				86D8FD022BFB2B3C008FD1AD /* MiniPlayerView.swift */,
 				86D8FD062BFB2B61008FD1AD /* NowPlayingView.swift */,
 				86D8FD042BFB2B52008FD1AD /* MusicPlayerModel.swift */,
@@ -154,15 +153,6 @@
 				86AD649F2BFED18300025CA1 /* NowQueueItemCell.swift */,
 			);
 			path = Cells;
-			sourceTree = "<group>";
-		};
-		86D8FD152BFB3945008FD1AD /* Test */ = {
-			isa = PBXGroup;
-			children = (
-				866AB6992BFD6B3C00332FB9 /* Test_HomeView.swift */,
-				86D8FD182BFB661E008FD1AD /* Test_PlaybackView.swift */,
-			);
-			path = Test;
 			sourceTree = "<group>";
 		};
 		D8184EFF2BF70EE300CBA736 /* Authorization */ = {
@@ -340,8 +330,6 @@
 				130D52892BFDD6BF0010BAE2 /* OnboardingButtonView.swift in Sources */,
 				130D52872BFDD6B60010BAE2 /* OnboardingPageView.swift in Sources */,
 				26B6F5292BFA36AC000B2340 /* MusicItemRowView.swift in Sources */,
-				86D8FD192BFB661E008FD1AD /* Test_PlaybackView.swift in Sources */,
-				866AB69A2BFD6B3C00332FB9 /* Test_HomeView.swift in Sources */,
 				86AD64A02BFED18300025CA1 /* NowQueueItemCell.swift in Sources */,
 				86D8FD052BFB2B52008FD1AD /* MusicPlayerModel.swift in Sources */,
 				D8184EFD2BF6516C00CBA736 /* MusicAuthorizationView.swift in Sources */,
