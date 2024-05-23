@@ -67,11 +67,11 @@ struct OnboardingTabView: View {
             }
             .animation(.easeInOut, value: currentPage) // 애니메이션 효과( 시작과 끝부분이 부드럽게 진행되며, 중간 부분이 빠르게 진행)
             .transition(.slide)//스와이프 애니메이션
-            HStack(spacing: 7) {//페이지 인디케이터(페이지 확인하는거)
+            HStack(spacing: 6) {//페이지 인디케이터(페이지 확인하는거)
                 ForEach(0..<7) { index in
                     Circle()
                         .fill(index == currentPage ? Color.white : Color.gray)
-                        .frame(width: 8, height: 8)
+                        .frame(width: 6, height: 6)
                 }
             }
             .padding(10)
@@ -83,7 +83,7 @@ struct OnboardingTabView: View {
                     DragGesture()
                         .onEnded { value in
                             if value.translation.width < -50 {//제스처(음수:왼, 양수:오)
-                                if currentPage != 1 && currentPage != 3 {//페이지(스와이프로 움직이지 않는 페이지 선택)
+                                if currentPage != 1 && currentPage != 3 && currentPage != 6 {//페이지(스와이프로 움직이지 않는 페이지 선택)
                                     currentPage += 1
                                 }
                             } else if value.translation.width > 50 {
