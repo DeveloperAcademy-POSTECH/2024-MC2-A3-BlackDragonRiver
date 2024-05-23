@@ -60,7 +60,7 @@ struct DetailedAlbumView: View {
                 Spacer()
                 
                 Button {
-                  if let tracks = model.tracks {
+                    if let tracks = model.tracks {
                         musicModel.playAlbumWithRecommendedList(tracks)
                     }
                 } label: {
