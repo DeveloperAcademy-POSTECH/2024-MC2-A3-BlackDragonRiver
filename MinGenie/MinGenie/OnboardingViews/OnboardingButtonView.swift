@@ -11,6 +11,8 @@ struct OnboardingButtonView: View {
     let title: String
     let imageName: String
     let text: String
+    @Binding var currentPage: Int
+
     
     var body: some View {
         ZStack {
@@ -18,7 +20,7 @@ struct OnboardingButtonView: View {
                 Text(title)
                     .font(.title)
                     .fontWeight(.bold)
-                    .foregroundStyle(Color("text/Blue"))
+                    .foregroundStyle(Color.black)
                     .multilineTextAlignment(.center)
                     .lineSpacing(6)
                     .frame(width: 300, height: 120, alignment: .bottom)
@@ -34,7 +36,9 @@ struct OnboardingButtonView: View {
                 Text(text)
                     .font(.subheadline)
                     .foregroundStyle(Color.gray)
-                Button { //다음 페이지로 넘어가거나 권한받기
+                Button {
+                    currentPage += 1
+
                 } label: {
                     Text("다음")
                         .fontWeight(.semibold)
