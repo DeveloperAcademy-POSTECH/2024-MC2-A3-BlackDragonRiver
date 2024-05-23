@@ -10,7 +10,7 @@ import SwiftUI
 
 
 struct MusicSearchView: View {
-    @ObservedObject private var model = MusicSearchModel()
+    @StateObject private var model = MusicSearchModel()
     
     @State private var selectedCategory: Category = .song
     @Binding var searchTerm: String
