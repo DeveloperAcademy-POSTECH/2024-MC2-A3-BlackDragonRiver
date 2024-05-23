@@ -6,6 +6,7 @@ import SwiftUI
 struct NowPlayingView: View {
     @ObservedObject var playbackQueue: ApplicationMusicPlayer.Queue
     @ObservedObject private var musicPlayer = MusicPlayerModel.shared
+    
     @Environment(\.presentationMode) var presentation
     
     @State private var currentIndex: Int = 0
@@ -35,7 +36,9 @@ struct NowPlayingView: View {
                                         .padding(.bottom, -30)
                                 }
                                 Text(currentEntry.title)
+                                    .font(.system(size: 20, weight: .semibold))
                                 Text(currentEntry.subtitle!)
+                                    .font(.system(size: 15, weight: .regular))
                             }
                         } else {
                             ZStack {
@@ -51,7 +54,7 @@ struct NowPlayingView: View {
                     }
                     
                     VStack {
-                        QueueView
+                        Queuelist(for: playbackQueue)
                     }
                 }
                 
@@ -72,10 +75,10 @@ struct NowPlayingView: View {
     
     @ViewBuilder
     private var QueueView: some View {
-        list(for: playbackQueue)
+        Queuelist(for: playbackQueue)
     }
     
-    private func list(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View {
+    private func Queuelist(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View {
         ScrollViewReader { proxy in
             List {
                 ForEach(playbackQueue.entries) { entry in
@@ -85,16 +88,21 @@ struct NowPlayingView: View {
                         subtitle: entry.subtitle
                     ).onTapGesture {
                         playbackQueue.currentEntry = entry
+                        
+                        /// 현재 재생 index가 queueList 상에서 가장 상단에 붙도록 currentIndex 찾기
                         currentIndex = playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) ?? 0
                         if !musicPlayer.isPlaying { pausePlay() }
                     }
                 }
             }
+            .listStyle(.plain)
+            /// currentIndex가 바뀌면 newIndex로!
             .onChange(of: currentIndex) { newIndex in
                 withAnimation {
                     proxy.scrollTo(playbackQueue.entries[newIndex].id, anchor: .top)
                 }
             }
+            
         }
     }
     
@@ -108,14 +116,12 @@ struct NowPlayingView: View {
             VStack {
                 ZStack {
                     ForEach(playbackQueue.entries.indices, id: \.self) { index in
-                        
-                            imageContainer(for: playbackQueue.entries[index].artwork)
-                                .frame(width: 250, height: 250)
-                                .cornerRadius(16)
-                                .opacity(1.0 - Double(abs(index - currentIndex)) * 0.2)
-                                .scaleEffect(1.0 - CGFloat(abs(index - currentIndex)) * 0.1)
-                                .zIndex(1.0 - Double(abs(index - currentIndex)))
-                                .offset(x: CGFloat(index - currentIndex) * 50 * (1 - CGFloat(abs(index - currentIndex)) * 0.1) + dragOffset, y: 0)
+                        imageContainer(for: playbackQueue.entries[index].artwork)
+                            .frame(width: 250, height: 250)
+                            .cornerRadius(16)
+                            .scaleEffect(1.0 - CGFloat(abs(index - currentIndex)) * 0.1)
+                            .zIndex(1.0 - Double(abs(index - currentIndex)))
+                            .offset(x: CGFloat(index - currentIndex) * 50 * (1 - CGFloat(abs(index - currentIndex)) * 0.1) + dragOffset, y: 0)
                         
                     }
                 }
