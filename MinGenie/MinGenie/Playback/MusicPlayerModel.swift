@@ -85,6 +85,19 @@ class MusicPlayerModel: ObservableObject {
     /// 🐯
     /// 개별 곡 재생하고 그 뒤에 추천 플레이리스트 붙여주기
     /// - Parameter song: 사용자가 선택한 개별 곡
+    func playRandomMusic() async {
+        let model = NextMusicRecommendationModel()
+        
+        /// 추천 트랙 추가
+        Task {
+            let recommendedList = try await model.requestNextMusicList()
+            if let recommendedList {
+                play(recommendedList[0], in: recommendedList, with: nil)
+            }
+        }
+    }
+    
+    /// 🐯
     func playMusicWithRecommendedList(_ song: Song) {
         let model = NextMusicRecommendationModel()
         let track = fromSongToTrackType(song)
@@ -109,7 +122,7 @@ class MusicPlayerModel: ObservableObject {
         
         // 앨범 재생
         play(tracks[0], in: tracks, with: nil)
-        
+
         // 추천 트랙 추가
         Task {
             let recommendedList = try await model.requestNextMusicList()
