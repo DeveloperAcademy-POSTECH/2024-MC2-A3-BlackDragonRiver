@@ -12,13 +12,14 @@ struct MiniPlayerView: View {
     /// fullscreen전환 관련 변수
     @State private var isShowingNowPlaying = false
     
+    
     // MARK: - View
     var body: some View {
         content
             .frame(maxWidth: .infinity)
             .background(
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(Color.blue)
+                    .fill(Color("shape/Blue"))
                     .frame(height: 60)
                     .padding(.horizontal,24)
             )
@@ -67,7 +68,6 @@ struct MiniPlayerView: View {
                     pauseButton
                         .padding(.horizontal, 12)
                 }
-                
             }
             .padding(.horizontal, 24)
         }
@@ -77,7 +77,7 @@ struct MiniPlayerView: View {
     private var pauseButton: some View {
         Button(action: pausePlay) {
             Image(systemName: (musicPlayer.isPlaying ? "pause.fill" : "play.fill"))
-                .foregroundColor(.white)
+                .foregroundColor(Color("text/White100"))
         }
     }
     

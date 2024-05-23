@@ -57,14 +57,13 @@ struct MiniPlayerItemCell: View {
                 if !subtitle.isEmpty {
                     Text(subtitle)
                         .lineLimit(1)
-                        .foregroundColor(.white)
                         .font(.system(size: 13, weight: .regular))
                         .padding(.top, subtitleVerticalOffset)
                 }
             }
             .padding(.leading, 12)
             .lineLimit(1)
-            .foregroundColor(.white)
+            .foregroundColor(Color("text/White100"))
         }
     }
     
