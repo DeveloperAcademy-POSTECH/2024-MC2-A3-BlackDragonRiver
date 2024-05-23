@@ -5,9 +5,17 @@
 //  Created by Sunyoung Jeon  on 5/22/24.
 //
 
+//  OnboardingButtonView.swift
+//  MinGenie
+//
+//  Created by Sunyoung Jeon  on 5/22/24.
+//
+
 import SwiftUI
 
 struct OnboardingButtonView: View {
+    @ObservedObject var model: MusicAuthorizationModel
+    
     let title: String
     let imageName: String
     let text: String
@@ -37,7 +45,7 @@ struct OnboardingButtonView: View {
                     .font(.subheadline)
                     .foregroundStyle(Color.gray)
                 Button {
-                    currentPage += 1
+                    model.requestMusicAuthorizationStatus(currentPage: $currentPage)
 
                 } label: {
                     Text("다음")
