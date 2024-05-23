@@ -68,6 +68,8 @@ struct categoryButton: View {
 }
 
 struct SongResultRowView: View {
+    @Environment(\.modelContext) var modelContext
+    
     let song: Song
     private let artworkSize: CGFloat = 44
     
@@ -76,6 +78,7 @@ struct SongResultRowView: View {
             /* 240520 Yu:D
              노래 재생 로직 추가해야 함.
              */
+            modelContext.insert(StoredTrackID(song))
             print("노래 재생")
         } label: {
             HStack {
