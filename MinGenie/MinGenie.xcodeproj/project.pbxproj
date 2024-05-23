@@ -257,6 +257,8 @@
 				D8C4C80E2BFF5A03007C9E4B /* Cells */,
 				D85D2AB22BFDD013003803C0 /* DetailedAlbum */,
 				26E8A0622BFF7D4A001EF6AE /* NextMusicRecommendationModel.swift */,
+				D8C4C80E2BFF5A03007C9E4B /* Cells */,
+				D85D2AB22BFDD013003803C0 /* DetailedAlbum */,
 			);
 			path = Search;
 			sourceTree = "<group>";
