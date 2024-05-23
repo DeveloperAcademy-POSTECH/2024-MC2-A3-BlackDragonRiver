@@ -16,7 +16,7 @@ struct OnboardingFailPageView: View {
             Text(title)
                 .font(.title)
                 .fontWeight(.bold)
-                .foregroundStyle(Color("text/Orange"))
+                .foregroundStyle(Color.Text.orange)
                 .multilineTextAlignment(.center)
                 .lineSpacing(6)
                 .frame(width: 300, height: 120, alignment: .bottom)
