@@ -6,6 +6,7 @@
 //
 
 import MusicKit
+import SwiftData
 import SwiftUI
 
 class MusicPersonalRecommendationModel: ObservableObject {
@@ -55,7 +56,6 @@ class MusicPersonalRecommendationModel: ObservableObject {
             
             return
         }
-        
         await mainTracksUpdate(tracks)
     }
 
