@@ -5,14 +5,14 @@ Abstract:
 A cell that displays information about a music item.
 */
 
-/// ✏️ MiniPlayer 곡 표시 cell ✏️
+/// ✏️ NowPlayingView에 들어가는 QueueList Cell✏️
 
 
 import MusicKit
 import SwiftUI
 
 /// A view that displays information about a music item.
-struct MiniPlayerItemCell: View {
+struct NowQueueItemCell: View {
     // MARK: - Properties
     private var artworkSize: CGFloat = 44
     private var artworkCornerRadius: CGFloat = 4
@@ -21,7 +21,7 @@ struct MiniPlayerItemCell: View {
     let artwork: Artwork?
     let title: String
     let subtitle: String
-    
+
     // MARK: - Initialization
     
     init(
@@ -52,19 +52,18 @@ struct MiniPlayerItemCell: View {
             }
             VStack(alignment: .leading) {
                 Text(title)
-                    
                     .font(.system(size: 17, weight: .regular))
                 if !subtitle.isEmpty {
                     Text(subtitle)
                         .lineLimit(1)
-                        .foregroundColor(.white)
                         .font(.system(size: 13, weight: .regular))
                         .padding(.top, subtitleVerticalOffset)
                 }
             }
             .padding(.leading, 12)
             .lineLimit(1)
-            .foregroundColor(.white)
+            .foregroundColor(.black)
+
         }
     }
     
