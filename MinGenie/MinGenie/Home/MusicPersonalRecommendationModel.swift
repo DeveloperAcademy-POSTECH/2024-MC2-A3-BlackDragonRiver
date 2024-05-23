@@ -48,14 +48,14 @@ class MusicPersonalRecommendationModel: ObservableObject {
     
     /// Loads tracks asynchronously.
     private func loadMainTracks() async throws {
-        let detailedPlaylist = try await playlists[0].with([.tracks])
+        let detailedPlaylist = try await playlists[1].with([.tracks])
         
         guard let tracks = detailedPlaylist.tracks else {
             print("🚫 Tracks Problem")
             
             return
         }
-        
+        print("✅ \(detailedPlaylist)")
         await mainTracksUpdate(tracks)
     }
 

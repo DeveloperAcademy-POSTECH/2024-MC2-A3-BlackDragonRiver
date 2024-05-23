@@ -68,15 +68,14 @@ struct categoryButton: View {
 }
 
 struct SongResultRowView: View {
-    let song: Song
+    @ObservedObject private var model = MusicPlayerModel.shared
+    
     private let artworkSize: CGFloat = 44
+    let song: Song
     
     var body: some View {
         Button {
-            /* 240520 Yu:D
-             노래 재생 로직 추가해야 함.
-             */
-            print("노래 재생")
+            model.sendToMusicPlayer(song)
         } label: {
             HStack {
                 if let artwork = song.artwork {
