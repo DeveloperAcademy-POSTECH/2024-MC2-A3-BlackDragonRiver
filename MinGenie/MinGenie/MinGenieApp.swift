@@ -10,12 +10,30 @@ import SwiftUI
 
 @main
 struct MinGenieApp: App {
+    @Environment(\.scenePhase) var phase
+    
     @StateObject private var shakeDetectionModel = ShakeDetectionModel()
 
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .modelContainer(for: StoredTrackID.self)
+                .onChange(of: phase) { _, newValue in
+                    if newValue == .background {
+                        print("START DETECTION❗️")
+                        shakeDetectionModel.startDetection()
+                    } else {
+                        print("🚫: \(phase)")
+                        print(shakeDetectionModel.stopDetection())
+                    }
+                }
+                .onChange(of: shakeDetectionModel.shakeDetected) { _, newValue in
+                    if newValue {
+                        print("🎧 Music Change")
+                        // 노래 교체가 끝나면 다시 시작
+                        shakeDetectionModel.markActionCompleted()
+                    }
+                }
         }
     }
 }

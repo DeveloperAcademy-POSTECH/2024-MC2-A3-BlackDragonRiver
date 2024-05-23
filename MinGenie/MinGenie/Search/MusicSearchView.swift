@@ -8,6 +8,7 @@
 import MusicKit
 import SwiftUI
 
+
 struct MusicSearchView: View {
     @ObservedObject private var model = MusicSearchModel()
     
@@ -71,13 +72,15 @@ struct SongResultRowView: View {
     @ObservedObject private var model = MusicPlayerModel.shared
     @Environment(\.modelContext) var modelContext
     
+    var mmm = NextMusicRecommendationModel()
+    
     let song: Song
     private let artworkSize: CGFloat = 44
     
     var body: some View {
         Button {
-            model.sendToMusicPlayer(song)
             modelContext.insert(StoredTrackID(song))
+            model.playMusicWithRecommendedList(song)
         } label: {
             HStack {
                 if let artwork = song.artwork {
@@ -90,11 +93,11 @@ struct SongResultRowView: View {
                     Text("\(song.title)")
                         .font(.body)
                         .foregroundStyle(Color.Text.black)
-
+                    
                     Text("\(song.artistName)")
                         .font(.subheadline)
                         .foregroundStyle(Color.Text.gray60)
-
+                    
                     Divider()
                 }
                 .lineLimit(1)
@@ -104,6 +107,7 @@ struct SongResultRowView: View {
             .padding(.horizontal, 16)
             .padding(.bottom, 9)
         }
+        
     }
 }
 
@@ -126,7 +130,7 @@ struct AlbumResultRowView: View {
                     Text("\(album.title)")
                         .font(.body)
                         .foregroundStyle(Color.Text.black)
-
+                    
                     HStack {
                         Text("\(album.artistName)")
                         
@@ -142,7 +146,7 @@ struct AlbumResultRowView: View {
                     Divider()
                 }
                 .lineLimit(1)
-
+                
                 Spacer()
                 
                 Image(systemName: "chevron.right")
