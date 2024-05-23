@@ -10,7 +10,9 @@ import SwiftUI
 
 struct OnboardingTabView: View {
     @Binding var hasSeenOnboarding: Bool
+    
     @StateObject private var shakeDetectionModel = ShakeDetectionModel()
+    
     @State private var currentPage = 0
     @State private var cancellables = Set<AnyCancellable>()
     
@@ -61,15 +63,15 @@ struct OnboardingTabView: View {
                         title: "정말 잘하셨어요!",
                         imageName: "headphone"
                     )
-                    .onAppear {
-                        shakeDetectionModel.startDetection()
-                    }
                 } else if currentPage == 7 {
                     OnboardingLastPageView(
                         title: "음악과 함께 \n일할 준비가 되셨나요?",
                         imageName: "headphone",
                         hasSeenOnboarding: $hasSeenOnboarding
                     )
+                    .onAppear {
+                        shakeDetectionModel.stopDetection()
+                    }
                 }
             }
             .animation(.easeInOut, value: currentPage) // 애니메이션 효과( 시작과 끝부분이 부드럽게 진행되며, 중간 부분이 빠르게 진행)
@@ -101,8 +103,6 @@ struct OnboardingTabView: View {
                         }
                 )
         .onAppear {
-            shakeDetectionModel.startDetection()
-
             // 감지 성공 시
             shakeDetectionModel.$shakeDetected
                 .filter { $0 }
@@ -134,7 +134,6 @@ struct OnboardingTabView: View {
                 .store(in: &cancellables)
         }
         .onDisappear {
-            shakeDetectionModel.stopDetection()
             cancellables.removeAll()
         }
     }
