@@ -20,7 +20,7 @@ struct OnboardingButtonView: View {
                 Text(title)
                     .font(.title)
                     .fontWeight(.bold)
-                    .foregroundStyle(Color("text/Blue"))
+                    .foregroundStyle(Color.Text.blue)
                     .multilineTextAlignment(.center)
                     .lineSpacing(6)
                     .frame(width: 300, height: 120, alignment: .bottom)
