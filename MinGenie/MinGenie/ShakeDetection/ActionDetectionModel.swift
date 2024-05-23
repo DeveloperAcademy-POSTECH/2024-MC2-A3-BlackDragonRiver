@@ -30,6 +30,21 @@ final class ShakeDetectionModel: ObservableObject {
         startDeviceMotion()
     }
     
+    func stopDetection() {
+        stopShakeDetection()
+        stopFaceDownDetection()
+    }
+    
+    /// Shake 감지 후, 뷰에서 특정 동작을 완료한 수 호출하는 메서드
+    func markActionCompleted() {
+        self.shakeDetected = false
+        
+        // 다시 엎어진 상태라면 가속도계 다시 시작
+        if self.isScreenDown {
+            self.startAccelerometer()
+        }
+    }
+    
     private func startDeviceMotion() {
         print("DeviceMotion Start")
         
@@ -118,19 +133,6 @@ final class ShakeDetectionModel: ObservableObject {
         motionManager.stopDeviceMotionUpdates()
     }
         
-    func stopDetection() {
-        stopShakeDetection()
-        stopFaceDownDetection()
-    }
-    
-    /// Shake 감지 후, 뷰에서 특정 동작을 완료한 수 호출하는 메서드
-    func markActionCompleted() {
-        self.shakeDetected = false
-        
-        // 다시 엎어진 상태라면 가속도계 다시 시작
-        if self.isScreenDown {
-            self.startAccelerometer()
-        }
-    }
+
 
 }
