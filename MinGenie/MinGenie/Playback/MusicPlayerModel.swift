@@ -71,8 +71,7 @@ class MusicPlayerModel: ObservableObject {
             musicPlayer.pause()
         }
     }
-    
-    
+
     func togglePlaybackStatus() {
         if !isPlaying {
             Task {
@@ -84,6 +83,8 @@ class MusicPlayerModel: ObservableObject {
     }
     
     /// 🐯
+    /// 개별 곡 재생하고 그 뒤에 추천 플레이리스트 붙여주기
+    /// - Parameter song: 사용자가 선택한 개별 곡
     func playRandomMusic() async {
         let model = NextMusicRecommendationModel()
         
@@ -103,7 +104,7 @@ class MusicPlayerModel: ObservableObject {
         
         // 개별 곡 재생
         play(track, in: nil, with: nil)
-
+        
         // 추천 트랙 추가
         Task {
             let recommendedList = try await model.requestNextMusicList()
@@ -113,7 +114,9 @@ class MusicPlayerModel: ObservableObject {
         }
     }
     
-    /// 🐯 ❗️❗️❗️
+    /// 🐯
+    /// 앨범 전체 재생하고 그 뒤에 추천 플레이리스트 붙여주기
+    /// - Parameter tracks: 사용자가 선택한 전체 재생할 앨범에 담긴 트랙
     func playAlbumWithRecommendedList(_ tracks: MusicItemCollection<Track>) {
         let model = NextMusicRecommendationModel()
         
@@ -159,21 +162,23 @@ class MusicPlayerModel: ObservableObject {
            play(track, in: nil, with: nil)
        }
     
-    /// 🐰
-    func fromSongToTrackType(_ song: Song) -> Track {
+    /// 🐰 Song 타입을 Track 타입으로 변경
+    /// - Parameter song: Track 타입으로 변경할 Song
+    /// - Returns: 전달받은 Song을 Track 타입으로 변환 후 반환
+    private func fromSongToTrackType(_ song: Song) -> Track {
         Track.song(song)
-       }
-
+    }
+    
     /// (추가) 다음곡으로 넘기기!
     func skipToNextEntry() {
-            Task {
-                do {
-                    try await musicPlayer.skipToNextEntry()
-                } catch {
-                    print("Failed to skip to the next entry: \(error)")
-                }
+        Task {
+            do {
+                try await musicPlayer.skipToNextEntry()
+            } catch {
+                print("Failed to skip to the next entry: \(error)")
             }
         }
+    }
     
     private func setQueue<S: Sequence, PlayableMusicItemType: PlayableMusicItem>(
         for playableItems: S,

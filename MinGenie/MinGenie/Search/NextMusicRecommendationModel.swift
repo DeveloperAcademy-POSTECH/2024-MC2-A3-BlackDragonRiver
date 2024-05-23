@@ -32,7 +32,7 @@ class NextMusicRecommendationModel {
         return playlists
     }
     
-    private func loadRandomTracks(_ playlists: MusicItemCollection<Playlist> ) async throws ->  MusicItemCollection<Track>? {
+    private func loadRandomTracks(_ playlists: MusicItemCollection<Playlist>) async throws -> MusicItemCollection<Track>? {
         guard let playlist = playlists.randomElement() else {
             print("🚫 Random Playlists Problem")
             
