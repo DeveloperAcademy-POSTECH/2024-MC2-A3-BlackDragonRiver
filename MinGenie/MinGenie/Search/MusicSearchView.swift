@@ -68,6 +68,7 @@ struct categoryButton: View {
 }
 
 struct SongResultRowView: View {
+    @ObservedObject private var model = MusicPlayerModel.shared
     @Environment(\.modelContext) var modelContext
     
     let song: Song
@@ -75,11 +76,8 @@ struct SongResultRowView: View {
     
     var body: some View {
         Button {
-            /* 240520 Yu:D
-             노래 재생 로직 추가해야 함.
-             */
+            model.sendToMusicPlayer(song)
             modelContext.insert(StoredTrackID(song))
-            print("노래 재생")
         } label: {
             HStack {
                 if let artwork = song.artwork {

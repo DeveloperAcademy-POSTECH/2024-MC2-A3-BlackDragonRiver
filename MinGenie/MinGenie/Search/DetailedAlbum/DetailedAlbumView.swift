@@ -10,6 +10,7 @@ import SwiftUI
 
 struct DetailedAlbumView: View {
     @ObservedObject private var model = DetailedAlbumModel()
+    @ObservedObject private var musicModel = MusicPlayerModel.shared
     
     let album: Album
     private let artworkSize: CGFloat = 146
@@ -60,7 +61,7 @@ struct DetailedAlbumView: View {
                 
                 Button {
                     /* 240520 Yu:D
-                     노래 재생 추가해야 함.
+                     앨범 재생 추가해야 함.
                      */
                     print("노래 재생")
                 } label: {
@@ -92,13 +93,13 @@ struct DetailedAlbumView: View {
 }
 
 struct MusicListRowView: View {
+    @ObservedObject private var model = MusicPlayerModel.shared
+    
     let track: Track
     
     var body: some View {
         Button {
-            /* 240520 Yu:D
-             노래 재생 추가해야 함.
-             */
+            model.play(track, in: nil, with: nil)
         } label: {
             HStack(spacing: 0) {
                 if let trackNumber = track.trackNumber {
@@ -112,6 +113,5 @@ struct MusicListRowView: View {
             .padding(.vertical, 15)
             .padding(.leading, 16)
         }
-        
     }
 }

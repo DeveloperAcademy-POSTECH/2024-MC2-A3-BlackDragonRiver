@@ -10,6 +10,8 @@ import SwiftUI
 
 /// 해당 View를 그리기 위해서는 Track 타입 값을 넣어 주어야 합니다.
 struct MusicItemCell: View {
+    @ObservedObject private var model = MusicPlayerModel.shared
+    
     let track: Track
     let imageSize: CGFloat
     
@@ -26,8 +28,7 @@ struct MusicItemCell: View {
     var body: some View {
         ZStack(alignment: .bottomLeading) {
             Button {
-                // 이후에 해당 노래를 틀어주는 로직 추가 🐯
-                print("이 노래 틀어 🎧")
+                model.play(track, in: nil, with: nil)
             } label: {
                 if let artwort = track.artwork {
                     
@@ -62,10 +63,10 @@ struct MusicItemCell: View {
                     VStack(alignment: .leading) {
                         Spacer()
                         Text(title)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(Color.Text.white100)
                             .font(.headline)
                         Text(artistName)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(Color.Text.white80)
                             .font(.subheadline)
                     }
                     .lineLimit(1)
