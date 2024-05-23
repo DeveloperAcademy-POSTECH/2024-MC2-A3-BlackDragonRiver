@@ -1,13 +1,13 @@
 //
-//  OnboardingPageView.swift
+//  OnboardingFailPageView.swift
 //  MinGenie
 //
-//  Created by Sunyoung Jeon  on 5/22/24.
+//  Created by 김하준 on 5/23/24.
 //
 
 import SwiftUI
 
-struct OnboardingPageView: View {
+struct OnboardingFailPageView: View {
     let title: String
     let imageName: String
     
@@ -16,7 +16,7 @@ struct OnboardingPageView: View {
             Text(title)
                 .font(.title)
                 .fontWeight(.bold)
-                .foregroundStyle(Color.Text.blue)
+                .foregroundStyle(Color.Text.orange)
                 .multilineTextAlignment(.center)
                 .lineSpacing(6)
                 .frame(width: 300, height: 120, alignment: .bottom)

@@ -32,20 +32,11 @@ struct OnboardingTabView: View {
                         currentPage: $currentPage
                     )
                 } else if currentPage == 2 {
-                    OnboardingButtonView(
-                        title: "손쉬운 곡 변경을 위해 \n모션 권한을 허용해 주세요!",
-                        imageName: "headphone",
-                        text: "권한을 허용해야 흔들 수 있어요",
-                        currentPage: $currentPage
+                    OnboardingPageView(
+                        title: "핸드폰 화면이 바닥을 \n향한 채로 좌우로 흔들면 \n노래가 교체돼요!",
+                        imageName: "headphone"
                     )
                 } else if currentPage == 3 {
-                    OnboardingButtonView(
-                        title: "핸드폰 화면이 바닥을 \n향한 채로 좌우로 흔들면 \n노래가 교체돼요!",
-                        imageName: "headphone",
-                        text: "권한을 허용해야 흔들 수 있어요",
-                        currentPage: $currentPage
-                    )
-                } else if currentPage == 4 {
                     OnboardingPageView(
                         title: "직접 좌우로 \n흔들어보세요!",
                         imageName: "headphone"
@@ -53,17 +44,17 @@ struct OnboardingTabView: View {
                     .onAppear {
                         shakeDetectionModel.startDetection()
                     }
-                } else if currentPage == 5 {
-                    OnboardingPageView(
+                } else if currentPage == 4 {
+                    OnboardingFailPageView(//안내 텍스트 색상 변경
                         title: "다시 한번 시도해 주세요!",
                         imageName: "headphone"
                     )
-                } else if currentPage == 6 {
+                } else if currentPage == 5 {
                     OnboardingPageView(
                         title: "정말 잘하셨어요!",
                         imageName: "headphone"
                     )
-                } else if currentPage == 7 {
+                } else if currentPage == 6 {
                     OnboardingLastPageView(
                         title: "음악과 함께 \n일할 준비가 되셨나요?",
                         imageName: "headphone",
@@ -76,11 +67,11 @@ struct OnboardingTabView: View {
             }
             .animation(.easeInOut, value: currentPage) // 애니메이션 효과( 시작과 끝부분이 부드럽게 진행되며, 중간 부분이 빠르게 진행)
             .transition(.slide)//스와이프 애니메이션
-            HStack(spacing: 8) {//페이지 인디케이터(페이지 확인하는거)
-                ForEach(0..<8) { index in
+            HStack(spacing: 6) {//페이지 인디케이터(페이지 확인하는거)
+                ForEach(0..<7) { index in
                     Circle()
                         .fill(index == currentPage ? Color.white : Color.gray)
-                        .frame(width: 8, height: 8)
+                        .frame(width: 6, height: 6)
                 }
             }
             .padding(10)
@@ -92,12 +83,13 @@ struct OnboardingTabView: View {
                     DragGesture()
                         .onEnded { value in
                             if value.translation.width < -50 {//제스처(음수:왼, 양수:오)
-                                if currentPage == 0 || currentPage > 5 {//페이지
+                                if currentPage != 1 && currentPage != 3 && currentPage != 6 {//페이지(스와이프로 움직이지 않는 페이지 선택)
                                     currentPage += 1
                                 }
                             } else if value.translation.width > 50 {
-                                if currentPage > 0 {
+                                if currentPage > 6 {
                                     currentPage -= 1
+
                                 }
                             }
                         }
@@ -107,15 +99,15 @@ struct OnboardingTabView: View {
             shakeDetectionModel.$shakeDetected
                 .filter { $0 }
                 .sink { _ in
-                    if currentPage == 4 {
-                        currentPage = 6 // 페이지 7로 이동
+                    if currentPage == 3 {
+                        currentPage = 5 // 페이지 7로 이동
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                            currentPage = 7 // 페이지 8로 이동
+                            currentPage = 6 // 페이지 8로 이동
                         }
-                    } else if currentPage == 5 {
-                        currentPage = 6 // 페이지 7로 이동
+                    } else if currentPage == 4 {
+                        currentPage = 5 // 페이지 7로 이동
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                            currentPage = 7 // 페이지 8로 이동
+                            currentPage = 6 // 페이지 8로 이동
                         }
                     }
                 }
