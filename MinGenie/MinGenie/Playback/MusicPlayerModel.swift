@@ -158,9 +158,9 @@ class MusicPlayerModel: ObservableObject {
     
     /// (추가) song -> Track 컨버터
     func sendToMusicPlayer(_ song: Song) {
-           let track = Track.song(song)
-           play(track, in: nil, with: nil)
-       }
+        let track = Track.song(song)
+        play(track, in: nil, with: nil)
+    }
     
     /// 🐰 Song 타입을 Track 타입으로 변경
     /// - Parameter song: Track 타입으로 변경할 Song
