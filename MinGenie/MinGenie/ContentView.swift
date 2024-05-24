@@ -11,12 +11,18 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var hasSeenOnboarding: Bool = UserDefaults.standard.bool(forKey: "hasSeenOnboarding")
-
+    
     var body: some View {
-        if hasSeenOnboarding {
-            HomeView()
-        } else {
-            OnboardingTabView(hasSeenOnboarding: $hasSeenOnboarding)
+        
+        ZStack{
+            if hasSeenOnboarding {
+                HomeView()
+            } else {
+                OnboardingTabView(hasSeenOnboarding: $hasSeenOnboarding)
+            }
+            VStack(alignment: .trailing){
+                MiniPlayerView()
+            }
         }
     }
 }
