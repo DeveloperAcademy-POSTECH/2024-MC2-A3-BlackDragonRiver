@@ -5,7 +5,7 @@ import SwiftUI
 
 struct MiniPlayerView: View {
     
-    // MARK: - Properties
+    /// musicPlayer 관련 변수
     @ObservedObject private var playbackQueue = ApplicationMusicPlayer.shared.queue
     @EnvironmentObject var musicPlayerModel: MusicPlayerModel
     
