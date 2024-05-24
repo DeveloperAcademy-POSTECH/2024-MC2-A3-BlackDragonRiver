@@ -11,7 +11,6 @@ import SwiftUI
 @main
 struct MinGenieApp: App {
 
-    
     var body: some Scene {
         WindowGroup {
             ContentView()
