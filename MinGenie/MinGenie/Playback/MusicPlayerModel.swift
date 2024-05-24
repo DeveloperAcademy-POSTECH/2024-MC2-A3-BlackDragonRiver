@@ -14,11 +14,6 @@ import SwiftUI
 
 class MusicPlayerModel: ObservableObject {
     
-    // MARK: - Initialization
-    static let shared = MusicPlayerModel()
-    
-    private init() {}
-    
     // MARK: - Properties
     @Published var isPlaying = false
     

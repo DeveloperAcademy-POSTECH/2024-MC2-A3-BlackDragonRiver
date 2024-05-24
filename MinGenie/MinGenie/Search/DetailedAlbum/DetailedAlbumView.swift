@@ -10,7 +10,7 @@ import SwiftUI
 
 struct DetailedAlbumView: View {
     @ObservedObject private var model = DetailedAlbumModel()
-    @ObservedObject private var musicModel = MusicPlayerModel.shared
+    @EnvironmentObject var musicPlayerModel: MusicPlayerModel
     
     let album: Album
     private let artworkSize: CGFloat = 146
@@ -61,7 +61,7 @@ struct DetailedAlbumView: View {
                 
                 Button {
                     if let tracks = model.tracks {
-                        musicModel.playAlbumWithRecommendedList(tracks)
+                        musicPlayerModel.playAlbumWithRecommendedList(tracks)
                     }
                 } label: {
                     Image(systemName: "play.circle")
@@ -92,13 +92,13 @@ struct DetailedAlbumView: View {
 }
 
 struct MusicListRowView: View {
-    @ObservedObject private var model = MusicPlayerModel.shared
+    @EnvironmentObject var musicPlayerModel: MusicPlayerModel
     
     let track: Track
     
     var body: some View {
         Button {
-            model.play(track, in: nil, with: nil)
+            musicPlayerModel.play(track, in: nil, with: nil)
         } label: {
             HStack(spacing: 0) {
                 if let trackNumber = track.trackNumber {

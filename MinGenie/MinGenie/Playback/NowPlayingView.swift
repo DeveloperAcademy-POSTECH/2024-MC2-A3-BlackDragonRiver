@@ -3,8 +3,8 @@ import SwiftUI
 
 struct NowPlayingView: View {
     @ObservedObject var playbackQueue: ApplicationMusicPlayer.Queue
-    @ObservedObject private var musicPlayer = MusicPlayerModel.shared
-
+    @EnvironmentObject var musicPlayerModel: MusicPlayerModel
+    
     @Environment(\.presentationMode) var presentation
 
     @AppStorage("currentIndex") private var currentIndex: Int = 0
@@ -74,7 +74,7 @@ struct NowPlayingView: View {
                     .onTapGesture {
                         playbackQueue.currentEntry = entry
                         currentIndex = playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) ?? 0
-                        if !musicPlayer.isPlaying { pausePlay() }
+                        if !musicPlayerModel.isPlaying { pausePlay() }
                     }
                 }
             }
@@ -157,7 +157,7 @@ struct NowPlayingView: View {
     }
 
     private func pausePlay() {
-        musicPlayer.togglePlaybackStatus()
+        musicPlayerModel.togglePlaybackStatus()
     }
 
     private func FullScreenDismiss() {

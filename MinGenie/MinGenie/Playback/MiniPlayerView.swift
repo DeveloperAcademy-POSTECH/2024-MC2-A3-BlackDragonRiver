@@ -7,7 +7,7 @@ struct MiniPlayerView: View {
     
     // MARK: - Properties
     @ObservedObject private var playbackQueue = ApplicationMusicPlayer.shared.queue
-    @ObservedObject private var musicPlayer = MusicPlayerModel.shared
+    @EnvironmentObject var musicPlayerModel: MusicPlayerModel
     
     /// fullscreen전환 관련 변수
     @State private var isShowingNowPlaying = false
@@ -93,7 +93,7 @@ struct MiniPlayerView: View {
     // MARK: - Methods
     
     private func pausePlay() {
-        musicPlayer.togglePlaybackStatus()
+        musicPlayerModel.togglePlaybackStatus()
     }
     
     private func handleTap() {
