@@ -11,7 +11,7 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject private var musicPersonalRecommendationModel = MusicPersonalRecommendationModel()
-    @StateObject private var selectedMusicDataModel = SelectedMusicDataModel()
+    @StateObject private var selectedMusicDataModel = FirstPickedMusicDataModel()
     
     @State private var searchTerm: String = ""
     
@@ -20,19 +20,22 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             if searchTerm.isEmpty { // 검색어 없을 때
-                VStack() {
-
-                    if let tracks = selectedMusicDataModel.storedTracks {
+                    VStack {
+                        
+                        if let tracks = selectedMusicDataModel.storedTracks {
                             MusicItemRowView(itemRowTitle: "지난 선곡", tracks: tracks)
-                     }
-                    
-                    if let tracks = musicPersonalRecommendationModel.personalRecommendationTracks {
+                        }
+                        
+                        if let tracks = musicPersonalRecommendationModel.personalRecommendationTracks {
                             MusicItemRowView(itemRowTitle: "맞춤 랜덤 선곡", tracks: tracks)
+                        }
+                        
+                        Spacer()
+                        
+                        MiniPlayerView()
                     }
-                    
-                    Spacer()
-                }
-                .navigationTitle("오늘의 첫곡 🎧")
+                    .navigationTitle("오늘의 첫곡 🎧")
+                    .ignoresSafeArea(.keyboard)
                 
             } else { // 검색어 있을 때
                 MusicSearchView(searchTerm: $searchTerm)
@@ -46,7 +49,7 @@ struct HomeView: View {
             selectedMusicDataModel.loadTracksByID(storedTrackIDs)
         }
     }
-
+    
 }
 
 #Preview {

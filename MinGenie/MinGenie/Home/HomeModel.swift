@@ -88,7 +88,7 @@ class MusicPersonalRecommendationModel: ObservableObject {
 
 
 //MARK: - SelectedMusicDataModel
-class SelectedMusicDataModel: ObservableObject {
+class FirstPickedMusicDataModel: ObservableObject {
     @Published var storedTracks: MusicItemCollection<Track>?
     
     func loadTracksByID(_ storedTrackIDs: [StoredTrackID]) {

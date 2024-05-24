@@ -1,16 +1,24 @@
 import MusicKit
 import SwiftUI
 
+/// ✏️ 현재 재생 View입니다 (수정중) ✏️
+
 struct NowPlayingView: View {
-    @ObservedObject var playbackQueue: ApplicationMusicPlayer.Queue
-    @ObservedObject private var musicPlayer = MusicPlayerModel.shared
-
+    
+    ///Music Player관련
+//    @ObservedObject var playbackQueue: ApplicationMusicPlayer.Queue
+    
+    @EnvironmentObject var musicPlayerModel: MusicPlayerModel
+    
+    ///FullScreen Dismiss 관련
     @Environment(\.presentationMode) var presentation
-
-    @AppStorage("currentIndex") private var currentIndex: Int = 0
     @GestureState private var dragOffset: CGFloat = 0
+    
+    ///Carousel 인덱스 관련
+    @AppStorage("currentIndex") private var currentIndex: Int = 0
 
     var body: some View {
+        /// 전체 View 구성
         NavigationView {
             ZStack {
                 Color.BG.main.ignoresSafeArea(.all)
@@ -39,6 +47,7 @@ struct NowPlayingView: View {
                 }
             }
         }
+        /// FullScreenDismiss 드래그 감지
         .gesture(
             DragGesture().onEnded { value in
                 if value.translation.height > 150 {
@@ -46,43 +55,69 @@ struct NowPlayingView: View {
                 }
             }
         )
-        .onChange(of: playbackQueue.currentEntry) { entry in
-            if let entry = entry, let newIndex = playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) {
+        .onAppear {
+            /// onAppear시, entries에서의 index와 캐러셀의 index를 일치시켜줘요!
+            if let savedEntryIndex = musicPlayerModel.playbackQueue.entries.firstIndex(where: { $0.id == musicPlayerModel.playbackQueue.currentEntry?.id }) {
+                currentIndex = savedEntryIndex
+            } 
+            /// entries에 아무것도 안담겨 있으면 index 0으로 초기화해요!
+            else {
+                currentIndex = 0
+            }
+        }
+        /// fullScreen일때, 현재재생곡이 넘어가면 캐러셀이 전환되는 부분입니다!
+        .onChange(of: musicPlayerModel.playbackQueue.currentEntry) { _,  entry in
+            /// 또 전수검사 해줘요..
+            if let entry = entry, let newIndex = musicPlayerModel.playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) {
                 currentIndex = newIndex
             }
         }
+        
     }
 
     @ViewBuilder
     private var QueueView: some View {
         ZStack {
             Color.BG.main.ignoresSafeArea(.all)
-            Queuelist(for: playbackQueue)
+            Queuelist(for: musicPlayerModel.playbackQueue)
         }
     }
-
+    @ViewBuilder
     private func Queuelist(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View {
         ScrollViewReader { proxy in
             List {
-                ForEach(playbackQueue.entries) { entry in
+                ForEach(playbackQueue.entries.indices, id: \.self) { index in
                     NowQueueItemCell(
-                        artwork: entry.artwork,
-                        title: entry.title,
-                        subtitle: entry.subtitle
+                        artwork: playbackQueue.entries[index].artwork,
+                        title: playbackQueue.entries[index].title,
+                        subtitle: playbackQueue.entries[index].subtitle
                     )
                     .listRowBackground(Color.BG.main)
                     .onTapGesture {
-                        playbackQueue.currentEntry = entry
-                        currentIndex = playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) ?? 0
-                        if !musicPlayer.isPlaying { pausePlay() }
+                        playbackQueue.currentEntry = playbackQueue.entries[index]
+                        currentIndex = index
+                        if !musicPlayerModel.isPlaying { pausePlay() }
                     }
                 }
             }
-            .listStyle(.plain)
             .background(Color.BG.main)
-            .onChange(of: currentIndex) { newIndex in
-                withAnimation {
-                    proxy.scrollTo(playbackQueue.entries[newIndex].id, anchor: .top)
+            .listStyle(.plain)
+            ///비활성화되어있을 때 곡이 넘어가도, 켜면 바로 그 곡으로 스크롤되도록!
+            .onAppear {
+                if let entry = playbackQueue.currentEntry, let newIndex = playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) {
+                    currentIndex = newIndex
+                    withAnimation {
+                        proxy.scrollTo(currentIndex, anchor: .top)
+                    }
+                }
+            }
+            ///현재재생곡이 넘어가면 list가 스크롤되는 부분입니다!
+            .onChange(of: playbackQueue.currentEntry) { _, entry in
+                if let entry = entry, let newIndex = playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) {
+                    currentIndex = newIndex
+                    withAnimation {
+                        proxy.scrollTo(currentIndex, anchor: .top)
+                    }
                 }
             }
         }
@@ -90,13 +125,14 @@ struct NowPlayingView: View {
 
     @ViewBuilder
     private var CarouselView: some View {
-        Carousellist(for: playbackQueue)
+        Carousellist(for: musicPlayerModel.playbackQueue)
     }
 
     private func Carousellist(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View {
         NavigationStack {
             ZStack {
                 Color.BG.main.ignoresSafeArea(.all)
+                
                 VStack {
                     ZStack {
                         ForEach(max(currentIndex - 2, 0)...min(currentIndex + 2, playbackQueue.entries.count - 1), id: \.self) { index in
@@ -141,6 +177,7 @@ struct NowPlayingView: View {
                             currentIndex = min(playbackQueue.entries.count - 1, currentIndex + 1)
                         }
                     }
+                    /// 캐러셀 넘기면 currentEntry를 갈아치워요!
                     playbackQueue.currentEntry = playbackQueue.entries[currentIndex]
                 }
         )
@@ -149,7 +186,7 @@ struct NowPlayingView: View {
     @ViewBuilder
     private var pauseButton: some View {
         Button(action: pausePlay) {
-            Image(systemName: musicPlayer.isPlaying ? "pause.circle" : "play.circle")
+            Image(systemName: musicPlayerModel.isPlaying ? "pause.circle" : "play.circle")
                 .font(.system(size: 70, weight: .ultraLight))
                 .foregroundColor(.white)
                 .shadow(radius: 5)
@@ -157,7 +194,7 @@ struct NowPlayingView: View {
     }
 
     private func pausePlay() {
-        musicPlayer.togglePlaybackStatus()
+        musicPlayerModel.togglePlaybackStatus()
     }
 
     private func FullScreenDismiss() {

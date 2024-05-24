@@ -21,13 +21,13 @@ struct OnboardingTabView: View {
             ZStack {
                 if currentPage == 0 {
                     OnboardingPageView(
-                        title: "반갑습니다! 복숭K님, \n업무환경에 딱 맞는 \n음악을 추천드릴께요!",
-                        imageName: "headphone"
+                        title: "반갑습니다! 복숭K님,\n업무환경에 딱 맞는\n음악을 추천드릴께요!",
+                        imageName: "notebook"
                     )
                 } else if currentPage == 1 {
                     OnboardingButtonView(
                         model: musicAuthorizationModel,
-                        title: "이제 복숭K님의 \n애플 뮤직을 연결할게요",
+                        title: "이제 복숭K님의\n애플 뮤직을 연결할게요",
                         imageName: "headphone",
                         text: "권한을 허용해야 음악 재생목록이 연결돼요",
                         currentPage: $currentPage
@@ -35,13 +35,13 @@ struct OnboardingTabView: View {
 
                 } else if currentPage == 2 {
                     OnboardingPageView(
-                        title: "핸드폰 화면이 바닥을 \n향한 채로 좌우로 흔들면 \n노래가 교체돼요!",
-                        imageName: "headphone"
+                        title: "핸드폰 화면이 바닥을\n향한 채로 좌우로 흔들면\n노래가 교체돼요!",
+                        imageName: "shaking"
                     )
                 } else if currentPage == 3 {
                     OnboardingPageView(
-                        title: "직접 좌우로 \n흔들어보세요!",
-                        imageName: "headphone"
+                        title: "직접 좌우로\n흔들어보세요!",
+                        imageName: "shaking"
                     )
                     .onAppear {
                         shakeDetectionModel.startDetection()
@@ -49,16 +49,16 @@ struct OnboardingTabView: View {
                 } else if currentPage == 4 {
                     OnboardingFailPageView(//안내 텍스트 색상 변경
                         title: "다시 한번 시도해 주세요!",
-                        imageName: "headphone"
+                        imageName: "shaking2"
                     )
                 } else if currentPage == 5 {
                     OnboardingPageView(
                         title: "정말 잘하셨어요!",
-                        imageName: "headphone"
+                        imageName: "shaking"
                     )
                 } else if currentPage == 6 {
                     OnboardingLastPageView(
-                        title: "음악과 함께 \n일할 준비가 되셨나요?",
+                        title: "음악과 함께\n일할 준비가 되셨나요?",
                         imageName: "headphone",
                         hasSeenOnboarding: $hasSeenOnboarding
                     )

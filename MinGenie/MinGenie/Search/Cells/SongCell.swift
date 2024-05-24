@@ -10,14 +10,14 @@ import SwiftUI
 
 struct SongCell: View {
     @Environment(\.modelContext) var modelContext
-    @ObservedObject private var musicModel = MusicPlayerModel.shared
+    @EnvironmentObject var musicPlayerModel: MusicPlayerModel
         
     private let artworkSize: CGFloat = 44
     let song: Song
     
     var body: some View {
         Button {
-            musicModel.playMusicWithRecommendedList(song)
+            musicPlayerModel.playMusicWithRecommendedList(song)
             modelContext.insert(StoredTrackID(song))
         } label: {
             HStack {

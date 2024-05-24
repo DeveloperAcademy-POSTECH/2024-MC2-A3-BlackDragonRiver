@@ -50,6 +50,7 @@ struct MiniPlayerItemCell: View {
                     Image(systemName: "music.note")
                         .foregroundColor(.white)
                 }
+                .padding(.horizontal,8)
             }
             }
             
