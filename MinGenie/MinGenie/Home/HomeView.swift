@@ -14,7 +14,6 @@ struct HomeView: View {
     @StateObject private var selectedMusicDataModel = FirstPickedMusicDataModel()
     
     @State private var searchTerm: String = ""
-    @State private var isPresented = false
     
     @Query(sort: \StoredTrackID.timestamp, order: .reverse) private var storedTrackIDs: [StoredTrackID]
     
