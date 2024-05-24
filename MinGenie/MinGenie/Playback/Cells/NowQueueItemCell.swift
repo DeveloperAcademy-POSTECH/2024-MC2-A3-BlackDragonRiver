@@ -58,9 +58,9 @@ struct NowQueueItemCell: View {
             .foregroundColor(Color("text/Black"))
             
             
-            Spacer() // 왼쪽에 빈 공간 추가
+            Spacer()
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity,maxHeight: 62, alignment: .leading)
         .background(Color("bg/Main"))
     }
     

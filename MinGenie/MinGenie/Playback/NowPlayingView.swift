@@ -18,58 +18,34 @@ struct NowPlayingView: View {
                 Color("bg/Main").ignoresSafeArea(.all)
                 
                 VStack {
-                    /// 1. title
-                    VStack(alignment: .leading) {
-                        Text("못할 것도 없지 화이팅🔥")
-                            .font(.system(size: 34, weight:.black))
-                            .foregroundStyle(Color("text/BLue"))
-                    }
-                    .padding(.leading, -18)
-                    .padding(.top, 54)
-                    .padding(.bottom,-10)
-                    
-                    /// 2. carousel
-                    VStack {
-                        if let currentEntry = playbackQueue.currentEntry {
-                            VStack(spacing: 0) {
-                                ZStack {
-                                    CarouselView
-//                                        .frame(height: 300)
-                                    pauseButton
-                                        .padding(.bottom, -40)
-                                }
-                                
-//                                .padding(.vertical,16)
-                                
-                                Spacer()
-                                
-                                Text(currentEntry.title)
-                                    .font(.system(size: 20, weight: .bold))
-                                    .foregroundColor(Color("text/Black"))
-                                Text(currentEntry.subtitle!)
-                                    .font(.system(size: 15, weight: .regular))
-                                    .foregroundColor(Color("text/Black"))
-                            }
-                        } else {
-                            ZStack {
-                                Rectangle()
-                                    .frame(width: 264, height: 264)
-                                    .cornerRadius(16)
-                                    .foregroundColor(.gray)
-                                
-                                Text("No Item Playing")
-                                    .foregroundColor(Color("text/White80"))
-                            }
+                   
+                        ZStack {
+                            /// 2. carousel
+                            CarouselView
+                                .padding(.top,20)
+                            pauseButton
+                                .padding(.bottom, -40)
+                            
+                            
                         }
-                    }
-                    
-                    VStack {
-                        Queuelist(for: playbackQueue)
+                        .frame(height: 420)
+
+                    VStack{
+                        QueueView
                     }
                 }
+                /// 1. title
+                VStack {
+                    Text("못할 것도 없지 화이팅🔥")
+                        .font(.system(size: 34, weight:.black))
+                        .foregroundStyle(Color("text/BLue"))
+                }
+                .padding(.leading, -18)
+                .padding(.top,-345)
                 
                 VStack {
                     DismissButton { FullScreenDismiss() }
+                    
                     Spacer()
                 }
             }
@@ -85,6 +61,7 @@ struct NowPlayingView: View {
     
     @ViewBuilder
     private var QueueView: some View {
+        
         ZStack{
             Color("bg/Main").ignoresSafeArea(.all)
             Queuelist(for: playbackQueue)
@@ -93,8 +70,6 @@ struct NowPlayingView: View {
     }
     
     private func Queuelist(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View {
-        
-        
         ScrollViewReader { proxy in
             List {
                 ForEach(playbackQueue.entries) { entry in
@@ -134,18 +109,31 @@ struct NowPlayingView: View {
         NavigationStack {
             ZStack{
                 Color.Bg.main.ignoresSafeArea(.all)
-                
                 VStack {
                     ZStack {
-                        ForEach(playbackQueue.entries.indices, id: \.self) { index in
-                            imageContainer(for: playbackQueue.entries[index].artwork)
-                                .frame(width: 264, height: 264)
-                                .cornerRadius(16)
-                                .scaleEffect(1.0 - CGFloat(abs(index - currentIndex)) * 0.1)
-                                .zIndex(1.0 - Double(abs(index - currentIndex)))
-                                .offset(x: CGFloat(index - currentIndex) * 50 * (1 - CGFloat(abs(index - currentIndex)) * 0.1) + dragOffset, y: 0)
-                            
+                                            ForEach(max(currentIndex - 2, 0)...min(currentIndex + 2, playbackQueue.entries.count - 1), id: \.self) { index in
+                                                imageContainer(for: playbackQueue.entries[index].artwork)
+                                                    .scaleEffect(1.0 - CGFloat(abs(index - currentIndex)) * 0.1)
+                                                    .zIndex(1.0 - Double(abs(index - currentIndex)))
+                                                    .offset(x: CGFloat(index - currentIndex) * 50 * (1 - CGFloat(abs(index - currentIndex)) * 0.1) + dragOffset, y: 0)
+                                                
+                                                if index == currentIndex {
+                                                    VStack {
+                                                        Text(playbackQueue.entries[index].title)
+                                                            .font(.system(size: 20, weight: .bold))
+                                                            .foregroundColor(Color("text/Black"))
+                                                            .padding(.top, 16)
+                                                        
+                                                        Text(playbackQueue.entries[index].subtitle ?? "")
+                                                            .font(.system(size: 15, weight: .regular))
+                                                            .foregroundColor(Color("text/Black"))
+                                                            .padding(.top, -10)
+                                                    }
+                                                    .padding(.top, 310)
+                                                    .transition(.opacity)
+                                                }
                         }
+                        
                     }
                 }
             }
@@ -169,9 +157,10 @@ struct NowPlayingView: View {
                     playbackQueue.currentEntry = playbackQueue.entries[currentIndex]
                 }
         )
-        .padding(.top, 40)
+        
     }
     
+    /// pauseButton 관련
     @ViewBuilder
     private var pauseButton: some View {
         Button(action: pausePlay) {
@@ -182,12 +171,12 @@ struct NowPlayingView: View {
         }
     }
     
-    // MARK: - Methods
-    
     private func pausePlay() {
         musicPlayer.togglePlaybackStatus()
     }
     
+    
+    /// FullScreen Dismiss 관련
     private func FullScreenDismiss() {
         presentation.wrappedValue.dismiss()
     }
@@ -209,19 +198,27 @@ struct NowPlayingView: View {
         }
     }
     
+    /// Artwork -> Image관련
     private func imageContainer(for artwork: Artwork?) -> some View {
         VStack {
             Spacer()
             if let artwork = artwork {
-                ArtworkImage(artwork, width: 250, height: 250)
-                    .cornerRadius(8)
-                    .shadow(radius: 10)
+                ZStack{
+                    ArtworkImage(artwork, width: 244, height: 244)
+                        .cornerRadius(16)
+                        .shadow(radius: 4)
+                    Rectangle()
+                        .frame(width: 244,height: 244)
+                        .cornerRadius(16)
+                        .foregroundColor(.black)
+                        .opacity(0.2)
+                }
             } else {
                 Rectangle()
                     .fill(Color.gray)
-                    .frame(width: 250, height: 250)
-                    .cornerRadius(8)
-                    .shadow(radius: 10)
+                    .frame(width: 244, height: 244)
+                    .cornerRadius(16)
+                    .shadow(radius: 4)
             }
             Spacer()
         }
