@@ -85,7 +85,7 @@ struct MiniPlayerView: View {
     @ViewBuilder
     private var pauseButton: some View {
         Button(action: pausePlay) {
-            Image(systemName: (musicPlayer.isPlaying ? "pause.fill" : "play.fill"))
+            Image(systemName: (musicPlayerModel.isPlaying ? "pause.fill" : "play.fill"))
                 .foregroundColor(Color.Text.white100)
         }
     }

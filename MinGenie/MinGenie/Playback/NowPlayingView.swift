@@ -46,7 +46,7 @@ struct NowPlayingView: View {
                 }
             }
         )
-        .onChange(of: playbackQueue.currentEntry) { entry in
+        .onChange(of: playbackQueue.currentEntry) { _, entry in
             if let entry = entry, let newIndex = playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) {
                 currentIndex = newIndex
             }
@@ -80,7 +80,7 @@ struct NowPlayingView: View {
             }
             .listStyle(.plain)
             .background(Color.BG.main)
-            .onChange(of: currentIndex) { newIndex in
+            .onChange(of: currentIndex) { _, newIndex in
                 withAnimation {
                     proxy.scrollTo(playbackQueue.entries[newIndex].id, anchor: .top)
                 }
@@ -149,7 +149,7 @@ struct NowPlayingView: View {
     @ViewBuilder
     private var pauseButton: some View {
         Button(action: pausePlay) {
-            Image(systemName: musicPlayer.isPlaying ? "pause.circle" : "play.circle")
+            Image(systemName: musicPlayerModel.isPlaying ? "pause.circle" : "play.circle")
                 .font(.system(size: 70, weight: .ultraLight))
                 .foregroundColor(.white)
                 .shadow(radius: 5)
