@@ -30,6 +30,21 @@ final class ShakeDetectionModel: ObservableObject {
         startDeviceMotion()
     }
     
+    func stopDetection() {
+        stopShakeDetection()
+        stopFaceDownDetection()
+    }
+    
+    /// Shake 감지 후, 뷰에서 특정 동작을 완료한 수 호출하는 메서드
+    func markActionCompleted() {
+        self.shakeDetected = false
+        
+        // 다시 엎어진 상태라면 가속도계 다시 시작
+        if self.isScreenDown {
+            self.startAccelerometer()
+        }
+    }
+    
     private func startDeviceMotion() {
         print("DeviceMotion Start")
         
@@ -97,8 +112,11 @@ final class ShakeDetectionModel: ObservableObject {
             && accZ < maxZAccelerationThreshold
             && accZ > minZAccelerationThreshold {
             print("🐯 Device was shaken while face down")
-            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate) //진동 주기
+            
+            print("problem❗️❗️❗️: \(shakeDetected)")
             self.shakeDetected = true // 흔들림 감지 여부 업데이트
+            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate) //진동 주기
+            
             self.shakeFailed = false
             self.stopShakeDetection()
         } else {
@@ -118,19 +136,6 @@ final class ShakeDetectionModel: ObservableObject {
         motionManager.stopDeviceMotionUpdates()
     }
         
-    func stopDetection() {
-        stopShakeDetection()
-        stopFaceDownDetection()
-    }
-    
-    /// Shake 감지 후, 뷰에서 특정 동작을 완료한 수 호출하는 메서드
-    func markActionCompleted() {
-        self.shakeDetected = false
-        
-        // 다시 엎어진 상태라면 가속도계 다시 시작
-        if self.isScreenDown {
-            self.startAccelerometer()
-        }
-    }
+
 
 }

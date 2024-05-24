@@ -8,8 +8,9 @@
 import MusicKit
 import SwiftUI
 
+
 struct MusicSearchView: View {
-    @ObservedObject private var model = MusicSearchModel()
+    @StateObject private var model = MusicSearchModel()
     
     @State private var selectedCategory: Category = .song
     @Binding var searchTerm: String
@@ -32,11 +33,11 @@ struct MusicSearchView: View {
                 switch(selectedCategory) {
                 case .song:
                     ForEach(model.songs, id: \.self) { song in
-                        SongResultRowView(song: song)
+                        SongCell(song: song)
                     }
                 case .album:
                     ForEach(model.albums, id: \.self) { album in
-                        AlbumResultRowView(album: album)
+                        AlbumCell(album: album)
                     }
                 }
             }
@@ -63,92 +64,6 @@ struct categoryButton: View {
                         .font(.callout)
                         .foregroundColor(selectedCategory == category ? Color.Text.white100 : Color.Text.gray50)
                 }
-        }
-    }
-}
-
-struct SongResultRowView: View {
-    let song: Song
-    private let artworkSize: CGFloat = 44
-    
-    var body: some View {
-        Button {
-            /* 240520 Yu:D
-             노래 재생 로직 추가해야 함.
-             */
-            print("노래 재생")
-        } label: {
-            HStack {
-                if let artwork = song.artwork {
-                    ArtworkImage(artwork, width: artworkSize, height: artworkSize)
-                        .scaledToFill()
-                        .cornerRadius(11)
-                }
-                
-                VStack(alignment: .leading) {
-                    Text("\(song.title)")
-                        .font(.body)
-                        .foregroundStyle(Color.Text.black)
-
-                    Text("\(song.artistName)")
-                        .font(.subheadline)
-                        .foregroundStyle(Color.Text.gray60)
-
-                    Divider()
-                }
-                .lineLimit(1)
-                
-                Spacer()
-            }
-            .padding(.horizontal, 16)
-            .padding(.bottom, 9)
-        }
-    }
-}
-
-struct AlbumResultRowView: View {
-    let album: Album
-    private let artworkSize: CGFloat = 44
-    
-    var body: some View {
-        NavigationLink {
-            DetailedAlbumView(album: album)
-        } label: {
-            HStack {
-                if let artwork = album.artwork {
-                    ArtworkImage(artwork, width: artworkSize, height: artworkSize)
-                        .scaledToFill()
-                        .cornerRadius(11)
-                }
-                
-                VStack(alignment: .leading) {
-                    Text("\(album.title)")
-                        .font(.body)
-                        .foregroundStyle(Color.Text.black)
-
-                    HStack {
-                        Text("\(album.artistName)")
-                        
-                        Text("・")
-                        
-                        if let releaseDate = album.releaseDate {
-                            Text("\(releaseDate, style: .date)")
-                        }
-                    }
-                    .font(.subheadline)
-                    .foregroundStyle(Color.Text.gray60)
-                    
-                    Divider()
-                }
-                .lineLimit(1)
-
-                Spacer()
-                
-                Image(systemName: "chevron.right")
-                    .foregroundStyle(Color.Text.gray40)
-            }
-            .padding(.horizontal, 16)
-            .padding(.bottom, 9)
         }
     }
 }

@@ -3,6 +3,7 @@ import MusicKit
 import SwiftUI
 
 /// ✏️ 재생기 기능을 하는 MusicPlayerModel 스크립트입니다 ✏️
+///
 /// (개념 정리) Combine 비동기처리
 /// Publisher: 값이나 이벤트를 생성하고 방출하는 역할
 /// Subscriber: Publisher로부터 방출된 값을 수신하여 처리하는 역할
@@ -70,8 +71,7 @@ class MusicPlayerModel: ObservableObject {
             musicPlayer.pause()
         }
     }
-    
-    
+
     func togglePlaybackStatus() {
         if !isPlaying {
             Task {
@@ -82,12 +82,62 @@ class MusicPlayerModel: ObservableObject {
         }
     }
     
+    /// 🐯
+    /// 개별 곡 재생하고 그 뒤에 추천 플레이리스트 붙여주기
+    /// - Parameter song: 사용자가 선택한 개별 곡
+    func playRandomMusic() async {
+        let model = NextMusicRecommendationModel()
+        
+        /// 추천 트랙 추가
+        Task {
+            let recommendedList = try await model.requestNextMusicList()
+            if let recommendedList {
+                play(recommendedList[0], in: recommendedList, with: nil)
+            }
+        }
+    }
+    
+    /// 🐯
+    func playMusicWithRecommendedList(_ song: Song) {
+        let model = NextMusicRecommendationModel()
+        let track = fromSongToTrackType(song)
+        
+        // 개별 곡 재생
+        play(track, in: nil, with: nil)
+        
+        // 추천 트랙 추가
+        Task {
+            let recommendedList = try await model.requestNextMusicList()
+            if let recommendedList {
+                try await ApplicationMusicPlayer.shared.queue.insert(recommendedList, position: .tail)
+            }
+        }
+    }
+    
+    /// 🐯
+    /// 앨범 전체 재생하고 그 뒤에 추천 플레이리스트 붙여주기
+    /// - Parameter tracks: 사용자가 선택한 전체 재생할 앨범에 담긴 트랙
+    func playAlbumWithRecommendedList(_ tracks: MusicItemCollection<Track>) {
+        let model = NextMusicRecommendationModel()
+        
+        // 앨범 재생
+        play(tracks[0], in: tracks, with: nil)
+
+        // 추천 트랙 추가
+        Task {
+            let recommendedList = try await model.requestNextMusicList()
+            if let recommendedList {
+                try await ApplicationMusicPlayer.shared.queue.insert(recommendedList, position: .tail)
+            }
+        }
+    }
+    
     /// ⭐️ 함께 활용할 함수 ⭐️
     /// 파라미터 1: 시작할 곡, 2: 트랙리스트 (곡 리스트), 3: 모르겠음
     func play(_ track: Track, in trackList: MusicItemCollection<Track>?, with parentCollectionID: MusicItemID?) {
         let musicPlayer = self.musicPlayer
         
-        if var specifiedTrackList = trackList {
+        if let specifiedTrackList = trackList {
             /// 개별 재생
             setQueue(for: specifiedTrackList, startingAt: track)
         } else {
@@ -102,6 +152,30 @@ class MusicPlayerModel: ObservableObject {
                 try await musicPlayer.play()
             } catch {
                 print("Failed to prepare music player to play \(track).")
+            }
+        }
+    }
+    
+    /// (추가) song -> Track 컨버터
+    func sendToMusicPlayer(_ song: Song) {
+           let track = Track.song(song)
+           play(track, in: nil, with: nil)
+       }
+    
+    /// 🐰 Song 타입을 Track 타입으로 변경
+    /// - Parameter song: Track 타입으로 변경할 Song
+    /// - Returns: 전달받은 Song을 Track 타입으로 변환 후 반환
+    private func fromSongToTrackType(_ song: Song) -> Track {
+        Track.song(song)
+    }
+    
+    /// (추가) 다음곡으로 넘기기!
+    func skipToNextEntry() {
+        Task {
+            do {
+                try await musicPlayer.skipToNextEntry()
+            } catch {
+                print("Failed to skip to the next entry: \(error)")
             }
         }
     }

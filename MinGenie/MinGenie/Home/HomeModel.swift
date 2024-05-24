@@ -1,5 +1,5 @@
 //
-//  MusicPersonalRecommendationModel.swift
+//  HomeModel.swift
 //  MinGenie
 //
 //  Created by zaehorang on 5/19/24.
@@ -8,6 +8,10 @@
 import MusicKit
 import SwiftUI
 
+/// MusicPersonalRecommendationModel
+/// SelectedMusicDataModel
+
+//MARK: - MusicPersonalRecommendationModel
 class MusicPersonalRecommendationModel: ObservableObject {
     private var personalRecommendations: MusicItemCollection<MusicPersonalRecommendation> = []
     private var playlists: MusicItemCollection<Playlist> = []
@@ -55,7 +59,6 @@ class MusicPersonalRecommendationModel: ObservableObject {
             
             return
         }
-        
         await mainTracksUpdate(tracks)
     }
 
@@ -81,4 +84,36 @@ class MusicPersonalRecommendationModel: ObservableObject {
     private func mainTracksUpdate(_ tracks: MusicItemCollection<Track>) {
             personalRecommendationTracks = tracks
     }
+}
+
+
+//MARK: - SelectedMusicDataModel
+class SelectedMusicDataModel: ObservableObject {
+    @Published var storedTracks: MusicItemCollection<Track>?
+    
+    func loadTracksByID(_ storedTrackIDs: [StoredTrackID]) {
+        Task {
+            if !storedTrackIDs.isEmpty {
+                do {
+                    let ids = storedTrackIDs.map { MusicItemID($0.id) }
+                    
+                    let request =  MusicCatalogResourceRequest<Song>(matching: \.id ,memberOf: ids)
+                    let result = try await request.response()
+                    
+                    var tracks: MusicItemCollection<Track> = []
+                    result.items.forEach { tracks += [Track.song($0)] }
+                    
+                    await storedTracksUpdate(tracks)
+                } catch {
+                    print("Music ID request failed with error: \(error)")
+                }
+            }
+        }
+    }
+    
+    @MainActor
+    private func storedTracksUpdate(_ tracks: MusicItemCollection<Track>) {
+            storedTracks = tracks
+    }
+    
 }
