@@ -57,18 +57,18 @@ struct MiniPlayerItemCell: View {
             VStack(alignment: .leading) {
                 Text(title)
                     .font(.system(size: 17, weight: .regular))
-                    .foregroundColor(Color("text/White100"))
+                    .foregroundColor(Color.Text.white100)
                 
                 if !subtitle.isEmpty {
                     Text(subtitle)
                         .font(.system(size: 13, weight: .regular))
-                        .foregroundColor(Color("text/White60"))
+                        .foregroundColor(Color.Text.white60)
                         .padding(.top, subtitleVerticalOffset)
                 }
             }
             .padding(.horizontal, -6)
             .lineLimit(1)
-            .foregroundColor(Color("text/White60"))
+            .foregroundColor(Color.Text.white60)
         }
     }
     

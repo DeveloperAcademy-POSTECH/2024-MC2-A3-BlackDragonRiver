@@ -1,51 +1,40 @@
 import MusicKit
 import SwiftUI
 
-/// ✏️ 현재 재생 (full Screen) View입니다 (정리중)✏️
-
 struct NowPlayingView: View {
     @ObservedObject var playbackQueue: ApplicationMusicPlayer.Queue
     @ObservedObject private var musicPlayer = MusicPlayerModel.shared
-    
+
     @Environment(\.presentationMode) var presentation
-    
+
     @State private var currentIndex: Int = 0
     @GestureState private var dragOffset: CGFloat = 0
-    
+
     var body: some View {
         NavigationView {
             ZStack {
-                Color("bg/Main").ignoresSafeArea(.all)
-                
+                Color.Bg.main.ignoresSafeArea(.all)
                 VStack {
-                    
                     ZStack {
-                        /// 2. carousel
                         CarouselView
-                            .padding(.top,20)
+                            .padding(.top, 20)
                         pauseButton
                             .padding(.bottom, -40)
-                        
-                        
                     }
                     .frame(height: 420)
-                    
-                    VStack{
+                    VStack {
                         QueueView
                     }
                 }
-                /// 1. title
                 VStack {
                     Text("못할 것도 없지 화이팅🔥")
-                        .font(.system(size: 34, weight:.black))
+                        .font(.system(size: 34, weight: .black))
                         .foregroundStyle(Color("text/BLue"))
                 }
                 .padding(.leading, -18)
-                .padding(.top,-345)
-                
+                .padding(.top, -345)
                 VStack {
                     DismissButton { FullScreenDismiss() }
-                    
                     Spacer()
                 }
             }
@@ -57,18 +46,21 @@ struct NowPlayingView: View {
                 }
             }
         )
+        .onChange(of: playbackQueue.currentEntry) { entry in
+            if let entry = entry, let newIndex = playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) {
+                currentIndex = newIndex
+            }
+        }
     }
-    
+
     @ViewBuilder
     private var QueueView: some View {
-        
-        ZStack{
-            Color("bg/Main").ignoresSafeArea(.all)
+        ZStack {
+            Color.Bg.main.ignoresSafeArea(.all)
             Queuelist(for: playbackQueue)
         }
-        
     }
-    
+
     private func Queuelist(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View {
         ScrollViewReader { proxy in
             List {
@@ -78,11 +70,9 @@ struct NowPlayingView: View {
                         title: entry.title,
                         subtitle: entry.subtitle
                     )
-                    .listRowBackground(Color("bg/Main"))
+                    .listRowBackground(Color.Bg.main)
                     .onTapGesture {
                         playbackQueue.currentEntry = entry
-                        
-                        /// 현재 재생 index가 queueList 상에서 가장 상단에 붙도록 currentIndex 찾기
                         currentIndex = playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) ?? 0
                         if !musicPlayer.isPlaying { pausePlay() }
                     }
@@ -90,24 +80,22 @@ struct NowPlayingView: View {
             }
             .listStyle(.plain)
             .background(Color("bg/Main"))
-            /// currentIndex가 바뀌면 newIndex로!
             .onChange(of: currentIndex) { newIndex in
                 withAnimation {
                     proxy.scrollTo(playbackQueue.entries[newIndex].id, anchor: .top)
                 }
             }
-            
         }
     }
-    
+
     @ViewBuilder
     private var CarouselView: some View {
         Carousellist(for: playbackQueue)
     }
-    
+
     private func Carousellist(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View {
         NavigationStack {
-            ZStack{
+            ZStack {
                 Color.Bg.main.ignoresSafeArea(.all)
                 VStack {
                     ZStack {
@@ -121,19 +109,18 @@ struct NowPlayingView: View {
                                 VStack {
                                     Text(playbackQueue.entries[index].title)
                                         .font(.system(size: 20, weight: .bold))
-                                        .foregroundColor(Color("text/Black"))
+                                        .foregroundColor(Color.Text.black)
                                         .padding(.top, 16)
                                     
                                     Text(playbackQueue.entries[index].subtitle ?? "")
                                         .font(.system(size: 15, weight: .regular))
-                                        .foregroundColor(Color("text/Black"))
+                                        .foregroundColor(Color.Text.black)
                                         .padding(.top, -10)
                                 }
                                 .padding(.top, 310)
                                 .transition(.opacity)
                             }
                         }
-                        
                     }
                 }
             }
@@ -157,37 +144,33 @@ struct NowPlayingView: View {
                     playbackQueue.currentEntry = playbackQueue.entries[currentIndex]
                 }
         )
-        
     }
-    
-    /// pauseButton 관련
+
     @ViewBuilder
     private var pauseButton: some View {
         Button(action: pausePlay) {
-            Image(systemName: (musicPlayer.isPlaying ? "pause.circle" : "play.circle"))
+            Image(systemName: musicPlayer.isPlaying ? "pause.circle" : "play.circle")
                 .font(.system(size: 70, weight: .ultraLight))
                 .foregroundColor(.white)
                 .shadow(radius: 5)
         }
     }
-    
+
     private func pausePlay() {
         musicPlayer.togglePlaybackStatus()
     }
-    
-    
-    /// FullScreen Dismiss 관련
+
     private func FullScreenDismiss() {
         presentation.wrappedValue.dismiss()
     }
-    
+
     private struct DismissButton: View {
         var action: () -> ()
-        
+
         init(_ action: @escaping () -> ()) {
             self.action = action
         }
-        
+
         var body: some View {
             Button(action: action) {
                 RoundedRectangle(cornerRadius: 16)
@@ -197,18 +180,17 @@ struct NowPlayingView: View {
             }
         }
     }
-    
-    /// Artwork -> Image관련
+
     private func imageContainer(for artwork: Artwork?) -> some View {
         VStack {
             Spacer()
             if let artwork = artwork {
-                ZStack{
+                ZStack {
                     ArtworkImage(artwork, width: 244, height: 244)
                         .cornerRadius(16)
                         .shadow(radius: 4)
                     Rectangle()
-                        .frame(width: 244,height: 244)
+                        .frame(width: 244, height: 244)
                         .cornerRadius(16)
                         .foregroundColor(.black)
                         .opacity(0.2)

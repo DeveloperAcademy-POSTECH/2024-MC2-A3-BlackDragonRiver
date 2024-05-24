@@ -55,13 +55,13 @@ struct NowQueueItemCell: View {
             }
             .padding(.leading, 8)
             .lineLimit(1)
-            .foregroundColor(Color("text/Black"))
+            .foregroundColor(Color.Text.black)
             
             
             Spacer()
         }
         .frame(maxWidth: .infinity,maxHeight: 62, alignment: .leading)
-        .background(Color("bg/Main"))
+        .background(Color.Bg.main)
     }
     
     private func imageContainer(for artwork: Artwork) -> some View {
