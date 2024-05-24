@@ -7,7 +7,7 @@ struct NowPlayingView: View {
 
     @Environment(\.presentationMode) var presentation
 
-    @State private var currentIndex: Int = 0
+    @AppStorage("currentIndex") private var currentIndex: Int = 0
     @GestureState private var dragOffset: CGFloat = 0
 
     var body: some View {
