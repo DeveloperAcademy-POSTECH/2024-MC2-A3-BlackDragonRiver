@@ -19,7 +19,7 @@ struct MiniPlayerView: View {
             .frame(maxWidth: .infinity)
             .background(
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(Color("shape/Blue"))
+                    .fill(Color.Shape.blue)
                     .frame(height: 60)
                     .padding(.horizontal,24)
                     .shadow(radius: 20)
@@ -69,7 +69,7 @@ struct MiniPlayerView: View {
                     Text("현재 재생 중인 곡이 없습니다.")
                         .lineLimit(1)
                         .font(.system(size: 17, weight: .regular))
-                        .foregroundColor(Color("text/White100"))
+                        .foregroundColor(Color.Text.white100)
                         .padding(.horizontal, -6)
                 }
                 
