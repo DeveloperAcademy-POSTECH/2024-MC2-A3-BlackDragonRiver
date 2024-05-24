@@ -15,30 +15,40 @@ struct NowPlayingView: View {
     var body: some View {
         NavigationView {
             ZStack {
+                Color("bg/Main").ignoresSafeArea(.all)
+                
                 VStack {
                     /// 1. title
                     VStack(alignment: .leading) {
-                        Text("못할 것도 없지🔥")
-                            .font(.title.bold())
-                            .foregroundStyle(.blue)
+                        Text("못할 것도 없지 화이팅🔥")
+                            .font(.system(size: 34, weight:.black))
+                            .foregroundStyle(Color("text/BLue"))
                     }
-                    .padding(.leading, -150)
-                    .padding(.top, 50)
-                    .padding(.bottom,-20)
+                    .padding(.leading, -18)
+                    .padding(.top, 54)
+                    .padding(.bottom,-10)
                     
                     /// 2. carousel
                     VStack {
                         if let currentEntry = playbackQueue.currentEntry {
-                            VStack {
+                            VStack(spacing: 0) {
                                 ZStack {
                                     CarouselView
+//                                        .frame(height: 300)
                                     pauseButton
-                                        .padding(.bottom, -30)
+                                        .padding(.bottom, -40)
                                 }
+                                
+//                                .padding(.vertical,16)
+                                
+                                Spacer()
+                                
                                 Text(currentEntry.title)
-                                    .font(.system(size: 20, weight: .semibold))
+                                    .font(.system(size: 20, weight: .bold))
+                                    .foregroundColor(Color("text/Black"))
                                 Text(currentEntry.subtitle!)
                                     .font(.system(size: 15, weight: .regular))
+                                    .foregroundColor(Color("text/Black"))
                             }
                         } else {
                             ZStack {
@@ -48,7 +58,7 @@ struct NowPlayingView: View {
                                     .foregroundColor(.gray)
                                 
                                 Text("No Item Playing")
-                                    .foregroundColor(.black)
+                                    .foregroundColor(Color("text/White80"))
                             }
                         }
                     }
@@ -75,10 +85,16 @@ struct NowPlayingView: View {
     
     @ViewBuilder
     private var QueueView: some View {
-        Queuelist(for: playbackQueue)
+        ZStack{
+            Color("bg/Main").ignoresSafeArea(.all)
+            Queuelist(for: playbackQueue)
+        }
+        
     }
     
     private func Queuelist(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View {
+        
+        
         ScrollViewReader { proxy in
             List {
                 ForEach(playbackQueue.entries) { entry in
@@ -86,7 +102,9 @@ struct NowPlayingView: View {
                         artwork: entry.artwork,
                         title: entry.title,
                         subtitle: entry.subtitle
-                    ).onTapGesture {
+                    )
+                    .listRowBackground(Color("bg/Main"))
+                    .onTapGesture {
                         playbackQueue.currentEntry = entry
                         
                         /// 현재 재생 index가 queueList 상에서 가장 상단에 붙도록 currentIndex 찾기
@@ -96,6 +114,7 @@ struct NowPlayingView: View {
                 }
             }
             .listStyle(.plain)
+            .background(Color("bg/Main"))
             /// currentIndex가 바뀌면 newIndex로!
             .onChange(of: currentIndex) { newIndex in
                 withAnimation {
@@ -113,16 +132,20 @@ struct NowPlayingView: View {
     
     private func Carousellist(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View {
         NavigationStack {
-            VStack {
-                ZStack {
-                    ForEach(playbackQueue.entries.indices, id: \.self) { index in
-                        imageContainer(for: playbackQueue.entries[index].artwork)
-                            .frame(width: 250, height: 250)
-                            .cornerRadius(16)
-                            .scaleEffect(1.0 - CGFloat(abs(index - currentIndex)) * 0.1)
-                            .zIndex(1.0 - Double(abs(index - currentIndex)))
-                            .offset(x: CGFloat(index - currentIndex) * 50 * (1 - CGFloat(abs(index - currentIndex)) * 0.1) + dragOffset, y: 0)
-                        
+            ZStack{
+                Color.Bg.main.ignoresSafeArea(.all)
+                
+                VStack {
+                    ZStack {
+                        ForEach(playbackQueue.entries.indices, id: \.self) { index in
+                            imageContainer(for: playbackQueue.entries[index].artwork)
+                                .frame(width: 264, height: 264)
+                                .cornerRadius(16)
+                                .scaleEffect(1.0 - CGFloat(abs(index - currentIndex)) * 0.1)
+                                .zIndex(1.0 - Double(abs(index - currentIndex)))
+                                .offset(x: CGFloat(index - currentIndex) * 50 * (1 - CGFloat(abs(index - currentIndex)) * 0.1) + dragOffset, y: 0)
+                            
+                        }
                     }
                 }
             }

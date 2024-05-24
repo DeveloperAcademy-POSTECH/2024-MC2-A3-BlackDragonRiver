@@ -1,27 +1,17 @@
-/*
-See LICENSE folder for this sample’s licensing information.
-
-Abstract:
-A cell that displays information about a music item.
-*/
-
-/// ✏️ NowPlayingView에 들어가는 QueueList Cell✏️
-
-
 import MusicKit
 import SwiftUI
 
 /// A view that displays information about a music item.
 struct NowQueueItemCell: View {
     // MARK: - Properties
-    private var artworkSize: CGFloat = 44
-    private var artworkCornerRadius: CGFloat = 4
-    private var subtitleVerticalOffset: CGFloat = -6
+    private var artworkSize: CGFloat = 51
+    private var artworkCornerRadius: CGFloat = 11
+    private var subtitleVerticalOffset: CGFloat = -8
     
     let artwork: Artwork?
     let title: String
     let subtitle: String
-
+    
     // MARK: - Initialization
     
     init(
@@ -33,10 +23,11 @@ struct NowQueueItemCell: View {
         self.title = title
         self.subtitle = (subtitle ?? "")
     }
-
+    
     // MARK: - View
     var body: some View {
         HStack {
+            
             if let itemArtwork = artwork {
                 imageContainer(for: itemArtwork)
                     .frame(width: artworkSize, height: artworkSize)
@@ -50,21 +41,27 @@ struct NowQueueItemCell: View {
                         .foregroundColor(.white)
                 }
             }
+            
             VStack(alignment: .leading) {
                 Text(title)
-                    .font(.system(size: 17, weight: .regular))
+                    .font(.system(size: 17, weight: .semibold))
+                
                 if !subtitle.isEmpty {
                     Text(subtitle)
                         .lineLimit(1)
-                        .font(.system(size: 13, weight: .regular))
+                        .font(.system(size: 15, weight: .regular))
                         .padding(.top, subtitleVerticalOffset)
                 }
             }
-            .padding(.leading, 12)
+            .padding(.leading, 8)
             .lineLimit(1)
-            .foregroundColor(.black)
-
+            .foregroundColor(Color("text/Black"))
+            
+            
+            Spacer() // 왼쪽에 빈 공간 추가
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color("bg/Main"))
     }
     
     private func imageContainer(for artwork: Artwork) -> some View {

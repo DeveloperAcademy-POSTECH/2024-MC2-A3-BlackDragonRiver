@@ -1,9 +1,9 @@
 /*
-See LICENSE folder for this sample’s licensing information.
-
-Abstract:
-A cell that displays information about a music item.
-*/
+ See LICENSE folder for this sample’s licensing information.
+ 
+ Abstract:
+ A cell that displays information about a music item.
+ */
 
 /// ✏️ MiniPlayer 곡 표시 cell ✏️
 
@@ -16,7 +16,7 @@ struct MiniPlayerItemCell: View {
     // MARK: - Properties
     private var artworkSize: CGFloat = 44
     private var artworkCornerRadius: CGFloat = 4
-    private var subtitleVerticalOffset: CGFloat = -6
+    private var subtitleVerticalOffset: CGFloat = -10
     
     let artwork: Artwork?
     let title: String
@@ -33,13 +33,14 @@ struct MiniPlayerItemCell: View {
         self.title = title
         self.subtitle = (subtitle ?? "")
     }
-
+    
     // MARK: - View
     var body: some View {
         HStack {
-            if let itemArtwork = artwork {
+            VStack{if let itemArtwork = artwork {
                 imageContainer(for: itemArtwork)
                     .frame(width: artworkSize, height: artworkSize)
+                    .padding(.horizontal,8)
             } else {
                 ZStack {
                     Rectangle()
@@ -50,20 +51,24 @@ struct MiniPlayerItemCell: View {
                         .foregroundColor(.white)
                 }
             }
+            }
+            
+            
             VStack(alignment: .leading) {
                 Text(title)
-                    
                     .font(.system(size: 17, weight: .regular))
+                    .foregroundColor(Color("text/White100"))
+                
                 if !subtitle.isEmpty {
                     Text(subtitle)
-                        .lineLimit(1)
                         .font(.system(size: 13, weight: .regular))
+                        .foregroundColor(Color("text/White60"))
                         .padding(.top, subtitleVerticalOffset)
                 }
             }
-            .padding(.leading, 12)
+            .padding(.horizontal, -6)
             .lineLimit(1)
-            .foregroundColor(Color("text/White100"))
+            .foregroundColor(Color("text/White60"))
         }
     }
     

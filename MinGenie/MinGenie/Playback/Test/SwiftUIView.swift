@@ -14,10 +14,11 @@ struct SwiftUIView: View {
         Circle()
             .fill(Color("shape/Blue"))
         Circle()
-            .fill(Color("shape/Gray10"))
+            .fill(Color("text/BLue"))
         Circle()
             .fill(Color("text/White80"))
         Circle()
+            .fill(Color("bg/Main"))
         
     }
 }

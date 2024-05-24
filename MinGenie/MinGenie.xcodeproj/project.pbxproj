@@ -15,6 +15,7 @@
 		86AD64A52BFF0D2000025CA1 /* TestHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AD64A42BFF0D2000025CA1 /* TestHomeView.swift */; };
 		86AD64A72BFF0D2E00025CA1 /* Test_PlaybackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AD64A62BFF0D2E00025CA1 /* Test_PlaybackView.swift */; };
 		86AD64AB2BFF119900025CA1 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AD64AA2BFF119900025CA1 /* SwiftUIView.swift */; };
+		86AD64B02BFF665E00025CA1 /* AnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AD64AF2BFF665E00025CA1 /* AnimationView.swift */; };
 		86D8FD032BFB2B3C008FD1AD /* MiniPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D8FD022BFB2B3C008FD1AD /* MiniPlayerView.swift */; };
 		86D8FD052BFB2B52008FD1AD /* MusicPlayerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D8FD042BFB2B52008FD1AD /* MusicPlayerModel.swift */; };
 		86D8FD072BFB2B61008FD1AD /* NowPlayingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D8FD062BFB2B61008FD1AD /* NowPlayingView.swift */; };
@@ -39,6 +40,7 @@
 		86AD64A42BFF0D2000025CA1 /* TestHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHomeView.swift; sourceTree = "<group>"; };
 		86AD64A62BFF0D2E00025CA1 /* Test_PlaybackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_PlaybackView.swift; sourceTree = "<group>"; };
 		86AD64AA2BFF119900025CA1 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
+		86AD64AF2BFF665E00025CA1 /* AnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationView.swift; sourceTree = "<group>"; };
 		86D8FD022BFB2B3C008FD1AD /* MiniPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniPlayerView.swift; sourceTree = "<group>"; };
 		86D8FD042BFB2B52008FD1AD /* MusicPlayerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerModel.swift; sourceTree = "<group>"; };
 		86D8FD062BFB2B61008FD1AD /* NowPlayingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingView.swift; sourceTree = "<group>"; };
@@ -99,8 +101,16 @@
 				86AD64A42BFF0D2000025CA1 /* TestHomeView.swift */,
 				86AD64A62BFF0D2E00025CA1 /* Test_PlaybackView.swift */,
 				86AD64AA2BFF119900025CA1 /* SwiftUIView.swift */,
+				86AD64AF2BFF665E00025CA1 /* AnimationView.swift */,
 			);
 			path = Test;
+			sourceTree = "<group>";
+		};
+		86AD64AE2BFF5AA000025CA1 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Font;
 			sourceTree = "<group>";
 		};
 		86D8FCFF2BFB2A92008FD1AD /* Playback */ = {
@@ -162,6 +172,7 @@
 				D8672FEA2BF2444600E9E242 /* MinGenieApp.swift */,
 				D8672FEC2BF2444600E9E242 /* ContentView.swift */,
 				D8672FEE2BF2444600E9E242 /* Assets.xcassets */,
+				86AD64AE2BFF5AA000025CA1 /* Font */,
 				D8672FF02BF2444700E9E242 /* Preview Content */,
 			);
 			path = MinGenie;
@@ -255,6 +266,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				86D8FD032BFB2B3C008FD1AD /* MiniPlayerView.swift in Sources */,
+				86AD64B02BFF665E00025CA1 /* AnimationView.swift in Sources */,
 				86D8FD102BFB2BC3008FD1AD /* NowPlayingItemCell.swift in Sources */,
 				26B6F5262BFA2D07000B2340 /* MusicItemCell.swift in Sources */,
 				86AD64A72BFF0D2E00025CA1 /* Test_PlaybackView.swift in Sources */,

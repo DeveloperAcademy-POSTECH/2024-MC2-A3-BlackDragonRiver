@@ -109,20 +109,20 @@ class MusicPlayerModel: ObservableObject {
     
     /// (추가) song -> Track 컨버터
     func sendToMusicPlayer(_ song: Song) {
-           let track = Track.song(song)
-           play(track, in: nil, with: nil)
-       }
+        let track = Track.song(song)
+        play(track, in: nil, with: nil)
+    }
     
     /// (추가) 다음곡으로 넘기기!
     func skipToNextEntry() {
-            Task {
-                do {
-                    try await musicPlayer.skipToNextEntry()
-                } catch {
-                    print("Failed to skip to the next entry: \(error)")
-                }
+        Task {
+            do {
+                try await musicPlayer.skipToNextEntry()
+            } catch {
+                print("Failed to skip to the next entry: \(error)")
             }
         }
+    }
     
     private func setQueue<S: Sequence, PlayableMusicItemType: PlayableMusicItem>(
         for playableItems: S,
