@@ -5,11 +5,10 @@ import SwiftUI
 
 struct MiniPlayerView: View {
     
-    /// musicPlayer 관련 변수
-    @ObservedObject private var playbackQueue = ApplicationMusicPlayer.shared.queue
+    // musicPlayer 관련 변수
     @EnvironmentObject var musicPlayerModel: MusicPlayerModel
     
-    /// fullscreen전환 관련 변수
+    // fullscreen전환 관련 변수
     @State private var isShowingNowPlaying = false
     
     
@@ -25,13 +24,14 @@ struct MiniPlayerView: View {
                     .shadow(radius: 20)
             )
             .fullScreenCover(isPresented: $isShowingNowPlaying) {
-                NowPlayingView(playbackQueue: playbackQueue)
+                NowPlayingView()
             }
+            .environmentObject(musicPlayerModel)
     }
     
     @ViewBuilder
     private var content: some View {
-        if let currentPlayerEntry = playbackQueue.currentEntry {
+        if let currentPlayerEntry = musicPlayerModel.playbackQueue.currentEntry {
             HStack {
                 VStack(alignment: .leading){
                     Button(action: handleTap) {
@@ -48,6 +48,7 @@ struct MiniPlayerView: View {
                 VStack(alignment: .trailing){
                     pauseButton
                         .padding(.horizontal, 20)
+                        .environmentObject(musicPlayerModel)
                 }
                 
             }
@@ -77,11 +78,13 @@ struct MiniPlayerView: View {
                 VStack(alignment: .trailing){
                     pauseButton
                         .padding(.horizontal, 20)
+                        .environmentObject(musicPlayerModel)
                 }.hidden()
             }
             .padding(.horizontal, 24)
         }
     }
+    
     @ViewBuilder
     private var pauseButton: some View {
         Button(action: pausePlay) {
