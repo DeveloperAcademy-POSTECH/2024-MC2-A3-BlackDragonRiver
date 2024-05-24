@@ -13,13 +13,13 @@ struct NowPlayingView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color.Bg.main.ignoresSafeArea(.all)
+                Color.BG.main.ignoresSafeArea(.all)
                 VStack {
                     ZStack {
                         CarouselView
                             .padding(.top, 20)
                         pauseButton
-                            .padding(.bottom, -40)
+                            .padding(.bottom, -28)
                     }
                     .frame(height: 420)
                     VStack {
@@ -29,7 +29,7 @@ struct NowPlayingView: View {
                 VStack {
                     Text("못할 것도 없지 화이팅🔥")
                         .font(.system(size: 34, weight: .black))
-                        .foregroundStyle(Color("text/BLue"))
+                        .foregroundStyle(Color.Text.blue)
                 }
                 .padding(.leading, -18)
                 .padding(.top, -345)
@@ -56,7 +56,7 @@ struct NowPlayingView: View {
     @ViewBuilder
     private var QueueView: some View {
         ZStack {
-            Color.Bg.main.ignoresSafeArea(.all)
+            Color.BG.main.ignoresSafeArea(.all)
             Queuelist(for: playbackQueue)
         }
     }
@@ -70,7 +70,7 @@ struct NowPlayingView: View {
                         title: entry.title,
                         subtitle: entry.subtitle
                     )
-                    .listRowBackground(Color.Bg.main)
+                    .listRowBackground(Color.BG.main)
                     .onTapGesture {
                         playbackQueue.currentEntry = entry
                         currentIndex = playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) ?? 0
@@ -79,7 +79,7 @@ struct NowPlayingView: View {
                 }
             }
             .listStyle(.plain)
-            .background(Color("bg/Main"))
+            .background(Color.BG.main)
             .onChange(of: currentIndex) { newIndex in
                 withAnimation {
                     proxy.scrollTo(playbackQueue.entries[newIndex].id, anchor: .top)
@@ -96,7 +96,7 @@ struct NowPlayingView: View {
     private func Carousellist(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View {
         NavigationStack {
             ZStack {
-                Color.Bg.main.ignoresSafeArea(.all)
+                Color.BG.main.ignoresSafeArea(.all)
                 VStack {
                     ZStack {
                         ForEach(max(currentIndex - 2, 0)...min(currentIndex + 2, playbackQueue.entries.count - 1), id: \.self) { index in
