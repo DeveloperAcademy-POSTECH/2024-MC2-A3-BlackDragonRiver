@@ -11,7 +11,7 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject private var musicPersonalRecommendationModel = MusicPersonalRecommendationModel()
-    @StateObject private var selectedMusicDataModel = SelectedMusicDataModel()
+    @StateObject private var selectedMusicDataModel = FirstPickedMusicDataModel()
     
     @State private var searchTerm: String = ""
     
