@@ -18,18 +18,18 @@ struct NowPlayingView: View {
                 Color("bg/Main").ignoresSafeArea(.all)
                 
                 VStack {
-                   
-                        ZStack {
-                            /// 2. carousel
-                            CarouselView
-                                .padding(.top,20)
-                            pauseButton
-                                .padding(.bottom, -40)
-                            
-                            
-                        }
-                        .frame(height: 420)
-
+                    
+                    ZStack {
+                        /// 2. carousel
+                        CarouselView
+                            .padding(.top,20)
+                        pauseButton
+                            .padding(.bottom, -40)
+                        
+                        
+                    }
+                    .frame(height: 420)
+                    
                     VStack{
                         QueueView
                     }
@@ -111,27 +111,27 @@ struct NowPlayingView: View {
                 Color.Bg.main.ignoresSafeArea(.all)
                 VStack {
                     ZStack {
-                                            ForEach(max(currentIndex - 2, 0)...min(currentIndex + 2, playbackQueue.entries.count - 1), id: \.self) { index in
-                                                imageContainer(for: playbackQueue.entries[index].artwork)
-                                                    .scaleEffect(1.0 - CGFloat(abs(index - currentIndex)) * 0.1)
-                                                    .zIndex(1.0 - Double(abs(index - currentIndex)))
-                                                    .offset(x: CGFloat(index - currentIndex) * 50 * (1 - CGFloat(abs(index - currentIndex)) * 0.1) + dragOffset, y: 0)
-                                                
-                                                if index == currentIndex {
-                                                    VStack {
-                                                        Text(playbackQueue.entries[index].title)
-                                                            .font(.system(size: 20, weight: .bold))
-                                                            .foregroundColor(Color("text/Black"))
-                                                            .padding(.top, 16)
-                                                        
-                                                        Text(playbackQueue.entries[index].subtitle ?? "")
-                                                            .font(.system(size: 15, weight: .regular))
-                                                            .foregroundColor(Color("text/Black"))
-                                                            .padding(.top, -10)
-                                                    }
-                                                    .padding(.top, 310)
-                                                    .transition(.opacity)
-                                                }
+                        ForEach(max(currentIndex - 2, 0)...min(currentIndex + 2, playbackQueue.entries.count - 1), id: \.self) { index in
+                            imageContainer(for: playbackQueue.entries[index].artwork)
+                                .scaleEffect(1.0 - CGFloat(abs(index - currentIndex)) * 0.1)
+                                .zIndex(1.0 - Double(abs(index - currentIndex)))
+                                .offset(x: CGFloat(index - currentIndex) * 50 * (1 - CGFloat(abs(index - currentIndex)) * 0.1) + dragOffset, y: 0)
+                            
+                            if index == currentIndex {
+                                VStack {
+                                    Text(playbackQueue.entries[index].title)
+                                        .font(.system(size: 20, weight: .bold))
+                                        .foregroundColor(Color("text/Black"))
+                                        .padding(.top, 16)
+                                    
+                                    Text(playbackQueue.entries[index].subtitle ?? "")
+                                        .font(.system(size: 15, weight: .regular))
+                                        .foregroundColor(Color("text/Black"))
+                                        .padding(.top, -10)
+                                }
+                                .padding(.top, 310)
+                                .transition(.opacity)
+                            }
                         }
                         
                     }

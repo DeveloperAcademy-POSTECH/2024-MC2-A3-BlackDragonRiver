@@ -45,12 +45,6 @@ struct MiniPlayerView: View {
                     
                 }
                 
-                if musicPlayer.isPlaying{
-                    AnimationView()
-                        .frame(width: 10, height: 10)
-                }
-                
-                
                 VStack(alignment: .trailing){
                     pauseButton
                         .padding(.horizontal, 20)
