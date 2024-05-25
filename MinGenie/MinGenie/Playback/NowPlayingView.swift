@@ -147,11 +147,13 @@ struct NowPlayingView: View {
                                     Text(playbackQueue.entries[index].title)
                                         .font(.system(size: 20, weight: .bold))
                                         .foregroundColor(Color.Text.black)
+                                        .lineLimit(1)
                                         .padding(.top, 16)
                                     
                                     Text(playbackQueue.entries[index].subtitle ?? "")
                                         .font(.system(size: 15, weight: .regular))
                                         .foregroundColor(Color.Text.black)
+                                        .lineLimit(1)
                                         .padding(.top, -10)
                                 }
                                 .padding(.top, 310)
