@@ -55,6 +55,7 @@ struct MiniPlayerView: View {
         } else {
             HStack {
                 HStack {
+                    
                     ZStack {
                         Rectangle()
                             .frame(width: 44, height: 44)

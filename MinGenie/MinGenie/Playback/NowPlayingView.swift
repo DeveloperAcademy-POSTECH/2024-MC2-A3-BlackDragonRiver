@@ -15,7 +15,7 @@ struct NowPlayingView: View {
     
     ///Carousel 인덱스 관련
     @AppStorage("currentIndex") private var currentIndex: Int = 0
-
+    
     var body: some View {
         /// 전체 View 구성
         NavigationView {
@@ -58,7 +58,7 @@ struct NowPlayingView: View {
             /// onAppear시, entries에서의 index와 캐러셀의 index를 일치시켜줘요!
             if let savedEntryIndex = playbackQueue.entries.firstIndex(where: { $0.id == playbackQueue.currentEntry?.id }) {
                 currentIndex = savedEntryIndex
-            } 
+            }
             /// entries에 아무것도 안담겨 있으면 index 0으로 초기화해요!
             else {
                 currentIndex = 0
@@ -73,7 +73,7 @@ struct NowPlayingView: View {
         }
         
     }
-
+    
     @ViewBuilder
     private var QueueView: some View {
         ZStack {
@@ -121,12 +121,12 @@ struct NowPlayingView: View {
             }
         }
     }
-
+    
     @ViewBuilder
     private var CarouselView: some View {
         Carousellist(for: playbackQueue)
     }
-
+    
     private func Carousellist(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View {
         NavigationStack {
             ZStack {
@@ -181,7 +181,7 @@ struct NowPlayingView: View {
                 }
         )
     }
-
+    
     @ViewBuilder
     private var pauseButton: some View {
         Button(action: pausePlay) {
@@ -191,22 +191,22 @@ struct NowPlayingView: View {
                 .shadow(radius: 5)
         }
     }
-
+    
     private func pausePlay() {
         musicPlayer.togglePlaybackStatus()
     }
-
+    
     private func FullScreenDismiss() {
         presentation.wrappedValue.dismiss()
     }
-
+    
     private struct DismissButton: View {
         var action: () -> ()
-
+        
         init(_ action: @escaping () -> ()) {
             self.action = action
         }
-
+        
         var body: some View {
             Button(action: action) {
                 RoundedRectangle(cornerRadius: 16)
@@ -216,7 +216,8 @@ struct NowPlayingView: View {
             }
         }
     }
-
+    
+    
     private func imageContainer(for artwork: Artwork?) -> some View {
         VStack {
             Spacer()
@@ -232,8 +233,8 @@ struct NowPlayingView: View {
                         .opacity(0.2)
                 }
             } else {
-                Rectangle()
-                    .fill(Color.gray)
+                Image("sampleArtwork")
+                    .resizable()
                     .frame(width: 244, height: 244)
                     .cornerRadius(16)
                     .shadow(radius: 4)
