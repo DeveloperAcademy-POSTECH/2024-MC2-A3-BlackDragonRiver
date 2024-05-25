@@ -6,6 +6,8 @@
  */
 
 /// ✏️ MiniPlayer 곡 표시 cell ✏️
+
+
 import MusicKit
 import SwiftUI
 
@@ -40,9 +42,11 @@ struct MiniPlayerItemCell: View {
                     .frame(width: artworkSize, height: artworkSize)
                     .padding(.horizontal,8)
             } else {
-                Image("sampleArtwork")
-                    .resizable()
-                    .frame(width: artworkSize, height: artworkSize)
+                VStack {
+                    Image("sampleArtwork")
+                        .frame(width: artworkSize, height: artworkSize)
+                        .foregroundColor(.gray)
+                }
                 .padding(.horizontal,8)
             }
             }

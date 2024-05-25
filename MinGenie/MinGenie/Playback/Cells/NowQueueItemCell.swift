@@ -32,10 +32,13 @@ struct NowQueueItemCell: View {
                 imageContainer(for: itemArtwork)
                     .frame(width: artworkSize, height: artworkSize)
             } else {
+                
                     Image("sampleArtwork")
                         .resizable()
                         .frame(width: artworkSize, height: artworkSize)
             }
+            
+            
             
             VStack(alignment: .leading) {
                 Text(title)
@@ -68,3 +71,4 @@ struct NowQueueItemCell: View {
         }
     }
 }
+
