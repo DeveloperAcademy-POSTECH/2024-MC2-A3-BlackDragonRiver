@@ -5,10 +5,11 @@ import SwiftUI
 
 struct MiniPlayerView: View {
     
-    // musicPlayer 관련 변수
-    @EnvironmentObject var musicPlayerModel: MusicPlayerModel
+    /// musicPlayer 관련 변수
+    @ObservedObject private var playbackQueue = ApplicationMusicPlayer.shared.queue
+    @ObservedObject private var musicPlayer = MusicPlayerModel.shared
     
-    // fullscreen전환 관련 변수
+    /// fullscreen전환 관련 변수
     @State private var isShowingNowPlaying = false
     
     
@@ -24,14 +25,13 @@ struct MiniPlayerView: View {
                     .shadow(radius: 20)
             )
             .fullScreenCover(isPresented: $isShowingNowPlaying) {
-                NowPlayingView()
+                NowPlayingView(playbackQueue: playbackQueue)
             }
-            .environmentObject(musicPlayerModel)
     }
     
     @ViewBuilder
     private var content: some View {
-        if let currentPlayerEntry = musicPlayerModel.playbackQueue.currentEntry {
+        if let currentPlayerEntry = playbackQueue.currentEntry {
             HStack {
                 VStack(alignment: .leading){
                     Button(action: handleTap) {
@@ -48,7 +48,6 @@ struct MiniPlayerView: View {
                 VStack(alignment: .trailing){
                     pauseButton
                         .padding(.horizontal, 20)
-                        .environmentObject(musicPlayerModel)
                 }
                 
             }
@@ -56,6 +55,7 @@ struct MiniPlayerView: View {
         } else {
             HStack {
                 HStack {
+                    
                     ZStack {
                         Rectangle()
                             .frame(width: 44, height: 44)
@@ -78,17 +78,15 @@ struct MiniPlayerView: View {
                 VStack(alignment: .trailing){
                     pauseButton
                         .padding(.horizontal, 20)
-                        .environmentObject(musicPlayerModel)
                 }.hidden()
             }
             .padding(.horizontal, 24)
         }
     }
-    
     @ViewBuilder
     private var pauseButton: some View {
         Button(action: pausePlay) {
-            Image(systemName: (musicPlayerModel.isPlaying ? "pause.fill" : "play.fill"))
+            Image(systemName: (musicPlayer.isPlaying ? "pause.fill" : "play.fill"))
                 .foregroundColor(Color.Text.white100)
         }
     }
@@ -96,7 +94,7 @@ struct MiniPlayerView: View {
     // MARK: - Methods
     
     private func pausePlay() {
-        musicPlayerModel.togglePlaybackStatus()
+        musicPlayer.togglePlaybackStatus()
     }
     
     private func handleTap() {

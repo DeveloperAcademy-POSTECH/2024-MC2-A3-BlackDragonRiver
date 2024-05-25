@@ -32,15 +32,13 @@ struct NowQueueItemCell: View {
                 imageContainer(for: itemArtwork)
                     .frame(width: artworkSize, height: artworkSize)
             } else {
-                ZStack {
-                    Rectangle()
+                
+                    Image("sampleArtwork")
+                        .resizable()
                         .frame(width: artworkSize, height: artworkSize)
-                        .foregroundColor(.gray)
-                    
-                    Image(systemName: "music.note")
-                        .foregroundColor(.white)
-                }
             }
+            
+            
             
             VStack(alignment: .leading) {
                 Text(title)
@@ -73,3 +71,4 @@ struct NowQueueItemCell: View {
         }
     }
 }
+

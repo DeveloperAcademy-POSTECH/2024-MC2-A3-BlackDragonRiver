@@ -42,13 +42,10 @@ struct MiniPlayerItemCell: View {
                     .frame(width: artworkSize, height: artworkSize)
                     .padding(.horizontal,8)
             } else {
-                ZStack {
-                    Rectangle()
+                VStack {
+                    Image("sampleArtwork")
                         .frame(width: artworkSize, height: artworkSize)
                         .foregroundColor(.gray)
-                    
-                    Image(systemName: "music.note")
-                        .foregroundColor(.white)
                 }
                 .padding(.horizontal,8)
             }
