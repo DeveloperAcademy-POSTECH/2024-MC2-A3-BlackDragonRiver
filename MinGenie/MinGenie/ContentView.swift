@@ -13,7 +13,7 @@ struct ContentView: View {
     @Environment(\.scenePhase) var phase
     
     @StateObject private var shakeDetectionModel = ShakeDetectionModel()
-    @StateObject var musicPlayerModel = MusicPlayerModel()
+    @StateObject var musicPlayerModel = MusicPlayerModel.shared
     
     @State private var hasSeenOnboarding: Bool = UserDefaults.standard.bool(forKey: "hasSeenOnboarding")
     

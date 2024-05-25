@@ -13,11 +13,15 @@ import SwiftUI
 /// 대략적인 과정 : MusicPlayerModel의 play 함수 실행 ➡️ MusicKit의 MusicPlayer(본체)의 queue에 해당 곡 담은 후 재생
 
 class MusicPlayerModel: ObservableObject {
+    static let shared = MusicPlayerModel()
+        
+        private init() {}
     
     // MARK: - Properties
     @Published var isPlaying = false
     @Published var playbackQueue = ApplicationMusicPlayer.shared.queue
     
+
     
     var playbackStateObserver: AnyCancellable?
     
