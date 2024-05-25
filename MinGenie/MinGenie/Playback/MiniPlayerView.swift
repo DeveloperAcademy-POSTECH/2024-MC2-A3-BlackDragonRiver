@@ -40,6 +40,7 @@ struct MiniPlayerView: View {
                             title: currentPlayerEntry.title,
                             subtitle: currentPlayerEntry.subtitle
                         )
+                        .environmentObject(musicPlayerModel)
                         Spacer()
                     }
                     

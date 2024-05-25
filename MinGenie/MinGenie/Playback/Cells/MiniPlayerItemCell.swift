@@ -6,8 +6,6 @@
  */
 
 /// ✏️ MiniPlayer 곡 표시 cell ✏️
-
-
 import MusicKit
 import SwiftUI
 
@@ -42,14 +40,9 @@ struct MiniPlayerItemCell: View {
                     .frame(width: artworkSize, height: artworkSize)
                     .padding(.horizontal,8)
             } else {
-                ZStack {
-                    Rectangle()
-                        .frame(width: artworkSize, height: artworkSize)
-                        .foregroundColor(.gray)
-                    
-                    Image(systemName: "music.note")
-                        .foregroundColor(.white)
-                }
+                Image("sampleArtwork")
+                    .resizable()
+                    .frame(width: artworkSize, height: artworkSize)
                 .padding(.horizontal,8)
             }
             }

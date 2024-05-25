@@ -128,6 +128,7 @@ struct NowPlayingView: View {
         Carousellist(for: musicPlayerModel.playbackQueue)
     }
 
+    @ViewBuilder
     private func Carousellist(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View {
         NavigationStack {
             ZStack {
@@ -233,8 +234,8 @@ struct NowPlayingView: View {
                         .opacity(0.2)
                 }
             } else {
-                Rectangle()
-                    .fill(Color.gray)
+                Image("sampleArtwork")
+                    .resizable()
                     .frame(width: 244, height: 244)
                     .cornerRadius(16)
                     .shadow(radius: 4)
