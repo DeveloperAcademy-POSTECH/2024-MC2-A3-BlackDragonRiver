@@ -30,7 +30,7 @@ struct DetailedAlbumView: View {
             
             Rectangle()
                 .frame(width: UIScreen.main.bounds.width, height: 120)
-                .foregroundStyle(.white)
+                .foregroundStyle(Color.BG.main)
             
             HStack {
                 if let artwork = album.artwork {
@@ -83,6 +83,7 @@ struct DetailedAlbumView: View {
                 }
             }
         }
+        .background(Color.BG.main)
         .lineLimit(1)
         .ignoresSafeArea(edges: .top)
         .task {

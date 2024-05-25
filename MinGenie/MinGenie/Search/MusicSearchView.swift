@@ -42,6 +42,7 @@ struct MusicSearchView: View {
                 }
             }
         }
+        .background(Color.BG.main)
         .onChange(of: searchTerm) { _, _ in
             model.requestUpdatedSearchResults(for: searchTerm)
         }

@@ -35,12 +35,14 @@ struct HomeView: View {
                         MiniPlayerView()
                     }
                     .navigationTitle("오늘의 첫곡 🎧")
+                    .background(Color.BG.main)
                     .ignoresSafeArea(.keyboard)
                 
             } else { // 검색어 있을 때
                 MusicSearchView(searchTerm: $searchTerm)
             }
         }
+        .background(Color.BG.main)
         .searchable(text: $searchTerm, prompt: "아티스트, 노래")
         .onChange(of: storedTrackIDs) {
             selectedMusicDataModel.loadTracksByID(storedTrackIDs)
