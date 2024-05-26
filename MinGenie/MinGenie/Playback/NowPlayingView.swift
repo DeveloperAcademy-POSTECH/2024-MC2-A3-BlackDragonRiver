@@ -65,7 +65,7 @@ struct NowPlayingView: View {
             }
         }
         /// fullScreen일때, 현재재생곡이 넘어가면 캐러셀이 전환되는 부분입니다!
-        .onChange(of: playbackQueue.currentEntry) { entry in
+        .onChange(of: playbackQueue.currentEntry) { _, entry in
             /// 또 전수검사 해줘요..
             if let entry = entry, let newIndex = playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) {
                 currentIndex = newIndex
@@ -111,7 +111,7 @@ struct NowPlayingView: View {
                 }
             }
             ///현재재생곡이 넘어가면 list가 스크롤되는 부분입니다!
-            .onChange(of: playbackQueue.currentEntry) { entry in
+            .onChange(of: playbackQueue.currentEntry) { _, entry in
                 if let entry = entry, let newIndex = playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) {
                     currentIndex = newIndex
                     withAnimation {

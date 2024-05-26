@@ -83,6 +83,22 @@ class MusicPlayerModel: ObservableObject {
         }
     }
     
+    func playTrackWithRecommendedList(_ track: Track) {
+        let model = NextMusicRecommendationModel()
+        
+        // 개별 트랙 재생
+        play(track, in: nil, with: nil)
+        
+        // 추천 트랙 추가
+        Task {
+            let recommendedList = try await model.requestNextMusicList()
+            if let recommendedList {
+                try await ApplicationMusicPlayer.shared.queue.insert(recommendedList, position: .tail)
+            }
+        }
+    }
+
+    
     /// 🐯
     /// 개별 곡 재생하고 그 뒤에 추천 플레이리스트 붙여주기
     /// - Parameter song: 사용자가 선택한 개별 곡
