@@ -44,6 +44,7 @@ struct MiniPlayerItemCell: View {
             } else {
                 VStack {
                     Image("sampleArtwork")
+                        .resizable()
                         .frame(width: artworkSize, height: artworkSize)
                         .foregroundColor(.gray)
                 }

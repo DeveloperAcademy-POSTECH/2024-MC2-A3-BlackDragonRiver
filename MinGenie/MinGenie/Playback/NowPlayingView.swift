@@ -130,40 +130,45 @@ struct NowPlayingView: View {
     }
     
     private func Carousellist(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View {
-        NavigationStack {
-            ZStack {
-                Color.BG.main.ignoresSafeArea(.all)
-                
-                VStack {
-                    ZStack {
-                        ForEach(max(currentIndex - 2, 0)...min(currentIndex + 2, playbackQueue.entries.count - 1), id: \.self) { index in
-                            imageContainer(for: playbackQueue.entries[index].artwork)
-                                .scaleEffect(1.0 - CGFloat(abs(index - currentIndex)) * 0.1)
-                                .zIndex(1.0 - Double(abs(index - currentIndex)))
-                                .offset(x: CGFloat(index - currentIndex) * 50 * (1 - CGFloat(abs(index - currentIndex)) * 0.1) + dragOffset, y: 0)
-                            
-                            if index == currentIndex {
-                                VStack {
-                                    Text(playbackQueue.entries[index].title)
-                                        .font(.system(size: 20, weight: .bold))
-                                        .foregroundColor(Color.Text.black)
-                                        .padding(.top, 16)
-                                        .lineLimit(1)
+            NavigationStack {
+                ZStack {
+                    Color.BG.main.ignoresSafeArea(.all)
+                    
+                    VStack {
+                        ZStack {
+                            if playbackQueue.entries.count > 0 {
+                                let startIndex = max(currentIndex - 2, 0)
+                                let endIndex = min(currentIndex + 2, playbackQueue.entries.count - 1)
+
+                                ForEach(startIndex...endIndex, id: \.self) { index in
+                                    imageContainer(for: playbackQueue.entries[index].artwork)
+                                        .scaleEffect(1.0 - CGFloat(abs(index - currentIndex)) * 0.1)
+                                        .zIndex(1.0 - Double(abs(index - currentIndex)))
+                                        .offset(x: CGFloat(index - currentIndex) * 50 * (1 - CGFloat(abs(index - currentIndex)) * 0.1) + dragOffset, y: 0)
                                     
-                                    Text(playbackQueue.entries[index].subtitle ?? "")
-                                        .font(.system(size: 15, weight: .regular))
-                                        .foregroundColor(Color.Text.black)
-                                        .padding(.top, -10)
-                                        .lineLimit(1)
+                                    if index == currentIndex {
+                                        VStack {
+                                            Text(playbackQueue.entries[index].title)
+                                                .font(.system(size: 20, weight: .bold))
+                                                .foregroundColor(Color.Text.black)
+                                                .padding(.top, 16)
+                                                .lineLimit(1)
+                                            
+                                            Text(playbackQueue.entries[index].subtitle ?? "")
+                                                .font(.system(size: 15, weight: .regular))
+                                                .foregroundColor(Color.Text.black)
+                                                .padding(.top, -10)
+                                                .lineLimit(1)
+                                        }
+                                        .padding(.top, 310)
+                                        .transition(.opacity)
+                                    }
                                 }
-                                .padding(.top, 310)
-                                .transition(.opacity)
                             }
                         }
                     }
                 }
             }
-        }
         .gesture(
             DragGesture()
                 .updating($dragOffset) { value, state, _ in
