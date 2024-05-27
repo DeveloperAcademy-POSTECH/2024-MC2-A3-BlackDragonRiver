@@ -99,7 +99,7 @@ struct MusicListRowView: View {
     
     var body: some View {
         Button {
-            musicPlayerModel.play(track, in: nil, with: nil)
+            musicPlayerModel.playTrackWithRecommendedList(track)
         } label: {
             HStack(spacing: 0) {
                 if let trackNumber = track.trackNumber {

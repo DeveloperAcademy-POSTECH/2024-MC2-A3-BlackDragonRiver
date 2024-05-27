@@ -9,8 +9,6 @@ struct NowPlayingView: View {
     @ObservedObject var playbackQueue: ApplicationMusicPlayer.Queue
     @ObservedObject private var musicPlayer = MusicPlayerModel.shared
     
-    
-    
     ///FullScreen Dismiss 관련
     @Environment(\.presentationMode) var presentation
     @GestureState private var dragOffset: CGFloat = 0
@@ -67,7 +65,7 @@ struct NowPlayingView: View {
             }
         }
         /// fullScreen일때, 현재재생곡이 넘어가면 캐러셀이 전환되는 부분입니다!
-        .onChange(of: playbackQueue.currentEntry) { entry in
+        .onChange(of: playbackQueue.currentEntry) { _, entry in
             /// 또 전수검사 해줘요..
             if let entry = entry, let newIndex = playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) {
                 currentIndex = newIndex
@@ -113,7 +111,7 @@ struct NowPlayingView: View {
                 }
             }
             ///현재재생곡이 넘어가면 list가 스크롤되는 부분입니다!
-            .onChange(of: playbackQueue.currentEntry) { entry in
+            .onChange(of: playbackQueue.currentEntry) { _, entry in
                 if let entry = entry, let newIndex = playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) {
                     currentIndex = newIndex
                     withAnimation {
@@ -139,35 +137,35 @@ struct NowPlayingView: View {
                             if playbackQueue.entries.count > 0 {
                                 let startIndex = max(currentIndex - 2, 0)
                                 let endIndex = min(currentIndex + 2, playbackQueue.entries.count - 1)
-
-                                ForEach(startIndex...endIndex, id: \.self) { index in
-                                    imageContainer(for: playbackQueue.entries[index].artwork)
-                                        .scaleEffect(1.0 - CGFloat(abs(index - currentIndex)) * 0.1)
-                                        .zIndex(1.0 - Double(abs(index - currentIndex)))
-                                        .offset(x: CGFloat(index - currentIndex) * 50 * (1 - CGFloat(abs(index - currentIndex)) * 0.1) + dragOffset, y: 0)
-                                    
-                                    if index == currentIndex {
-                                        VStack {
-                                            Text(playbackQueue.entries[index].title)
-                                                .font(.system(size: 20, weight: .bold))
-                                                .foregroundColor(Color.Text.black)
-                                                .padding(.top, 16)
-                                                .lineLimit(1)
-                                            
-                                            Text(playbackQueue.entries[index].subtitle ?? "")
-                                                .font(.system(size: 15, weight: .regular))
-                                                .foregroundColor(Color.Text.black)
-                                                .padding(.top, -10)
-                                                .lineLimit(1)
+                                if startIndex <= endIndex {
+                                    ForEach(startIndex...endIndex, id: \.self) { index in
+                                        imageContainer(for: playbackQueue.entries[index].artwork)
+                                            .scaleEffect(1.0 - CGFloat(abs(index - currentIndex)) * 0.1)
+                                            .zIndex(1.0 - Double(abs(index - currentIndex)))
+                                            .offset(x: CGFloat(index - currentIndex) * 50 * (1 - CGFloat(abs(index - currentIndex)) * 0.1) + dragOffset, y: 0)
+                                        
+                                        if index == currentIndex {
+                                            VStack {
+                                                Text(playbackQueue.entries[index].title)
+                                                    .font(.system(size: 20, weight: .bold))
+                                                    .foregroundColor(Color.Text.black)
+                                                    .padding(.top, 16)
+                                                    .lineLimit(1)
+                                                
+                                                Text(playbackQueue.entries[index].subtitle ?? "")
+                                                    .font(.system(size: 15, weight: .regular))
+                                                    .foregroundColor(Color.Text.black)
+                                                    .padding(.top, -10)
+                                                    .lineLimit(1)
+                                            }
+                                            .padding(.top, 310)
+                                            .transition(.opacity)
                                         }
-                                        .padding(.top, 310)
-                                        .transition(.opacity)
                                     }
                                 }
                             }
                         }
-                    }
-                }
+                    }}
             }
         .gesture(
             DragGesture()
