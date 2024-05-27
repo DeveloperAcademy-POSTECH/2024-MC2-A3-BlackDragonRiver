@@ -251,8 +251,6 @@
 			children = (
 				D8E776BF2BFA6A6D00CA94A2 /* MusicSearchModel.swift */,
 				D8E776C12BFA6A8E00CA94A2 /* MusicSearchView.swift */,
-				D8C4C80E2BFF5A03007C9E4B /* Cells */,
-				D85D2AB22BFDD013003803C0 /* DetailedAlbum */,
 				26E8A0622BFF7D4A001EF6AE /* NextMusicRecommendationModel.swift */,
 				D8C4C80E2BFF5A03007C9E4B /* Cells */,
 				D85D2AB22BFDD013003803C0 /* DetailedAlbum */,
@@ -505,7 +503,7 @@
 				INFOPLIST_FILE = MinGenie/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Min Genie";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
-				INFOPLIST_KEY_NSAppleMusicUsageDescription = Description;
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "권한을 허용해야 음악 재생목록과 모션이 가능합니다.";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "앱이 백그라운드와 포그라운드 모두에서 위치 서비스를 사용하기 위해 필요합니다.";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "앱이 백그라운드에서도 위치 서비스를 사용하기 위해 필요합니다.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱 사용 중에 위치 서비스를 사용하기 위해 필요합니다.";
@@ -551,7 +549,7 @@
 				INFOPLIST_FILE = MinGenie/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Min Genie";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
-				INFOPLIST_KEY_NSAppleMusicUsageDescription = Description;
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "권한을 허용해야 음악 재생목록과 모션이 가능합니다.";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "앱이 백그라운드와 포그라운드 모두에서 위치 서비스를 사용하기 위해 필요합니다.";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "앱이 백그라운드에서도 위치 서비스를 사용하기 위해 필요합니다.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱 사용 중에 위치 서비스를 사용하기 위해 필요합니다.";
