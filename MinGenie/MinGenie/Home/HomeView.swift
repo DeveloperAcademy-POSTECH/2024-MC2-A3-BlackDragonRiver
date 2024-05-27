@@ -20,10 +20,11 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             if searchTerm.isEmpty { // 검색어 없을 때
-                    VStack {
+                VStack(spacing: 0) {
                         
                         if let tracks = selectedMusicDataModel.storedTracks {
                             MusicItemRowView(itemRowTitle: "지난 선곡", tracks: tracks)
+                                .padding(.bottom, 30)
                         }
                         
                         if let tracks = musicPersonalRecommendationModel.personalRecommendationTracks {
@@ -34,6 +35,7 @@ struct HomeView: View {
                         
                         MiniPlayerView()
                     }
+                    .padding(.top, 20)
                     .navigationTitle("오늘의 첫곡 🎧")
                     .background(Color.BG.main)
                     .ignoresSafeArea(.keyboard)
