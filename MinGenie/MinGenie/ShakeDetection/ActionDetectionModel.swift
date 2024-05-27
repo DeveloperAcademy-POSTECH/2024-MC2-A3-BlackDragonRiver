@@ -5,6 +5,7 @@
 //  Created by zaehorang on 5/18/24.
 //
 
+import AudioToolbox
 import CoreMotion
 
 final class ShakeDetectionModel: ObservableObject {
@@ -26,6 +27,7 @@ final class ShakeDetectionModel: ObservableObject {
     
     
     func startDetection() {
+        shakeDetected = false
         startDeviceMotion()
     }
     
@@ -111,6 +113,8 @@ final class ShakeDetectionModel: ObservableObject {
             print("problem❗️❗️❗️: \(shakeDetected)")
             self.shakeDetected = true // 흔들림 감지 여부 업데이트
             self.shakeFailed = false
+            
+            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate) //진동 주기
             
             self.stopShakeDetection()
         } else {
