@@ -5,7 +5,7 @@
 //  Created by 김유빈 on 5/13/24.
 //
 
-import AudioToolbox
+
 import MusicKit
 import SwiftUI
 
@@ -33,13 +33,14 @@ struct ContentView: View {
                     .onChange(of: shakeDetectionModel.shakeDetected) { _, newValue in
                         if newValue && musicPlayerModel.isPlaying {
                             print("🎧 Music Change")
+                            
                             // 노래 교체가 끝나면 다시 시작
-                            
-                            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate) //진동 주기
-                            
+                            shakeDetectionModel.stopDetection()
                             Task {
                                 await musicPlayerModel.playRandomMusic()
-                                shakeDetectionModel.markActionCompleted()
+                                if phase == .background {
+                                    shakeDetectionModel.startDetection()
+                                }
                             }
                         }
                     }
