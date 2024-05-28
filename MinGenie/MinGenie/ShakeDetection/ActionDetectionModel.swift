@@ -5,7 +5,6 @@
 //  Created by zaehorang on 5/18/24.
 //
 
-import AudioToolbox
 import CoreMotion
 
 final class ShakeDetectionModel: ObservableObject {
@@ -62,7 +61,6 @@ final class ShakeDetectionModel: ObservableObject {
             
             guard let self = self, let motionData else { return }
             self.detectFaceDown(motionData)
-            print(motionData.attitude.roll)
         }
     }
     
@@ -117,23 +115,26 @@ final class ShakeDetectionModel: ObservableObject {
             self.shakeDetected = true // 흔들림 감지 여부 업데이트
             self.shakeFailed = false
             
-            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate) //진동 주기
-            
             self.stopShakeDetection()
         } else {
             print("❌ Shake detection failed")
             self.shakeFailed = true
+            shakeDetected = false
         }
     }
     
 
     private func stopShakeDetection() {
         isDetectingShake = false
+        isScreenDown = false
+        
         motionManager.stopAccelerometerUpdates() // 흔들기 측정 멈추기
         print("❌ Accelerometer Stop")
     }
 
     private func stopFaceDownDetection() {
         motionManager.stopDeviceMotionUpdates()
+        
+        print("❌ Face Down Dectect Stop")
     }
 }

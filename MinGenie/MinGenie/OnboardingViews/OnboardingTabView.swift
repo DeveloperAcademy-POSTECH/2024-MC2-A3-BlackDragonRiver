@@ -5,6 +5,7 @@
 //  Created by Sunyoung Jeon  on 5/22/24.
 //
 
+import AudioToolbox
 import Combine
 import SwiftUI
 
@@ -62,9 +63,6 @@ struct OnboardingTabView: View {
                         imageName: "headphone",
                         hasSeenOnboarding: $hasSeenOnboarding
                     )
-                    .onAppear {
-                        shakeDetectionModel.stopDetection()
-                    }
                 }
             }
             .animation(.default, value: currentPage) // 애니메이션 효과
@@ -104,6 +102,9 @@ struct OnboardingTabView: View {
             shakeDetectionModel.$shakeDetected
                 .filter { $0 }
                 .sink { _ in
+                    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate) //진동 주기
+                    shakeDetectionModel.stopDetection()
+                    
                     if currentPage == 3 {
                         currentPage = 5 // 페이지 7로 이동
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {

@@ -5,7 +5,7 @@
 //  Created by 김유빈 on 5/13/24.
 //
 
-
+import AudioToolbox
 import MusicKit
 import SwiftUI
 
@@ -25,7 +25,7 @@ struct ContentView: View {
                     .environmentObject(musicPlayerModel)
                 
                     .onChange(of: phase) { _, newValue in
-                        if newValue == .background {
+                        if newValue == .background && musicPlayerModel.isPlaying {
                             shakeDetectionModel.startDetection()
                         } else {
                             shakeDetectionModel.stopDetection()
@@ -34,6 +34,8 @@ struct ContentView: View {
                     .onChange(of: shakeDetectionModel.shakeDetected) { _, newValue in
                         if newValue && musicPlayerModel.isPlaying {
                             print("🎧 Music Change")
+                            
+                            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate) //진동 주기
                             
                             // 노래 교체가 끝나면 다시 시작
                             shakeDetectionModel.stopDetection()
