@@ -1,69 +1,52 @@
 import MusicKit
 import SwiftUI
 
-/// ✏️ 현재 재생 (full Screen) View입니다 (정리중)✏️
+/// ✏️ 현재 재생 View입니다 (수정중) ✏️
 
 struct NowPlayingView: View {
+    
+    ///Music Player관련
     @ObservedObject var playbackQueue: ApplicationMusicPlayer.Queue
     @ObservedObject private var musicPlayer = MusicPlayerModel.shared
     
+    ///FullScreen Dismiss 관련
     @Environment(\.presentationMode) var presentation
-    
-    @State private var currentIndex: Int = 0
     @GestureState private var dragOffset: CGFloat = 0
     
+    ///Carousel 인덱스 관련
+    @AppStorage("currentIndex") private var currentIndex: Int = 0
+    
     var body: some View {
+        /// 전체 View 구성
         NavigationView {
             ZStack {
+                Color.BG.main.ignoresSafeArea(.all)
                 VStack {
-                    /// 1. title
-                    VStack(alignment: .leading) {
-                        Text("못할 것도 없지🔥")
-                            .font(.title.bold())
-                            .foregroundStyle(.blue)
+                    ZStack {
+                        CarouselView
+                            .padding(.top, 20)
+                        pauseButton
+                            .padding(.bottom, -28)
                     }
-                    .padding(.leading, -150)
-                    .padding(.top, 50)
-                    .padding(.bottom,-20)
-                    
-                    /// 2. carousel
+                    .frame(height: 420)
                     VStack {
-                        if let currentEntry = playbackQueue.currentEntry {
-                            VStack {
-                                ZStack {
-                                    CarouselView
-                                    pauseButton
-                                        .padding(.bottom, -30)
-                                }
-                                Text(currentEntry.title)
-                                    .font(.system(size: 20, weight: .semibold))
-                                Text(currentEntry.subtitle!)
-                                    .font(.system(size: 15, weight: .regular))
-                            }
-                        } else {
-                            ZStack {
-                                Rectangle()
-                                    .frame(width: 264, height: 264)
-                                    .cornerRadius(16)
-                                    .foregroundColor(.gray)
-                                
-                                Text("No Item Playing")
-                                    .foregroundColor(.black)
-                            }
-                        }
-                    }
-                    
-                    VStack {
-                        Queuelist(for: playbackQueue)
+                        QueueView
                     }
                 }
-                
+                VStack {
+                    Text("못할 것도 없지 화이팅🔥")
+                        .font(.system(size: 34, weight: .black))
+                        .foregroundStyle(Color.Text.blue)
+                }
+                .padding(.leading, -18)
+                .padding(.top, -345)
                 VStack {
                     DismissButton { FullScreenDismiss() }
                     Spacer()
                 }
             }
         }
+        /// FullScreenDismiss 드래그 감지
         .gesture(
             DragGesture().onEnded { value in
                 if value.translation.height > 150 {
@@ -71,38 +54,71 @@ struct NowPlayingView: View {
                 }
             }
         )
+        .onAppear {
+            /// onAppear시, entries에서의 index와 캐러셀의 index를 일치시켜줘요!
+            if let savedEntryIndex = playbackQueue.entries.firstIndex(where: { $0.id == playbackQueue.currentEntry?.id }) {
+                currentIndex = savedEntryIndex
+            }
+            /// entries에 아무것도 안담겨 있으면 index 0으로 초기화해요!
+            else {
+                currentIndex = 0
+            }
+        }
+        /// fullScreen일때, 현재재생곡이 넘어가면 캐러셀이 전환되는 부분입니다!
+        .onChange(of: playbackQueue.currentEntry) { _, entry in
+            /// 또 전수검사 해줘요..
+            if let entry = entry, let newIndex = playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) {
+                currentIndex = newIndex
+            }
+        }
+        
     }
     
     @ViewBuilder
     private var QueueView: some View {
-        Queuelist(for: playbackQueue)
+        ZStack {
+            Color.BG.main.ignoresSafeArea(.all)
+            Queuelist(for: playbackQueue)
+        }
     }
-    
+    @ViewBuilder
     private func Queuelist(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View {
         ScrollViewReader { proxy in
             List {
-                ForEach(playbackQueue.entries) { entry in
+                ForEach(playbackQueue.entries.indices, id: \.self) { index in
                     NowQueueItemCell(
-                        artwork: entry.artwork,
-                        title: entry.title,
-                        subtitle: entry.subtitle
-                    ).onTapGesture {
-                        playbackQueue.currentEntry = entry
-                        
-                        /// 현재 재생 index가 queueList 상에서 가장 상단에 붙도록 currentIndex 찾기
-                        currentIndex = playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) ?? 0
+                        artwork: playbackQueue.entries[index].artwork,
+                        title: playbackQueue.entries[index].title,
+                        subtitle: playbackQueue.entries[index].subtitle
+                    )
+                    .listRowBackground(Color.BG.main)
+                    .onTapGesture {
+                        playbackQueue.currentEntry = playbackQueue.entries[index]
+                        currentIndex = index
                         if !musicPlayer.isPlaying { pausePlay() }
                     }
                 }
             }
+            .background(Color.BG.main)
             .listStyle(.plain)
-            /// currentIndex가 바뀌면 newIndex로!
-            .onChange(of: currentIndex) { newIndex in
-                withAnimation {
-                    proxy.scrollTo(playbackQueue.entries[newIndex].id, anchor: .top)
+            ///비활성화되어있을 때 곡이 넘어가도, 켜면 바로 그 곡으로 스크롤되도록!
+            .onAppear {
+                if let entry = playbackQueue.currentEntry, let newIndex = playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) {
+                    currentIndex = newIndex
+                    withAnimation {
+                        proxy.scrollTo(currentIndex, anchor: .top)
+                    }
                 }
             }
-            
+            ///현재재생곡이 넘어가면 list가 스크롤되는 부분입니다!
+            .onChange(of: playbackQueue.currentEntry) { _, entry in
+                if let entry = entry, let newIndex = playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) {
+                    currentIndex = newIndex
+                    withAnimation {
+                        proxy.scrollTo(currentIndex, anchor: .top)
+                    }
+                }
+            }
         }
     }
     
@@ -112,21 +128,45 @@ struct NowPlayingView: View {
     }
     
     private func Carousellist(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View {
-        NavigationStack {
-            VStack {
+            NavigationStack {
                 ZStack {
-                    ForEach(playbackQueue.entries.indices, id: \.self) { index in
-                        imageContainer(for: playbackQueue.entries[index].artwork)
-                            .frame(width: 250, height: 250)
-                            .cornerRadius(16)
-                            .scaleEffect(1.0 - CGFloat(abs(index - currentIndex)) * 0.1)
-                            .zIndex(1.0 - Double(abs(index - currentIndex)))
-                            .offset(x: CGFloat(index - currentIndex) * 50 * (1 - CGFloat(abs(index - currentIndex)) * 0.1) + dragOffset, y: 0)
-                        
-                    }
-                }
+                    Color.BG.main.ignoresSafeArea(.all)
+                    
+                    VStack {
+                        ZStack {
+                            if playbackQueue.entries.count > 0 {
+                                let startIndex = max(currentIndex - 2, 0)
+                                let endIndex = min(currentIndex + 2, playbackQueue.entries.count - 1)
+                                if startIndex <= endIndex {
+                                    ForEach(startIndex...endIndex, id: \.self) { index in
+                                        imageContainer(for: playbackQueue.entries[index].artwork)
+                                            .scaleEffect(1.0 - CGFloat(abs(index - currentIndex)) * 0.1)
+                                            .zIndex(1.0 - Double(abs(index - currentIndex)))
+                                            .offset(x: CGFloat(index - currentIndex) * 50 * (1 - CGFloat(abs(index - currentIndex)) * 0.1) + dragOffset, y: 0)
+                                        
+                                        if index == currentIndex {
+                                            VStack {
+                                                Text(playbackQueue.entries[index].title)
+                                                    .font(.system(size: 20, weight: .bold))
+                                                    .foregroundColor(Color.Text.black)
+                                                    .padding(.top, 16)
+                                                    .lineLimit(1)
+                                                
+                                                Text(playbackQueue.entries[index].subtitle ?? "")
+                                                    .font(.system(size: 15, weight: .regular))
+                                                    .foregroundColor(Color.Text.black)
+                                                    .padding(.top, -10)
+                                                    .lineLimit(1)
+                                            }
+                                            .padding(.top, 310)
+                                            .transition(.opacity)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }}
             }
-        }
         .gesture(
             DragGesture()
                 .updating($dragOffset) { value, state, _ in
@@ -143,23 +183,21 @@ struct NowPlayingView: View {
                             currentIndex = min(playbackQueue.entries.count - 1, currentIndex + 1)
                         }
                     }
+                    /// 캐러셀 넘기면 currentEntry를 갈아치워요!
                     playbackQueue.currentEntry = playbackQueue.entries[currentIndex]
                 }
         )
-        .padding(.top, 40)
     }
     
     @ViewBuilder
     private var pauseButton: some View {
         Button(action: pausePlay) {
-            Image(systemName: (musicPlayer.isPlaying ? "pause.circle" : "play.circle"))
+            Image(systemName: musicPlayer.isPlaying ? "pause.circle" : "play.circle")
                 .font(.system(size: 70, weight: .ultraLight))
                 .foregroundColor(.white)
                 .shadow(radius: 5)
         }
     }
-    
-    // MARK: - Methods
     
     private func pausePlay() {
         musicPlayer.togglePlaybackStatus()
@@ -186,19 +224,27 @@ struct NowPlayingView: View {
         }
     }
     
+    
     private func imageContainer(for artwork: Artwork?) -> some View {
         VStack {
             Spacer()
             if let artwork = artwork {
-                ArtworkImage(artwork, width: 250, height: 250)
-                    .cornerRadius(8)
-                    .shadow(radius: 10)
+                ZStack {
+                    ArtworkImage(artwork, width: 244, height: 244)
+                        .cornerRadius(16)
+                        .shadow(radius: 4)
+                    Rectangle()
+                        .frame(width: 244, height: 244)
+                        .cornerRadius(16)
+                        .foregroundColor(.black)
+                        .opacity(0.2)
+                }
             } else {
-                Rectangle()
-                    .fill(Color.gray)
-                    .frame(width: 250, height: 250)
-                    .cornerRadius(8)
-                    .shadow(radius: 10)
+                Image("sampleArtwork")
+                    .resizable()
+                    .frame(width: 244, height: 244)
+                    .cornerRadius(16)
+                    .shadow(radius: 4)
             }
             Spacer()
         }

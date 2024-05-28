@@ -5,8 +5,8 @@
 //  Created by zaehorang on 5/18/24.
 //
 
-import CoreMotion
 import AudioToolbox
+import CoreMotion
 
 final class ShakeDetectionModel: ObservableObject {
     private let motionManager = CMMotionManager()
@@ -27,6 +27,7 @@ final class ShakeDetectionModel: ObservableObject {
     
     
     func startDetection() {
+        shakeDetected = false
         startDeviceMotion()
     }
     
@@ -70,15 +71,11 @@ final class ShakeDetectionModel: ObservableObject {
             if !isScreenDown { // 다른 상태에 있다가 엎어질 때
                 self.isScreenDown = true
                 self.startAccelerometer()
-                
-                print("✅ 뒤집어진 상태 oo")
             }
         } else {
             if isScreenDown {  // 엎어져 있다가 상태가 변경될 떄
                 self.isScreenDown = false
                 self.stopShakeDetection()
-                
-                print("❌ 뒤집어진 상태 xx")
             }
         }
     }
@@ -115,9 +112,10 @@ final class ShakeDetectionModel: ObservableObject {
             
             print("problem❗️❗️❗️: \(shakeDetected)")
             self.shakeDetected = true // 흔들림 감지 여부 업데이트
+            self.shakeFailed = false
+            
             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate) //진동 주기
             
-            self.shakeFailed = false
             self.stopShakeDetection()
         } else {
             print("❌ Shake detection failed")
@@ -135,7 +133,4 @@ final class ShakeDetectionModel: ObservableObject {
     private func stopFaceDownDetection() {
         motionManager.stopDeviceMotionUpdates()
     }
-        
-
-
 }

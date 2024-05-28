@@ -20,6 +20,7 @@ struct MusicItemRowView: View {
         VStack(alignment: .leading, spacing: 10) {
             Text(itemRowTitle)
                 .font(.headline)
+                .bold()
                 .foregroundStyle(Color.Text.blue)
                 .padding(.horizontal, 16)
             
