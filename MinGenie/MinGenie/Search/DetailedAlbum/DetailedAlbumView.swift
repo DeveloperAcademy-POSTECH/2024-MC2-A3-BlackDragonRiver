@@ -91,6 +91,8 @@ struct DetailedAlbumView: View {
         .background(Color.BG.main)
         .lineLimit(1)
         .ignoresSafeArea(edges: .top)
+        .navigationTitle(album.title)
+        .navigationBarTitleDisplayMode(.inline)
         .task {
             try? await model.loadTracks(album: album)
         }

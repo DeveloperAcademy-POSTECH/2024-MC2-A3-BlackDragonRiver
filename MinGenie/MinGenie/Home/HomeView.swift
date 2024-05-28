@@ -42,6 +42,7 @@ struct HomeView: View {
             }
         }
         .background(Color.BG.main)
+        .tint(Color.accentColor)
         .searchable(text: $searchTerm, prompt: "아티스트, 노래")
         .onChange(of: storedTrackIDs) {
             selectedMusicDataModel.loadTracksByID(storedTrackIDs)
