@@ -12,6 +12,8 @@ struct DetailedAlbumView: View {
     @ObservedObject private var model = DetailedAlbumModel()
     @EnvironmentObject var musicPlayerModel: MusicPlayerModel
     
+    @State private var isPlaying = false
+    
     let album: Album
     private let artworkSize: CGFloat = 146
     
@@ -60,15 +62,18 @@ struct DetailedAlbumView: View {
                 Spacer()
                 
                 Button {
+                    isPlaying.toggle()
+                    
                     if let tracks = model.tracks {
                         musicPlayerModel.playAlbumWithRecommendedList(tracks)
                     }
                 } label: {
-                    Image(systemName: "play.circle")
+                    Image(systemName: isPlaying ? "pause.circle" : "play.circle")
                         .resizable()
                         .frame(width: 46, height: 46)
                         .foregroundStyle(Color.Shape.blue)
                 }
+                .disabled(isPlaying)
             }
             .padding(.top, -55)
             .padding(.horizontal, 16)
