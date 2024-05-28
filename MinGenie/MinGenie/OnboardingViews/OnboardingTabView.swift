@@ -35,7 +35,7 @@ struct OnboardingTabView: View {
 
                 } else if currentPage == 2 {
                     OnboardingPageView(
-                        title: "핸드폰 화면이 바닥을\n향한 채로 좌우로 흔들면\n노래가 교체돼요!",
+                        title: "핸드폰을 바닥에 두고\n좌우로 흔들면 노래가 교체돼요!",
                         imageName: "shaking"
                     )
                 } else if currentPage == 3 {

@@ -14,6 +14,8 @@ final class ShakeDetectionModel: ObservableObject {
     
     // 상태 감지를 위한 임계값 수치
     private let minRollThreshold = 3.1
+    private let maxRollRheshold = 0.006
+    
     private let minXYAccelerationThreshold = 0.6
     private let maxZAccelerationThreshold = 1.1
     private let minZAccelerationThreshold = 0.9
@@ -60,6 +62,7 @@ final class ShakeDetectionModel: ObservableObject {
             
             guard let self = self, let motionData else { return }
             self.detectFaceDown(motionData)
+            print(motionData.attitude.roll)
         }
     }
     
@@ -67,7 +70,7 @@ final class ShakeDetectionModel: ObservableObject {
         let roll = abs(motionData.attitude.roll)
         
         // 디바이스가 엎어진 상태를 roll 값으로 확인
-        if roll > minRollThreshold {
+        if roll > minRollThreshold || roll < maxRollRheshold {
             if !isScreenDown { // 다른 상태에 있다가 엎어질 때
                 self.isScreenDown = true
                 self.startAccelerometer()
