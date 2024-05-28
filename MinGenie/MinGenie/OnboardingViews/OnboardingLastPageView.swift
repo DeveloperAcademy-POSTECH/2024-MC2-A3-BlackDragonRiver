@@ -33,9 +33,7 @@ struct OnboardingLastPageView: View {
             
             VStack {
                 Spacer()
-                
                 Button {
-                    UserDefaults.standard.set(true, forKey: "hasSeenOnboarding")
                     hasSeenOnboarding = true
                 } label: {
                     Text("시작하기")

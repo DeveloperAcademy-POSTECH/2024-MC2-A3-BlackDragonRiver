@@ -15,7 +15,7 @@ struct ContentView: View {
     @StateObject private var shakeDetectionModel = ShakeDetectionModel()
     @StateObject var musicPlayerModel = MusicPlayerModel.shared
     
-    @State private var hasSeenOnboarding: Bool = UserDefaults.standard.bool(forKey: "hasSeenOnboarding")
+    @State private var hasSeenOnboarding: Bool = false
     
     var body: some View {
         if hasSeenOnboarding {
