@@ -18,7 +18,8 @@ struct ContentView: View {
     @State private var hasSeenOnboarding: Bool = UserDefaults.standard.bool(forKey: "hasSeenOnboarding")
     
     var body: some View {
-            if hasSeenOnboarding {
+        if hasSeenOnboarding {
+            ZStack(alignment: .bottom) {
                 HomeView()
                     .modelContainer(for: StoredTrackID.self)
                     .environmentObject(musicPlayerModel)
@@ -44,9 +45,13 @@ struct ContentView: View {
                             }
                         }
                     }
-            } else {
-                OnboardingTabView(hasSeenOnboarding: $hasSeenOnboarding)
+                
+                MiniPlayerView()
             }
+            .ignoresSafeArea(.keyboard)
+        } else {
+            OnboardingTabView(hasSeenOnboarding: $hasSeenOnboarding)
+        }
     }
 }
 
