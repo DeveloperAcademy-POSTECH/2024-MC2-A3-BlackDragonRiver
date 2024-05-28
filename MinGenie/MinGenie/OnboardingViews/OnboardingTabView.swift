@@ -21,7 +21,7 @@ struct OnboardingTabView: View {
             ZStack {
                 if currentPage == 0 {
                     OnboardingPageView(
-                        title: "반갑습니다! 복숭K님,\n업무환경에 딱 맞는\n음악을 추천드릴께요!",
+                        title: "반갑습니다! 복숭K님,\n업무환경에 딱 맞는\n음악을 추천드릴게요!",
                         imageName: "notebook"
                     )
                 } else if currentPage == 1 {

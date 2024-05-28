@@ -21,7 +21,6 @@ struct OnboardingButtonView: View {
     let text: String
     @Binding var currentPage: Int
 
-    
     var body: some View {
         ZStack {
             VStack{
@@ -43,16 +42,16 @@ struct OnboardingButtonView: View {
                 Spacer()
                 Text(text)
                     .font(.subheadline)
-                    .foregroundStyle(Color.gray)
+                    .foregroundStyle(Color.Text.gray50)
                 Button {
                     model.requestMusicAuthorizationStatus(currentPage: $currentPage)
 
                 } label: {
                     Text("다음")
                         .fontWeight(.semibold)
-                        .foregroundColor(.white)
+                        .foregroundColor(Color.Text.white100)
                         .frame(width: 361, height: 50)
-                        .background(Color.black)
+                        .background(Color.Shape.black)
                         .cornerRadius(16)
                         .padding(.bottom, 160)
                 }
