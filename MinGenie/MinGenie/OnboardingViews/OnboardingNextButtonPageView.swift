@@ -1,15 +1,17 @@
 //
-//  OnboardingPageView.swift
+//  OnboardingNextButtonPageView.swift
 //  MinGenie
 //
-//  Created by Sunyoung Jeon  on 5/22/24.
+//  Created by zaehorang on 5/29/24.
 //
 
 import SwiftUI
 
-struct OnboardingPageView: View {
+struct OnboardingNextButtonPageView: View {
     let title: String
     let imageName: String
+    
+    @Binding var currentPage: Int
     
     var body: some View {
         VStack{
@@ -27,6 +29,20 @@ struct OnboardingPageView: View {
             Spacer()
         }
         
+        VStack{
+                Spacer()
+                Button {
+                    currentPage += 1
 
+                } label: {
+                    Text("다음")
+                        .fontWeight(.semibold)
+                        .foregroundColor(Color.Text.white100)
+                        .frame(width: 361, height: 50)
+                        .background(Color.Shape.black)
+                        .cornerRadius(16)
+                        .padding(.bottom, 160)
+                }
+            }
     }
 }

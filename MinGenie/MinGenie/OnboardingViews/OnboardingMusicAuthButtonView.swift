@@ -1,5 +1,5 @@
 //
-//  OnboardingButtonView.swift
+//  OnboardingMusicAuthButtonView.swift
 //  MinGenie
 //
 //  Created by Sunyoung Jeon  on 5/22/24.
@@ -13,7 +13,7 @@
 
 import SwiftUI
 
-struct OnboardingButtonView: View {
+struct OnboardingMusicAuthButtonView: View {
     @ObservedObject var model: MusicAuthorizationModel
     
     let title: String

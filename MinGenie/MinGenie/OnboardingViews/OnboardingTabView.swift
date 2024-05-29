@@ -26,7 +26,7 @@ struct OnboardingTabView: View {
                         imageName: "notebook"
                     )
                 } else if currentPage == 1 {
-                    OnboardingButtonView(
+                    OnboardingMusicAuthButtonView(
                         model: musicAuthorizationModel,
                         title: "이제 복숭K님의\n애플 뮤직을 연결할게요",
                         imageName: "headphone",
@@ -35,9 +35,10 @@ struct OnboardingTabView: View {
                     )
 
                 } else if currentPage == 2 {
-                    OnboardingPageView(
+                    OnboardingNextButtonPageView(
                         title: "핸드폰을 바닥에 두고\n좌우로 흔들면 노래가 교체돼요!",
-                        imageName: "shaking"
+                        imageName: "shaking",
+                        currentPage: $currentPage
                     )
                 } else if currentPage == 3 {
                     OnboardingPageView(
