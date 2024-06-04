@@ -27,7 +27,7 @@ struct AlbumCell: View {
                     Text("\(album.title)")
                         .font(.body)
                         .foregroundStyle(Color.Text.black)
-
+                    
                     HStack {
                         Text("\(album.artistName)")
                         
@@ -43,7 +43,7 @@ struct AlbumCell: View {
                     Divider()
                 }
                 .lineLimit(1)
-
+                
                 Spacer()
                 
                 Image(systemName: "chevron.right")

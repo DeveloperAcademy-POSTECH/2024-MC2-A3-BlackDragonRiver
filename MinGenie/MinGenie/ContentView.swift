@@ -5,7 +5,7 @@
 //  Created by 김유빈 on 5/13/24.
 //
 
-
+import AudioToolbox
 import MusicKit
 import SwiftUI
 
@@ -15,16 +15,17 @@ struct ContentView: View {
     @StateObject private var shakeDetectionModel = ShakeDetectionModel()
     @StateObject var musicPlayerModel = MusicPlayerModel.shared
     
-    @State private var hasSeenOnboarding: Bool = UserDefaults.standard.bool(forKey: "hasSeenOnboarding")
+    @State private var hasSeenOnboarding: Bool = false
     
     var body: some View {
-            if hasSeenOnboarding {
+        if hasSeenOnboarding {
+            ZStack(alignment: .bottom) {
                 HomeView()
                     .modelContainer(for: StoredTrackID.self)
                     .environmentObject(musicPlayerModel)
                 
                     .onChange(of: phase) { _, newValue in
-                        if newValue == .background {
+                        if newValue == .background && musicPlayerModel.isPlaying {
                             shakeDetectionModel.startDetection()
                         } else {
                             shakeDetectionModel.stopDetection()
@@ -33,6 +34,8 @@ struct ContentView: View {
                     .onChange(of: shakeDetectionModel.shakeDetected) { _, newValue in
                         if newValue && musicPlayerModel.isPlaying {
                             print("🎧 Music Change")
+                            
+                            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate) //진동 주기
                             
                             // 노래 교체가 끝나면 다시 시작
                             shakeDetectionModel.stopDetection()
@@ -44,9 +47,13 @@ struct ContentView: View {
                             }
                         }
                     }
-            } else {
-                OnboardingTabView(hasSeenOnboarding: $hasSeenOnboarding)
+                
+                MiniPlayerView()
             }
+            .ignoresSafeArea(.keyboard)
+        } else {
+            OnboardingTabView(hasSeenOnboarding: $hasSeenOnboarding)
+        }
     }
 }
 

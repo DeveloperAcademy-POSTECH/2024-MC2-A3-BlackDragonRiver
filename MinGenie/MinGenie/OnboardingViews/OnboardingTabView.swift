@@ -5,6 +5,7 @@
 //  Created by Sunyoung Jeon  on 5/22/24.
 //
 
+import AudioToolbox
 import Combine
 import SwiftUI
 
@@ -21,11 +22,11 @@ struct OnboardingTabView: View {
             ZStack {
                 if currentPage == 0 {
                     OnboardingPageView(
-                        title: "반갑습니다! 복숭K님,\n업무환경에 딱 맞는\n음악을 추천드릴께요!",
+                        title: "반갑습니다! 복숭K님,\n업무환경에 딱 맞는\n음악을 추천드릴게요!",
                         imageName: "notebook"
                     )
                 } else if currentPage == 1 {
-                    OnboardingButtonView(
+                    OnboardingMusicAuthButtonView(
                         model: musicAuthorizationModel,
                         title: "이제 복숭K님의\n애플 뮤직을 연결할게요",
                         imageName: "headphone",
@@ -34,9 +35,10 @@ struct OnboardingTabView: View {
                     )
 
                 } else if currentPage == 2 {
-                    OnboardingPageView(
-                        title: "핸드폰 화면이 바닥을\n향한 채로 좌우로 흔들면\n노래가 교체돼요!",
-                        imageName: "shaking"
+                    OnboardingNextButtonPageView(
+                        title: "핸드폰을 바닥에 두고\n좌우로 흔들면 노래가 교체돼요!",
+                        imageName: "shaking",
+                        currentPage: $currentPage
                     )
                 } else if currentPage == 3 {
                     OnboardingPageView(
@@ -62,9 +64,6 @@ struct OnboardingTabView: View {
                         imageName: "headphone",
                         hasSeenOnboarding: $hasSeenOnboarding
                     )
-                    .onAppear {
-                        shakeDetectionModel.stopDetection()
-                    }
                 }
             }
             .animation(.default, value: currentPage) // 애니메이션 효과
@@ -104,6 +103,9 @@ struct OnboardingTabView: View {
             shakeDetectionModel.$shakeDetected
                 .filter { $0 }
                 .sink { _ in
+                    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate) //진동 주기
+                    shakeDetectionModel.stopDetection()
+                    
                     if currentPage == 3 {
                         currentPage = 5 // 페이지 7로 이동
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
