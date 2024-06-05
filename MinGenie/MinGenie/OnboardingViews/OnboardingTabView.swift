@@ -60,9 +60,9 @@ struct OnboardingTabView: View {
                     )
                 } else if currentPage == 6 {
                     OnboardingLastPageView(
+                        hasSeenOnboarding: $hasSeenOnboarding, 
                         title: "음악과 함께\n일할 준비가 되셨나요?",
-                        imageName: "headphone",
-                        hasSeenOnboarding: $hasSeenOnboarding
+                        imageName: "headphone"
                     )
                 }
             }

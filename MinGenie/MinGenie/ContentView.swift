@@ -12,10 +12,10 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.scenePhase) var phase
     
-    @StateObject private var shakeDetectionModel = ShakeDetectionModel()
+    @StateObject var shakeDetectionModel = ShakeDetectionModel()
     @StateObject var musicPlayerModel = MusicPlayerModel.shared
     
-    @State private var hasSeenOnboarding: Bool = false
+    @AppStorage("Onboarding") var hasSeenOnboarding = false
     
     var body: some View {
         if hasSeenOnboarding {
