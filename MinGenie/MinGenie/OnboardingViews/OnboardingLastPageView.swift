@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct OnboardingLastPageView: View {
+    @Binding var hasSeenOnboarding: Bool
+    
     let title: String
     let imageName: String
-    @Binding var hasSeenOnboarding: Bool
     
     var body: some View {
         ZStack {
