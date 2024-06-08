@@ -10,7 +10,9 @@ import SwiftData
 import SwiftUI
 
 struct HomeView: View {
+    // 개인 맞춤 음악 데이터를 위한 모델
     @StateObject private var musicPersonalRecommendationModel = MusicPersonalRecommendationModel()
+    // 지난 선곡 데이터를 위한 모델
     @StateObject private var selectedMusicDataModel = FirstPickedMusicDataModel()
     
     @State private var searchTerm: String = ""

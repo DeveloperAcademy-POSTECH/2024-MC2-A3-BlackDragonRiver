@@ -62,6 +62,8 @@ class MusicPersonalRecommendationModel: ObservableObject {
         await mainTracksUpdate(tracks)
     }
 
+    /// 애플에서 제공하는 개인 맞춤 플레이 리스트 중 랜덤으로 트랙 배열을 전달한다.
+    /// - Returns: 개인 맞춤 랜덤 트랙 배열
     func loadRandomTracks() async throws -> MusicItemCollection<Track>? {
         guard let playlist = playlists.randomElement() else {
             print("🚫 Random Playlists Problem")
@@ -87,10 +89,13 @@ class MusicPersonalRecommendationModel: ObservableObject {
 }
 
 
-//MARK: - SelectedMusicDataModel
+//MARK: - FirstPickedMusicDataModel
+// 로컬에 id로 저장되어 있는 지난 선곡 음악 데이터를 Track 타입으로 변환해주는 모델
 class FirstPickedMusicDataModel: ObservableObject {
     @Published var storedTracks: MusicItemCollection<Track>?
     
+    /// 로컬에 id로 저장되어 있은 음악 데이터를 Track 타입의 데이터 배열로 전환하는 메서드
+    /// - Parameter storedTrackIDs:이전에 선택된 음악 id 데이터 배열
     func loadTracksByID(_ storedTrackIDs: [StoredTrackID]) {
         Task {
             if !storedTrackIDs.isEmpty {
