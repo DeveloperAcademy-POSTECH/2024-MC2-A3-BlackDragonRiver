@@ -14,14 +14,14 @@ import SwiftUI
 
 class MusicPlayerModel: ObservableObject {
     static let shared = MusicPlayerModel()
-        
-        private init() {}
+    
+    private init() {}
     
     // MARK: - Properties
     @Published var isPlaying = false
     @Published var playbackQueue = ApplicationMusicPlayer.shared.queue
     
-
+    
     
     var playbackStateObserver: AnyCancellable?
     
@@ -72,7 +72,7 @@ class MusicPlayerModel: ObservableObject {
             musicPlayer.pause()
         }
     }
-
+    
     func togglePlaybackStatus() {
         if !isPlaying {
             Task {
@@ -97,11 +97,9 @@ class MusicPlayerModel: ObservableObject {
             }
         }
     }
-
     
-    /// 🐯
-    /// 개별 곡 재생하고 그 뒤에 추천 플레이리스트 붙여주기
-    /// - Parameter song: 사용자가 선택한 개별 곡
+    
+    /// 🐯 유저가 새로운 플레이 리스트를 요구할 때 사용하는 메서드
     func playRandomMusic() async {
         let model = NextMusicRecommendationModel()
         
@@ -114,9 +112,67 @@ class MusicPlayerModel: ObservableObject {
         }
     }
     
-    /// 🐯
+    
+    /// 🐯 특정 음악과 관련된 앨범을 통해 다음 노래로 재생할 Track 타입의 배열을 리턴해주는 메서드
+    /// - Parameter song: 어떤 Song과 관련된 노래를 받을 지를 전달한다.
+    /// - Returns: 특정 노래와 연관된 Track 배열
+    private func getRelatedSongs(_ song: Song) async throws -> MusicItemCollection<Track>? {
+        // 관련 앨범 가져오기
+        let songAlbums = try await song.with([.albums])
+        
+        let relatedAlbums = try await songAlbums.albums?[0].with([.relatedAlbums])
+        guard let albums = relatedAlbums?.relatedAlbums else {
+            print("🚫 Related Albums Problem")
+            return nil
+        }
+        
+        var allTracks: [Track] = []
+        
+        // 각 앨범의 트랙 가져오기
+        for album in albums {
+            let detailedAlbum = try await album.with([.tracks])
+            guard let tracks = detailedAlbum.tracks else {
+                print("🚫 Related Albums Tracks Problem")
+                return nil
+            }
+            allTracks.append(contentsOf: tracks)
+        }
+        
+        allTracks.shuffle()
+        return MusicItemCollection(allTracks)
+    }
+    
+    
+    /// 🐯특정 앨범과 관련된 다음 노래로 재생할 Track 타입의 배열을 리턴해주는 메서드
+    /// - Parameter album: 어떤 Album과 관련된 노래를 받을 지를 전달한다.
+    /// - Returns: 특정 앨범과 연관된 Track 배열
+    private func getRelatedSongs(_ album: Album) async throws -> MusicItemCollection<Track>? {
+        // 관련 앨범 가져오기
+        let relatedAlbums = try await album.with([.relatedAlbums])
+        guard let albums = relatedAlbums.relatedAlbums else {
+            print("🚫 Related Albums Problem")
+            return nil
+        }
+        
+        var allTracks: [Track] = []
+        
+        // 각 앨범의 트랙 가져오기
+        for album in albums {
+            let detailedAlbum = try await album.with([.tracks])
+            guard let tracks = detailedAlbum.tracks else {
+                print("🚫 Related Albums Tracks Problem")
+                return nil
+            }
+            allTracks.append(contentsOf: tracks)
+        }
+        
+        allTracks.shuffle()
+        return MusicItemCollection(allTracks)
+    }
+    
+    /// 🐯 특정 노래를 재생하고 그 뒤에 추천 플레이리스트 붙여주기
+    /// - Parameter song: 관련된 노래를 찾을 때 사용할 노래
     func playMusicWithRecommendedList(_ song: Song) {
-        let model = NextMusicRecommendationModel()
         let track = fromSongToTrackType(song)
         
         // 개별 곡 재생
@@ -124,25 +180,26 @@ class MusicPlayerModel: ObservableObject {
         
         // 추천 트랙 추가
         Task {
-            let recommendedList = try await model.requestNextMusicList()
+            let recommendedList = try await getRelatedSongs(song)
             if let recommendedList {
                 try await ApplicationMusicPlayer.shared.queue.insert(recommendedList, position: .tail)
             }
         }
     }
     
-    /// 🐯
-    /// 앨범 전체 재생하고 그 뒤에 추천 플레이리스트 붙여주기
+    
+    /// 🐯 앨범 전체 재생하고 그 뒤에 추천 플레이리스트 붙여주기
     /// - Parameter tracks: 사용자가 선택한 전체 재생할 앨범에 담긴 트랙
-    func playAlbumWithRecommendedList(_ tracks: MusicItemCollection<Track>) {
-        let model = NextMusicRecommendationModel()
+    /// - Parameter album: 관련된 노래를 찾을 때 사용할 앨범
+    func playAlbumWithRecommendedList(_ tracks: MusicItemCollection<Track>, album: Album) {
+        // ⁉️호랑: 이후에 DetailedAlbumModel에서 진행중인 로직을 여기다가 합칠 지 고민해보기 -> 현재는 앨범을 통해 트랙 배열을 받고 해당 메서드에 파라미터로 사용하는 로직
         
         // 앨범 재생
         play(tracks[0], in: tracks, with: nil)
-
-        // 추천 트랙 추가
+        
+         // 추천 트랙 추가
         Task {
-            let recommendedList = try await model.requestNextMusicList()
+            let recommendedList = try await getRelatedSongs(album)
             if let recommendedList {
                 try await ApplicationMusicPlayer.shared.queue.insert(recommendedList, position: .tail)
             }
@@ -151,7 +208,7 @@ class MusicPlayerModel: ObservableObject {
     
     /// ⭐️ 함께 활용할 함수 ⭐️
     /// 파라미터 1: 시작할 곡, 2: 트랙리스트 (곡 리스트), 3: 모르겠음
-    func play(_ track: Track, in trackList: MusicItemCollection<Track>?, with parentCollectionID: MusicItemID?) {
+    private func play(_ track: Track, in trackList: MusicItemCollection<Track>?, with parentCollectionID: MusicItemID?) {
         let musicPlayer = self.musicPlayer
         
         if let specifiedTrackList = trackList {
@@ -174,7 +231,7 @@ class MusicPlayerModel: ObservableObject {
     }
     
     /// (추가) song -> Track 컨버터
-    func sendToMusicPlayer(_ song: Song) {
+    private func sendToMusicPlayer(_ song: Song) {
         let track = Track.song(song)
         play(track, in: nil, with: nil)
     }
