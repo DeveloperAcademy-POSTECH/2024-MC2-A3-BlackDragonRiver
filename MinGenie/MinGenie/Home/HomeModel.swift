@@ -18,12 +18,14 @@ class MusicPersonalRecommendationModel: ObservableObject {
     
     @Published var personalRecommendationTracks: MusicItemCollection<Track>?
     
+    //MARK: init 메서드
     init() {
         Task {
             self.requestMusicPersonalRecommendation()
         }
     }
     
+    /// apple music에서 맞춤 개인 선곡 리스트를 요청하는 메서드입니다.
     private func requestMusicPersonalRecommendation() {
         Task {
             do {
@@ -37,51 +39,36 @@ class MusicPersonalRecommendationModel: ObservableObject {
         }
     }
     
+    
+    /// 맞춤 개인 선곡 리스트에서 playlist만 찾아주는 메서드입니다.
     private func findPlaylist(_ response: MusicPersonalRecommendationsResponse) async {
         self.personalRecommendations = response.recommendations
-        for recommendation in personalRecommendations {
+        for recommendation in personalRecommendations {  // 추천 목록에서 플레이리스트만을 선택합니다.
             if !recommendation.playlists.isEmpty {
                 playlists += recommendation.playlists
-                
-                if !playlists.isEmpty {  // 플리를 한 개라도 찾으면
-                    try? await loadMainTracks()
-                }
             }
         }
+        try? await loadRecommendationRandomTracks()
     }
     
-    /// Loads tracks asynchronously.
-    private func loadMainTracks() async throws {
-        let detailedPlaylist = try await playlists[0].with([.tracks])
+    
+    /// apple music에서 제공하는 개인 맞춤 플레이 리스트 중 랜덤으로 플리를 선택한 후, 트랙 배열로 전달합니다.
+    private func loadRecommendationRandomTracks() async throws {
+        guard let playlist = playlists.randomElement() else {
+            print("🚫 Random Playlists Problem")
+            return
+        }
+        
+        let detailedPlaylist = try await playlist.with([.tracks])
         
         guard let tracks = detailedPlaylist.tracks else {
             print("🚫 Tracks Problem")
-            
             return
         }
         await mainTracksUpdate(tracks)
     }
 
-    /// 애플에서 제공하는 개인 맞춤 플레이 리스트 중 랜덤으로 트랙 배열을 전달한다.
-    /// - Returns: 개인 맞춤 랜덤 트랙 배열
-    func loadRandomTracks() async throws -> MusicItemCollection<Track>? {
-        guard let playlist = playlists.randomElement() else {
-            print("🚫 Random Playlists Problem")
-            
-            return nil
-        }
-                
-        let detailedPlaylist = try await playlist.with([.tracks])
         
-        guard let tracks = detailedPlaylist.tracks else {
-            print("🚫 Tracks Problem")
-            
-            return nil
-        }
-        
-        return tracks
-    }
-    
     @MainActor
     private func mainTracksUpdate(_ tracks: MusicItemCollection<Track>) {
             personalRecommendationTracks = tracks
@@ -90,7 +77,7 @@ class MusicPersonalRecommendationModel: ObservableObject {
 
 
 //MARK: - FirstPickedMusicDataModel
-// 로컬에 id로 저장되어 있는 지난 선곡 음악 데이터를 Track 타입으로 변환해주는 모델
+// Int 타입으로 저장된 음악 id값을 통해 해당 음악을 Track 타입으로 변환하여 전달하는 모델
 class FirstPickedMusicDataModel: ObservableObject {
     @Published var storedTracks: MusicItemCollection<Track>?
     
