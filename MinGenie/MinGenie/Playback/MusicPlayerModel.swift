@@ -135,7 +135,9 @@ class MusicPlayerModel: ObservableObject {
                 print("🚫 Related Albums Tracks Problem")
                 return nil
             }
-            allTracks.append(contentsOf: tracks)
+            // "(Instrumental)"이 포함된 트랙을 필터링하여 추가
+            let filteredTracks = filterInstrumentalTracks(from: tracks)
+            allTracks.append(contentsOf: filteredTracks)
         }
         
         allTracks.shuffle()
@@ -163,7 +165,9 @@ class MusicPlayerModel: ObservableObject {
                 print("🚫 Related Albums Tracks Problem")
                 return nil
             }
-            allTracks.append(contentsOf: tracks)
+            // "(Instrumental)"이 포함된 트랙을 필터링하여 추가
+            let filteredTracks = filterInstrumentalTracks(from: tracks)
+            allTracks.append(contentsOf: filteredTracks)
         }
         
         allTracks.shuffle()
@@ -197,7 +201,7 @@ class MusicPlayerModel: ObservableObject {
         // 앨범 재생
         play(tracks[0], in: tracks, with: nil)
         
-         // 추천 트랙 추가
+        // 추천 트랙 추가
         Task {
             let recommendedList = try await getRelatedSongs(album)
             if let recommendedList {
@@ -227,6 +231,16 @@ class MusicPlayerModel: ObservableObject {
             } catch {
                 print("Failed to prepare music player to play \(track).")
             }
+        }
+    }
+    
+    /// 🐯 instrumental를 제목에 포함한 트랙을 필터링하는 메서드
+    /// - Parameter tracks: 필터링할 트랙 배열
+    /// - Returns: 필터링된 트랙 배열
+    private func filterInstrumentalTracks(from tracks: MusicItemCollection<Track>) -> [Track] {
+        return tracks.filter { track in
+            // 대, 소문자 구분 없이 제외
+            return track.title.range(of: "(instrumental)", options: .caseInsensitive) == nil
         }
     }
     
@@ -266,3 +280,4 @@ class MusicPlayerModel: ObservableObject {
     }
     
 }
+
