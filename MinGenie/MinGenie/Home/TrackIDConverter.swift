@@ -10,7 +10,7 @@ import SwiftUI
 
 //MARK: - TrackIDConverter
 // Int 타입으로 저장된 음악 id값을 통해 해당 음악을 Track 타입으로 변환하여 전달하는 모델
-class TrackIDConverter: ObservableObject {
+final class TrackIDConverter: ObservableObject {
     @Published var storedTracks: MusicItemCollection<Track>?
     
     /// 로컬에 id로 저장되어 있은 음악 데이터를 Track 타입의 데이터 배열로 전환하는 메서드

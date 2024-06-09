@@ -10,7 +10,7 @@ import SwiftUI
 
 //MARK: - MusicPersonalRecommendationModel
 // Apple music에서 제공하는 개인 맞춤 리스트에서 플레이 리스트만을 관리해주는 모델
-class MusicPersonalRecommendationModel: ObservableObject {
+final class MusicPersonalRecommendationModel: ObservableObject {
     private var personalRecommendations: MusicItemCollection<MusicPersonalRecommendation> = []
     private var playlists: MusicItemCollection<Playlist> = []
     

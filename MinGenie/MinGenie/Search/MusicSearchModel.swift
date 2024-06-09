@@ -13,7 +13,7 @@ enum Category: String {
     case song = "노래"
 }
 
-class MusicSearchModel: ObservableObject {
+final class MusicSearchModel: ObservableObject {
     @Published var albums: MusicItemCollection<Album> = []
     @Published var songs: MusicItemCollection<Song> = []
 
