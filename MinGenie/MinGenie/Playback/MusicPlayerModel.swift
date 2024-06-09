@@ -2,17 +2,7 @@ import Combine
 import MusicKit
 import SwiftUI
 
-/// ✏️ 재생기 기능을 하는 MusicPlayerModel 스크립트입니다 ✏️
-///
-/// (개념 정리) Combine 비동기처리
-/// Publisher: 값이나 이벤트를 생성하고 방출하는 역할
-/// Subscriber: Publisher로부터 방출된 값을 수신하여 처리하는 역할
-/// Data Stream: Publisher에서 Subscriber까지 이어지는 데이터의 흐름
-/// Combine = 이 데이터 스트림 과정에서 비동기 이벤트를 효율적으로 처리하는 것!
-
-/// 대략적인 과정 : MusicPlayerModel의 play 함수 실행 ➡️ MusicKit의 MusicPlayer(본체)의 queue에 해당 곡 담은 후 재생
-
-class MusicPlayerModel: ObservableObject {
+final class MusicPlayerModel: ObservableObject {
     static let shared = MusicPlayerModel()
     
     private init() {}
@@ -20,8 +10,6 @@ class MusicPlayerModel: ObservableObject {
     // MARK: - Properties
     @Published var isPlaying = false
     @Published var playbackQueue = ApplicationMusicPlayer.shared.queue
-    
-    
     
     var playbackStateObserver: AnyCancellable?
     
@@ -83,23 +71,7 @@ class MusicPlayerModel: ObservableObject {
         }
     }
     
-    func playTrackWithRecommendedList(_ track: Track) {
-        let model = NextMusicRecommendationModel()
-        
-        // 개별 트랙 재생
-        play(track, in: nil, with: nil)
-        
-        // 추천 트랙 추가
-        Task {
-            let recommendedList = try await model.requestNextMusicList()
-            if let recommendedList {
-                try await ApplicationMusicPlayer.shared.queue.insert(recommendedList, position: .tail)
-            }
-        }
-    }
-    
-    
-    /// 🐯 유저가 새로운 플레이 리스트를 요구할 때 사용하는 메서드
+    /// 🐯 Shake action을 감지했을 때 새로운 플레이 리스트로 교체해주는 메서드
     func playRandomMusic() async {
         let model = NextMusicRecommendationModel()
         
@@ -111,7 +83,6 @@ class MusicPlayerModel: ObservableObject {
             }
         }
     }
-    
     
     /// 🐯 특정 음악과 관련된 앨범을 통해 다음 노래로 재생할 Track 타입의 배열을 리턴해주는 메서드
     /// - Parameter song: 어떤 Song과 관련된 노래를 받을 지를 전달한다.
@@ -126,24 +97,12 @@ class MusicPlayerModel: ObservableObject {
             return nil
         }
         
-        var allTracks: [Track] = []
+        // 트랙 가져오기 및 필터링
+        let allTracks = try await fetchAndFilterTracks(from: albums)
+        let shuffledTracks = allTracks.shuffled()
         
-        // 각 앨범의 트랙 가져오기
-        for album in albums {
-            let detailedAlbum = try await album.with([.tracks])
-            guard let tracks = detailedAlbum.tracks else {
-                print("🚫 Related Albums Tracks Problem")
-                return nil
-            }
-            // "(Instrumental)"이 포함된 트랙을 필터링하여 추가
-            let filteredTracks = filterInstrumentalTracks(from: tracks)
-            allTracks.append(contentsOf: filteredTracks)
-        }
-        
-        allTracks.shuffle()
-        return MusicItemCollection(allTracks)
+        return MusicItemCollection(shuffledTracks)
     }
-    
     
     /// 🐯특정 앨범과 관련된 다음 노래로 재생할 Track 타입의 배열을 리턴해주는 메서드
     /// - Parameter album: 어떤 Album과 관련된 노래를 받을 지를 전달한다.
@@ -156,22 +115,11 @@ class MusicPlayerModel: ObservableObject {
             return nil
         }
         
-        var allTracks: [Track] = []
+        // 트랙 가져오기 및 필터링
+        let allTracks = try await fetchAndFilterTracks(from: albums)
+        let shuffledTracks = allTracks.shuffled()
         
-        // 각 앨범의 트랙 가져오기
-        for album in albums {
-            let detailedAlbum = try await album.with([.tracks])
-            guard let tracks = detailedAlbum.tracks else {
-                print("🚫 Related Albums Tracks Problem")
-                return nil
-            }
-            // "(Instrumental)"이 포함된 트랙을 필터링하여 추가
-            let filteredTracks = filterInstrumentalTracks(from: tracks)
-            allTracks.append(contentsOf: filteredTracks)
-        }
-        
-        allTracks.shuffle()
-        return MusicItemCollection(allTracks)
+        return MusicItemCollection(shuffledTracks)
     }
     
     /// 🐯 특정 노래를 재생하고 그 뒤에 추천 플레이리스트 붙여주기
@@ -234,6 +182,25 @@ class MusicPlayerModel: ObservableObject {
         }
     }
     
+    /// 🐯 특정 앨범들의 리스트에서 트랙을 가져와 필터링하는 메서드
+    /// - Parameter albums: 필터링할 앨범 배열
+    /// - Returns: 필터링된 트랙 배열
+    private func fetchAndFilterTracks(from albums: MusicItemCollection<Album>) async throws -> [Track] {
+        var allTracks: [Track] = []
+        
+        for album in albums {
+            let detailedAlbum = try await album.with([.tracks])
+            guard let tracks = detailedAlbum.tracks else {
+                print("🚫 Related Albums Tracks Problem")
+                continue
+            }
+            let filteredTracks = filterInstrumentalTracks(from: tracks)
+            allTracks.append(contentsOf: filteredTracks)
+        }
+        
+        return allTracks
+    }
+    
     /// 🐯 instrumental를 제목에 포함한 트랙을 필터링하는 메서드
     /// - Parameter tracks: 필터링할 트랙 배열
     /// - Returns: 필터링된 트랙 배열
@@ -280,4 +247,3 @@ class MusicPlayerModel: ObservableObject {
     }
     
 }
-

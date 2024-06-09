@@ -106,7 +106,9 @@ struct MusicListRowView: View {
     
     var body: some View {
         Button {
-            musicPlayerModel.playTrackWithRecommendedList(track)
+            if case .song(let song) = track {
+                musicPlayerModel.playMusicWithRecommendedList(song)
+            }
         } label: {
             HStack(spacing: 0) {
                 if let trackNumber = track.trackNumber {
