@@ -74,15 +74,14 @@ final class MusicPlayerModel: ObservableObject {
     }
     
     /// 🐯 ❗️Shake action을 감지했을 때 새로운 플레이 리스트로 교체해주는 메서드
-    func playRandomMusic() async {
-        let model = NextMusicRecommendationModel()
+    func updatePlaylistAfterShaking() async {
+        guard let track = lastRandomTrack else {
+            print("🚫 Last Random Track Problem")
+            return
+        }
         
-        /// 추천 트랙 추가
-        Task {
-            let recommendedList = try await model.requestNextMusicList()
-            if let recommendedList {
-                play(recommendedList[0], in: recommendedList, with: nil)
-            }
+        if case .song(let song) = track {
+            playMusicWithRecommendedList(song)
         }
     }
     
@@ -102,6 +101,10 @@ final class MusicPlayerModel: ObservableObject {
         // 트랙 가져오기 및 필터링
         let allTracks = try await fetchAndFilterTracks(from: albums)
         
+        // 셔플된 플리의 마지막 곡을 저장
+        // 흔들기 감지 후, 플리 교체를 위해 사용된다.
+        lastRandomTrack = allTracks.last
+        
         return MusicItemCollection(allTracks)
     }
     
@@ -118,6 +121,10 @@ final class MusicPlayerModel: ObservableObject {
         
         // 트랙 가져오기 및 필터링
         let allTracks = try await fetchAndFilterTracks(from: albums)
+        
+        // 셔플된 플리의 마지막 곡을 저장
+        // 흔들기 감지 후, 플리 교체를 위해 사용된다.
+        lastRandomTrack = allTracks.last
         
         return MusicItemCollection(allTracks)
     }
