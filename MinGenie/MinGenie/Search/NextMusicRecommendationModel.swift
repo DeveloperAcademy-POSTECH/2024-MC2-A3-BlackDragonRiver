@@ -7,7 +7,7 @@
 
 import MusicKit
 
-class NextMusicRecommendationModel {
+struct NextMusicRecommendationModel {
  
     func requestNextMusicList() async throws ->  MusicItemCollection<Track>? {
         let request = MusicPersonalRecommendationsRequest()
