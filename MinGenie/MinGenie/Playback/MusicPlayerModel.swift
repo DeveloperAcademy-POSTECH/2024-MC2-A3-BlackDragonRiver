@@ -161,7 +161,7 @@ final class MusicPlayerModel: ObservableObject {
     /// 🐯 특정 노래를 재생하고 그 뒤에 추천 플레이리스트 붙여주기
     /// - Parameter song: 관련된 노래를 찾을 때 사용할 노래
     func playMusicWithRecommendedList(_ song: Song) {
-        let track = fromSongToTrackType(song)
+        let track = fromSongToTrack(song)
         
         // 개별 곡 재생
         play(track, in: nil, with: nil)
@@ -218,8 +218,6 @@ final class MusicPlayerModel: ObservableObject {
         }
     }
     
-
-    
     /// (추가) song -> Track 컨버터
     private func sendToMusicPlayer(_ song: Song) {
         let track = Track.song(song)
@@ -229,7 +227,7 @@ final class MusicPlayerModel: ObservableObject {
     /// 🐰 Song 타입을 Track 타입으로 변경
     /// - Parameter song: Track 타입으로 변경할 Song
     /// - Returns: 전달받은 Song을 Track 타입으로 변환 후 반환
-    private func fromSongToTrackType(_ song: Song) -> Track {
+    private func fromSongToTrack(_ song: Song) -> Track {
         Track.song(song)
     }
     
