@@ -27,7 +27,7 @@ struct NowPlayingView: View {
                 DismissButton { FullScreenDismiss() }
                     .padding(.bottom, 10)
                 HStack {
-                    Text("못할 것도 없지 화이팅🔥")
+                    Text("Flowish")
                         .font(.system(size: 32, weight: .heavy))
                         .foregroundStyle(Color.Text.blue)
                         .padding()

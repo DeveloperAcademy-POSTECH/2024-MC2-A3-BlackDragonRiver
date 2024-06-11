@@ -22,28 +22,28 @@ struct OnboardingTabView: View {
             ZStack {
                 if currentPage == 0 {
                     OnboardingPageView(
-                        title: "반갑습니다! 복숭K님,\n업무환경에 딱 맞는\n음악을 추천드릴게요!",
+                        title: "반갑습니다!\n집중할 수 있는 환경을 \n만들어드릴게요",
                         imageName: "notebook"
                     )
                 } else if currentPage == 1 {
                     OnboardingMusicAuthButtonView(
                         model: musicAuthorizationModel,
-                        title: "이제 복숭K님의\n애플 뮤직을 연결할게요",
-                        imageName: "headphone",
+                        title: "앱 사용을 위해\n애플 뮤직을 연결할게요",
+                        imageName: "iphone",
                         text: "권한을 허용해야 음악 재생목록이 연결돼요",
                         currentPage: $currentPage
                     )
 
                 } else if currentPage == 2 {
                     OnboardingNextButtonPageView(
-                        title: "핸드폰을 바닥에 두고\n좌우로 흔들면 노래가 교체돼요!",
-                        imageName: "shaking",
+                        title: "핸드폰을 책상 위에\n놓아주세요",
+                        imageName: "ShakeFloor",
                         currentPage: $currentPage
                     )
                 } else if currentPage == 3 {
                     OnboardingPageView(
-                        title: "직접 좌우로\n흔들어보세요!",
-                        imageName: "shaking"
+                        title: "책상에 놓은 상태에서\n좌우로 흔들어주세요!",
+                        imageName: "ShakingFloorMoving"
                     )
                     .onAppear {
                         shakeDetectionModel.startDetection()
@@ -61,7 +61,7 @@ struct OnboardingTabView: View {
                 } else if currentPage == 6 {
                     OnboardingLastPageView(
                         hasSeenOnboarding: $hasSeenOnboarding, 
-                        title: "음악과 함께\n일할 준비가 되셨나요?",
+                        title: "음악과 함께\n집중할 준비가 되셨나요?",
                         imageName: "headphone"
                     )
                 }
