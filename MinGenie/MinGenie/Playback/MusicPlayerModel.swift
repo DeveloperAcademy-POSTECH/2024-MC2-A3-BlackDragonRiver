@@ -28,6 +28,8 @@ final class MusicPlayerModel: ObservableObject {
     private var isPlaybackQueueInitialized = false
     private var playbackQueueInitializationItemID: MusicItemID?
     
+    private var lastRandomTrack: Track?
+    
     // MARK: - Methods
     
     func togglePlaybackStatus<MusicItemType: PlayableMusicItem>(for item: MusicItemType) {
@@ -71,16 +73,15 @@ final class MusicPlayerModel: ObservableObject {
         }
     }
     
-    /// 🐯 Shake action을 감지했을 때 새로운 플레이 리스트로 교체해주는 메서드
-    func playRandomMusic() async {
-        let model = NextMusicRecommendationModel()
+    /// 🐯 ❗️Shake action을 감지했을 때 새로운 플레이 리스트로 교체해주는 메서드
+    func updatePlaylistAfterShaking() async {
+        guard let track = lastRandomTrack else {
+            print("🚫 Last Random Track Problem")
+            return
+        }
         
-        /// 추천 트랙 추가
-        Task {
-            let recommendedList = try await model.requestNextMusicList()
-            if let recommendedList {
-                play(recommendedList[0], in: recommendedList, with: nil)
-            }
+        if case .song(let song) = track {
+            playMusicWithRecommendedList(song)
         }
     }
     
@@ -99,9 +100,12 @@ final class MusicPlayerModel: ObservableObject {
         
         // 트랙 가져오기 및 필터링
         let allTracks = try await fetchAndFilterTracks(from: albums)
-        let shuffledTracks = allTracks.shuffled()
         
-        return MusicItemCollection(shuffledTracks)
+        // 셔플된 플리의 마지막 곡을 저장
+        // 흔들기 감지 후, 플리 교체를 위해 사용된다.
+        lastRandomTrack = allTracks.last
+        
+        return MusicItemCollection(allTracks)
     }
     
     /// 🐯특정 앨범과 관련된 다음 노래로 재생할 Track 타입의 배열을 리턴해주는 메서드
@@ -117,15 +121,47 @@ final class MusicPlayerModel: ObservableObject {
         
         // 트랙 가져오기 및 필터링
         let allTracks = try await fetchAndFilterTracks(from: albums)
-        let shuffledTracks = allTracks.shuffled()
         
-        return MusicItemCollection(shuffledTracks)
+        // 셔플된 플리의 마지막 곡을 저장
+        // 흔들기 감지 후, 플리 교체를 위해 사용된다.
+        lastRandomTrack = allTracks.last
+        
+        return MusicItemCollection(allTracks)
+    }
+    
+    /// 🐯 특정 앨범들의 리스트에서 트랙을 가져와 필터링하는 메서드
+    /// - Parameter albums: 필터링할 앨범 배열
+    /// - Returns: 필터링된 트랙 배열
+    private func fetchAndFilterTracks(from albums: MusicItemCollection<Album>) async throws -> [Track] {
+        var allTracks: [Track] = []
+        
+        for album in albums {
+            let detailedAlbum = try await album.with([.tracks])
+            guard let tracks = detailedAlbum.tracks else {
+                print("🚫 Related Albums Tracks Problem")
+                continue
+            }
+            let filteredTracks = filterInstrumentalTracks(from: tracks)
+            allTracks.append(contentsOf: filteredTracks)
+        }
+        
+        return allTracks.shuffled()
+    }
+    
+    /// 🐯 instrumental를 제목에 포함한 트랙을 필터링하는 메서드
+    /// - Parameter tracks: 필터링할 트랙 배열
+    /// - Returns: 필터링된 트랙 배열
+    private func filterInstrumentalTracks(from tracks: MusicItemCollection<Track>) -> [Track] {
+        return tracks.filter { track in
+            // 대, 소문자 구분 없이 제외
+            return track.title.range(of: "(instrumental)", options: .caseInsensitive) == nil
+        }
     }
     
     /// 🐯 특정 노래를 재생하고 그 뒤에 추천 플레이리스트 붙여주기
     /// - Parameter song: 관련된 노래를 찾을 때 사용할 노래
     func playMusicWithRecommendedList(_ song: Song) {
-        let track = fromSongToTrackType(song)
+        let track = fromSongToTrack(song)
         
         // 개별 곡 재생
         play(track, in: nil, with: nil)
@@ -182,35 +218,6 @@ final class MusicPlayerModel: ObservableObject {
         }
     }
     
-    /// 🐯 특정 앨범들의 리스트에서 트랙을 가져와 필터링하는 메서드
-    /// - Parameter albums: 필터링할 앨범 배열
-    /// - Returns: 필터링된 트랙 배열
-    private func fetchAndFilterTracks(from albums: MusicItemCollection<Album>) async throws -> [Track] {
-        var allTracks: [Track] = []
-        
-        for album in albums {
-            let detailedAlbum = try await album.with([.tracks])
-            guard let tracks = detailedAlbum.tracks else {
-                print("🚫 Related Albums Tracks Problem")
-                continue
-            }
-            let filteredTracks = filterInstrumentalTracks(from: tracks)
-            allTracks.append(contentsOf: filteredTracks)
-        }
-        
-        return allTracks
-    }
-    
-    /// 🐯 instrumental를 제목에 포함한 트랙을 필터링하는 메서드
-    /// - Parameter tracks: 필터링할 트랙 배열
-    /// - Returns: 필터링된 트랙 배열
-    private func filterInstrumentalTracks(from tracks: MusicItemCollection<Track>) -> [Track] {
-        return tracks.filter { track in
-            // 대, 소문자 구분 없이 제외
-            return track.title.range(of: "(instrumental)", options: .caseInsensitive) == nil
-        }
-    }
-    
     /// (추가) song -> Track 컨버터
     private func sendToMusicPlayer(_ song: Song) {
         let track = Track.song(song)
@@ -220,7 +227,7 @@ final class MusicPlayerModel: ObservableObject {
     /// 🐰 Song 타입을 Track 타입으로 변경
     /// - Parameter song: Track 타입으로 변경할 Song
     /// - Returns: 전달받은 Song을 Track 타입으로 변환 후 반환
-    private func fromSongToTrackType(_ song: Song) -> Track {
+    private func fromSongToTrack(_ song: Song) -> Track {
         Track.song(song)
     }
     

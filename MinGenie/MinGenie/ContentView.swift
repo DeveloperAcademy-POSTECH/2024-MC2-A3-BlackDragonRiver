@@ -40,7 +40,7 @@ struct ContentView: View {
                             // 노래 교체가 끝나면 다시 시작
                             shakeDetectionModel.stopDetection()
                             Task {
-                                await musicPlayerModel.playRandomMusic()
+                                await musicPlayerModel.updatePlaylistAfterShaking()
                                 if phase == .background {
                                     shakeDetectionModel.startDetection()
                                 }
