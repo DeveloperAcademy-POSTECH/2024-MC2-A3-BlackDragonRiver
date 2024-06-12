@@ -16,6 +16,7 @@ struct ContentView: View {
     @StateObject var musicPlayerModel = MusicPlayerModel.shared
     
     @AppStorage("Onboarding") var hasSeenOnboarding = false
+    @AppStorage("BackgroundInfo") var isShowingBackgroundInfoView = true
     
     var body: some View {
         if hasSeenOnboarding {
@@ -23,7 +24,6 @@ struct ContentView: View {
                 HomeView()
                     .modelContainer(for: StoredTrackID.self)
                     .environmentObject(musicPlayerModel)
-                
                     .onChange(of: phase) { _, newValue in
                         if newValue == .background && musicPlayerModel.isPlaying {
                             shakeDetectionModel.startDetection()
@@ -49,6 +49,28 @@ struct ContentView: View {
                     }
                 
                 MiniPlayerView()
+                
+                // 백그라운드에서 실행됨을 알리는 설명 화면
+                // 앱 설치하고 처음 진입했을 때만 뜨고 이후로 뜨지 않음.
+                // 온보딩과 동일함.
+                if isShowingBackgroundInfoView {
+                    ZStack(alignment: .topTrailing) {
+                        Image("BackgroundInfoView")
+                            .resizable()
+                            .ignoresSafeArea()
+                        
+                        Button {
+                            isShowingBackgroundInfoView = false
+                            
+                        } label: {
+                            Image(systemName: "xmark")
+                                .foregroundStyle(.white)
+                                .frame(width: 50, height: 50)
+                                .padding(EdgeInsets(top: 60, leading: 0, bottom: 0, trailing: 10))
+                        }
+                    }
+                }
+
             }
             .ignoresSafeArea(.keyboard)
         } else {
