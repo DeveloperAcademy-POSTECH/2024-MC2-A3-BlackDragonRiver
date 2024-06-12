@@ -9,7 +9,7 @@
 import MusicKit
 import SwiftUI
 
-struct MusicItemRowView: View {
+struct MusicItemRowView: View {    
     private let imageSize: CGFloat = 160
     
     let itemRowTitle: String
