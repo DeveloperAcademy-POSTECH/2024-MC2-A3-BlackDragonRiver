@@ -9,7 +9,7 @@ import MusicKit
 import SwiftUI
 
 /// 애플 뮤직 권한 받기 Model
-class MusicAuthorizationModel: ObservableObject {
+final class MusicAuthorizationModel: ObservableObject {
     @State private var musicAuthorizationStatus: MusicAuthorization.Status = .notDetermined
     @Environment(\.openURL) private var openURL
 

@@ -26,5 +26,7 @@ struct OnboardingPageView: View {
                 .frame(width: 361, height: 200)
             Spacer()
         }
+        
+
     }
 }

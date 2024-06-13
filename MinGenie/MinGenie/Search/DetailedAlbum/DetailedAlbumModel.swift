@@ -8,7 +8,7 @@
 import MusicKit
 import SwiftUI
 
-class DetailedAlbumModel: ObservableObject {
+final class DetailedAlbumModel: ObservableObject {
     @Published var tracks: MusicItemCollection<Track>? = []
 
     /// Loads tracks asynchronously.

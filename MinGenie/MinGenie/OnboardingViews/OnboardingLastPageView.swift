@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct OnboardingLastPageView: View {
+    @Binding var hasSeenOnboarding: Bool
+    
     let title: String
     let imageName: String
-    @Binding var hasSeenOnboarding: Bool
     
     var body: some View {
         ZStack {
-            VStack{
+            VStack {
                 Text(title)
                     .font(.title)
                     .fontWeight(.bold)
@@ -22,26 +23,28 @@ struct OnboardingLastPageView: View {
                     .multilineTextAlignment(.center)
                     .lineSpacing(6)
                     .frame(width: 300, height: 120, alignment: .bottom)
+                
                     .padding(EdgeInsets(top: 100, leading: 0, bottom: 40, trailing: 0))
                 GifImage(imageName)
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 361, height: 200)
+                
                 Spacer()
             }
-            VStack{
+            
+            VStack {
                 Spacer()
-                Button(action: {
-                    UserDefaults.standard.set(true, forKey: "hasSeenOnboarding")
+                Button {
                     hasSeenOnboarding = true
-
-                }) {
+                } label: {
                     Text("시작하기")
                         .fontWeight(.semibold)
-                        .foregroundColor(.white)
+                        .foregroundColor(Color.Text.white100)
                         .frame(width: 361, height: 50)
-                        .background(Color.black)
+                        .background(Color.Shape.black)
                         .cornerRadius(16)
-                        .padding(.bottom, 160)                }
+                        .padding(.bottom, 160)
+                }
             }
         }
     }

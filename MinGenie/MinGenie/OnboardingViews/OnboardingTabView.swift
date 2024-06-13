@@ -5,6 +5,7 @@
 //  Created by Sunyoung Jeon  on 5/22/24.
 //
 
+import AudioToolbox
 import Combine
 import SwiftUI
 
@@ -21,27 +22,28 @@ struct OnboardingTabView: View {
             ZStack {
                 if currentPage == 0 {
                     OnboardingPageView(
-                        title: "반갑습니다! 복숭K님,\n업무환경에 딱 맞는\n음악을 추천드릴께요!",
+                        title: "반갑습니다!\n집중할 수 있는 환경을 \n만들어드릴게요",
                         imageName: "notebook"
                     )
                 } else if currentPage == 1 {
-                    OnboardingButtonView(
+                    OnboardingMusicAuthButtonView(
                         model: musicAuthorizationModel,
-                        title: "이제 복숭K님의\n애플 뮤직을 연결할게요",
-                        imageName: "headphone",
+                        title: "앱 사용을 위해\n애플 뮤직을 연결할게요",
+                        imageName: "iphone",
                         text: "권한을 허용해야 음악 재생목록이 연결돼요",
                         currentPage: $currentPage
                     )
 
                 } else if currentPage == 2 {
-                    OnboardingPageView(
-                        title: "핸드폰 화면이 바닥을\n향한 채로 좌우로 흔들면\n노래가 교체돼요!",
-                        imageName: "shaking"
+                    OnboardingNextButtonPageView(
+                        title: "핸드폰을 책상 위에\n놓아주세요",
+                        imageName: "ShakeFloor",
+                        currentPage: $currentPage
                     )
                 } else if currentPage == 3 {
                     OnboardingPageView(
-                        title: "직접 좌우로\n흔들어보세요!",
-                        imageName: "shaking"
+                        title: "책상에 놓은 상태에서\n좌우로 흔들어주세요!",
+                        imageName: "ShakingFloorMoving"
                     )
                     .onAppear {
                         shakeDetectionModel.startDetection()
@@ -58,13 +60,10 @@ struct OnboardingTabView: View {
                     )
                 } else if currentPage == 6 {
                     OnboardingLastPageView(
-                        title: "음악과 함께\n일할 준비가 되셨나요?",
-                        imageName: "headphone",
-                        hasSeenOnboarding: $hasSeenOnboarding
+                        hasSeenOnboarding: $hasSeenOnboarding, 
+                        title: "음악과 함께\n집중할 준비가 되셨나요?",
+                        imageName: "headphone"
                     )
-                    .onAppear {
-                        shakeDetectionModel.stopDetection()
-                    }
                 }
             }
             .animation(.default, value: currentPage) // 애니메이션 효과
@@ -104,6 +103,9 @@ struct OnboardingTabView: View {
             shakeDetectionModel.$shakeDetected
                 .filter { $0 }
                 .sink { _ in
+                    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate) //진동 주기
+                    shakeDetectionModel.stopDetection()
+                    
                     if currentPage == 3 {
                         currentPage = 5 // 페이지 7로 이동
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {

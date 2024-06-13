@@ -17,6 +17,8 @@ struct SongCell: View {
     
     var body: some View {
         Button {
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            
             musicPlayerModel.playMusicWithRecommendedList(song)
             modelContext.insert(StoredTrackID(song))
         } label: {

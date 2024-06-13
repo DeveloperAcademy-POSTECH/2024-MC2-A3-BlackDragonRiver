@@ -41,6 +41,7 @@ struct MusicSearchView: View {
                     }
                 }
             }
+            .scrollDismissesKeyboard(.immediately)
         }
         .background(Color.BG.main)
         .onChange(of: searchTerm) { _, _ in
