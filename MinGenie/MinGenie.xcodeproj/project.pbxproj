@@ -39,10 +39,8 @@
 		D8672FED2BF2444600E9E242 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8672FEC2BF2444600E9E242 /* ContentView.swift */; };
 		D8672FEF2BF2444600E9E242 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8672FEE2BF2444600E9E242 /* Assets.xcassets */; };
 		D8672FF22BF2444700E9E242 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8672FF12BF2444700E9E242 /* Preview Assets.xcassets */; };
-		D8720A222C1837D9005AB163 /* SubscriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8720A212C1837D9005AB163 /* SubscriptionManager.swift */; };
 		D8720A1D2C181B46005AB163 /* ShakingFloorMoving.gif in Resources */ = {isa = PBXBuildFile; fileRef = D8720A1C2C181B46005AB163 /* ShakingFloorMoving.gif */; };
 		D8720A1F2C181B4D005AB163 /* ShakeFloor.gif in Resources */ = {isa = PBXBuildFile; fileRef = D8720A1E2C181B4D005AB163 /* ShakeFloor.gif */; };
-		D8720A222C1837D9005AB163 /* SubscriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8720A212C1837D9005AB163 /* SubscriptionManager.swift */; };
 		D8C4C80C2BFF1B2E007C9E4B /* NowQueueItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C4C80B2BFF1B2E007C9E4B /* NowQueueItemCell.swift */; };
 		D8C4C8102BFF5A12007C9E4B /* SongCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C4C80F2BFF5A12007C9E4B /* SongCell.swift */; };
 		D8C4C8122BFF5A60007C9E4B /* AlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C4C8112BFF5A60007C9E4B /* AlbumCell.swift */; };
@@ -85,10 +83,8 @@
 		D8672FEC2BF2444600E9E242 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D8672FEE2BF2444600E9E242 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D8672FF12BF2444700E9E242 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		D8720A212C1837D9005AB163 /* SubscriptionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManager.swift; sourceTree = "<group>"; };
 		D8720A1C2C181B46005AB163 /* ShakingFloorMoving.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ShakingFloorMoving.gif; sourceTree = "<group>"; };
 		D8720A1E2C181B4D005AB163 /* ShakeFloor.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ShakeFloor.gif; sourceTree = "<group>"; };
-		D8720A212C1837D9005AB163 /* SubscriptionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManager.swift; sourceTree = "<group>"; };
 		D8C4C80B2BFF1B2E007C9E4B /* NowQueueItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowQueueItemCell.swift; sourceTree = "<group>"; };
 		D8C4C80F2BFF5A12007C9E4B /* SongCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongCell.swift; sourceTree = "<group>"; };
 		D8C4C8112BFF5A60007C9E4B /* AlbumCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCell.swift; sourceTree = "<group>"; };
@@ -182,7 +178,6 @@
 			isa = PBXGroup;
 			children = (
 				D8184F002BF70F1900CBA736 /* MusicAuthorizationModel.swift */,
-				D8720A202C1837AC005AB163 /* Subscription */,
 			);
 			path = Authorization;
 			sourceTree = "<group>";
@@ -238,14 +233,6 @@
 				D8672FF12BF2444700E9E242 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		D8720A202C1837AC005AB163 /* Subscription */ = {
-			isa = PBXGroup;
-			children = (
-				D8720A212C1837D9005AB163 /* SubscriptionManager.swift */,
-			);
-			path = Subscription;
 			sourceTree = "<group>";
 		};
 		D8C4C80D2BFF1BC3007C9E4B /* GIF */ = {
@@ -363,7 +350,6 @@
 				264802B22BFE343700369831 /* StoredTrack.swift in Sources */,
 				86D8FD032BFB2B3C008FD1AD /* MiniPlayerView.swift in Sources */,
 				86D8FD102BFB2BC3008FD1AD /* NowPlayingItemCell.swift in Sources */,
-				D8720A222C1837D9005AB163 /* SubscriptionManager.swift in Sources */,
 				D8C4C8122BFF5A60007C9E4B /* AlbumCell.swift in Sources */,
 				26B6F5262BFA2D07000B2340 /* MusicItemCell.swift in Sources */,
 				D8C4C8102BFF5A12007C9E4B /* SongCell.swift in Sources */,
@@ -533,15 +519,16 @@
 				INFOPLIST_FILE = MinGenie/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Min Genie";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
-				INFOPLIST_KEY_NSAppleMusicUsageDescription = "권한을 허용해야 음악 재생목록과 모션이 가능합니다.";
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Apple Music API를 이용해서 음악을 검색하고 재생하기 때문에 접근 권한이 필요합니다. 허용하지 않으면 음악 검색 및 재생이 불가능합니다.\n";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "앱이 백그라운드와 포그라운드 모두에서 위치 서비스를 사용하기 위해 필요합니다.";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "앱이 백그라운드에서도 위치 서비스를 사용하기 위해 필요합니다.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱 사용 중에 위치 서비스를 사용하기 위해 필요합니다.";
-				INFOPLIST_KEY_NSMotionUsageDescription = "이 앱은 기기 움직임을 감지하여 음악을 자동으로 변경하기 위해 모션 데이터를 사용합니다.";
+				INFOPLIST_KEY_NSMotionUsageDescription = "흔들기를 활용해 음악을 교체합니다. 허용하지 않으면 흔들기 기능을 사용하지 못합니다.\n흔들기흔들기를 활용해 음악을 교체합니다. 허용하지 않으면 흔들기 기능을 사용하지 못합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -579,15 +566,16 @@
 				INFOPLIST_FILE = MinGenie/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Min Genie";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
-				INFOPLIST_KEY_NSAppleMusicUsageDescription = "권한을 허용해야 음악 재생목록과 모션이 가능합니다.";
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Apple Music API를 이용해서 음악을 검색하고 재생하기 때문에 접근 권한이 필요합니다. 허용하지 않으면 음악 검색 및 재생이 불가능합니다.\n";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "앱이 백그라운드와 포그라운드 모두에서 위치 서비스를 사용하기 위해 필요합니다.";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "앱이 백그라운드에서도 위치 서비스를 사용하기 위해 필요합니다.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱 사용 중에 위치 서비스를 사용하기 위해 필요합니다.";
-				INFOPLIST_KEY_NSMotionUsageDescription = "이 앱은 기기 움직임을 감지하여 음악을 자동으로 변경하기 위해 모션 데이터를 사용합니다.";
+				INFOPLIST_KEY_NSMotionUsageDescription = "흔들기를 활용해 음악을 교체합니다. 허용하지 않으면 흔들기 기능을 사용하지 못합니다.\n흔들기흔들기를 활용해 음악을 교체합니다. 허용하지 않으면 흔들기 기능을 사용하지 못합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
