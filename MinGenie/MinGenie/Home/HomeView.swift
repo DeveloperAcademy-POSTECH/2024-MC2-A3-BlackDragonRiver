@@ -14,10 +14,12 @@ struct HomeView: View {
     @StateObject private var musicPersonalRecommendationModel = MusicPersonalRecommendationModel()
     // 지난 선곡 데이터를 위한 모델
     @StateObject private var selectedMusicDataModel = TrackIDConverter()
-    @ObservedObject var subscriptionManager = SubscriptionManager.shared
     
     @State private var searchTerm: String = ""
-    @State private var isShowingOffer = false
+    
+    // 애플 뮤직 구독 상태 관리
+    @State private var musicSubscription: MusicSubscription?
+    @State private var isShowingSubscriptionOffer = false
     
     @Query(sort: \StoredTrackID.timestamp, order: .reverse) private var storedTrackIDs: [StoredTrackID]
     
@@ -53,17 +55,15 @@ struct HomeView: View {
         }
         .onAppear {
             selectedMusicDataModel.loadTracksByID(storedTrackIDs)
-            
-            isShowingOffer = !subscriptionManager.canPlayCatalogContent
         }
         .task {
             for await subscription in MusicSubscription.subscriptionUpdates {
-                subscriptionManager.musicSubscription = subscription
+                musicSubscription = subscription
+                isShowingSubscriptionOffer = !(musicSubscription?.canPlayCatalogContent ?? false)
             }
         }
-        .musicSubscriptionOffer(isPresented: $isShowingOffer)
+        .musicSubscriptionOffer(isPresented: $isShowingSubscriptionOffer)
     }
-    
 }
 
 #Preview {
