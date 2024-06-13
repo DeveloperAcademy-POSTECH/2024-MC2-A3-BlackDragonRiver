@@ -17,6 +17,10 @@ struct HomeView: View {
     
     @State private var searchTerm: String = ""
     
+    // 애플 뮤직 구독 상태 관리
+    @State private var musicSubscription: MusicSubscription?
+    @State private var isShowingSubscriptionOffer = false
+    
     @Query(sort: \StoredTrackID.timestamp, order: .reverse) private var storedTrackIDs: [StoredTrackID]
     
     var body: some View {
@@ -52,8 +56,14 @@ struct HomeView: View {
         .onAppear {
             selectedMusicDataModel.loadTracksByID(storedTrackIDs)
         }
+        .task {
+            for await subscription in MusicSubscription.subscriptionUpdates {
+                musicSubscription = subscription
+                isShowingSubscriptionOffer = !(musicSubscription?.canPlayCatalogContent ?? false)
+            }
+        }
+        .musicSubscriptionOffer(isPresented: $isShowingSubscriptionOffer)
     }
-    
 }
 
 #Preview {
