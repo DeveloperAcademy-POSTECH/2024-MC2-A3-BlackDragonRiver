@@ -517,12 +517,9 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MinGenie/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Min Genie";
+				INFOPLIST_KEY_CFBundleDisplayName = Flowish;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Apple Music API를 이용해서 음악을 검색하고 재생하기 때문에 접근 권한이 필요합니다. 허용하지 않으면 음악 검색 및 재생이 불가능합니다.\n";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "앱이 백그라운드와 포그라운드 모두에서 위치 서비스를 사용하기 위해 필요합니다.";
-				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "앱이 백그라운드에서도 위치 서비스를 사용하기 위해 필요합니다.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱 사용 중에 위치 서비스를 사용하기 위해 필요합니다.";
 				INFOPLIST_KEY_NSMotionUsageDescription = "흔들기를 활용해 음악을 교체합니다. 허용하지 않으면 흔들기 기능을 사용하지 못합니다.\n흔들기흔들기를 활용해 음악을 교체합니다. 허용하지 않으면 흔들기 기능을 사용하지 못합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -564,12 +561,9 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MinGenie/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Min Genie";
+				INFOPLIST_KEY_CFBundleDisplayName = Flowish;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Apple Music API를 이용해서 음악을 검색하고 재생하기 때문에 접근 권한이 필요합니다. 허용하지 않으면 음악 검색 및 재생이 불가능합니다.\n";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "앱이 백그라운드와 포그라운드 모두에서 위치 서비스를 사용하기 위해 필요합니다.";
-				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "앱이 백그라운드에서도 위치 서비스를 사용하기 위해 필요합니다.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱 사용 중에 위치 서비스를 사용하기 위해 필요합니다.";
 				INFOPLIST_KEY_NSMotionUsageDescription = "흔들기를 활용해 음악을 교체합니다. 허용하지 않으면 흔들기 기능을 사용하지 못합니다.\n흔들기흔들기를 활용해 음악을 교체합니다. 허용하지 않으면 흔들기 기능을 사용하지 못합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
