@@ -33,7 +33,7 @@ struct NowQueueItemCell: View {
                     .frame(width: artworkSize, height: artworkSize)
             } else {
                 
-                    Image("")
+                    Image("FlowishGray")
                         .resizable()
                         .frame(width: artworkSize, height: artworkSize)
             }

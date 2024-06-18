@@ -28,7 +28,7 @@ struct NowPlayingView: View {
                     .padding(.bottom, 10)
                 HStack {
                     Text("Flowish")
-                        .font(.system(size: 32))
+                        .font(.system(size: 32, weight: .bold))
                         .foregroundStyle(Color.Text.black)
                         .padding()
                     Spacer()
@@ -263,7 +263,7 @@ struct NowPlayingView: View {
                         .opacity(0.2)
                 }
             } else {
-                Image("")
+                Image("FlowishGray")
                     .resizable()
                     .frame(width: 244, height: 244)
                     .cornerRadius(16)

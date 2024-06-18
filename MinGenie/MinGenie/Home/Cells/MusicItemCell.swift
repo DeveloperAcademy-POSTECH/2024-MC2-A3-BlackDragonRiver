@@ -50,7 +50,7 @@ struct MusicItemCell: View {
                         .clipShape(RoundedRectangle(cornerRadius: imageCornerRadius))
                     
                 } else {  // Track에 이미지가 없을 경우 예외 처리
-                    Image("")
+                    Image("FlowishGray")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: imageSize, height: imageSize)
