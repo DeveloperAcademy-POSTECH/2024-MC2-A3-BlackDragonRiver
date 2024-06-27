@@ -21,8 +21,7 @@ struct NowPlayingView: View {
     var body: some View {
         /// 전체 View 구성
         NavigationView {
-            //            ZStack {
-            //                Color.BG.main.ignoresSafeArea(.all)
+            
             VStack(spacing: 0) {
                 DismissButton { FullScreenDismiss() }
                     .padding(.bottom, 10)
@@ -36,30 +35,15 @@ struct NowPlayingView: View {
                 
                 ZStack {
                     CarouselView
-//                        .padding(30)
-                    //                        .padding(.top, 20)
                     pauseButton
                         .padding(.bottom, -20)
                 }
-                                                .frame(height: 360)
-//                .background(.red)
+                .frame(height: 360)
                 
                 QueueView
             }
             .background(Color.BG.main)
-            
-            //                VStack {
-            //                    Text("못할 것도 없지 화이팅🔥")
-            //                        .font(.system(size: 34, weight: .black))
-            //                        .foregroundStyle(Color.Text.blue)
-            //                }
-            //                .padding(.leading, -18)
-            //                .padding(.top, -345)
-            
-            
         }
-        
-        //        }
         
         /// FullScreenDismiss 드래그 감지
         .gesture(
@@ -86,7 +70,6 @@ struct NowPlayingView: View {
                 currentIndex = newIndex
             }
         }
-        
     }
     
     @ViewBuilder
@@ -96,6 +79,7 @@ struct NowPlayingView: View {
             Queuelist(for: playbackQueue)
         }
     }
+    
     @ViewBuilder
     private func Queuelist(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View {
         ScrollViewReader { proxy in
@@ -116,6 +100,7 @@ struct NowPlayingView: View {
             }
             .background(Color.BG.main)
             .listStyle(.plain)
+            
             ///비활성화되어있을 때 곡이 넘어가도, 켜면 바로 그 곡으로 스크롤되도록!
             .onAppear {
                 if let entry = playbackQueue.currentEntry, let newIndex = playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) {
@@ -250,7 +235,6 @@ struct NowPlayingView: View {
     
     private func imageContainer(for artwork: Artwork?) -> some View {
         VStack {
-            //            Spacer()
             if let artwork = artwork {
                 ZStack {
                     ArtworkImage(artwork, width: 244, height: 244)
@@ -269,7 +253,6 @@ struct NowPlayingView: View {
                     .cornerRadius(16)
                     .shadow(radius: 4)
             }
-            //            Spacer()
         }
     }
 }
