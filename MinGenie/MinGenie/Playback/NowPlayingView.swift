@@ -1,8 +1,6 @@
 import MusicKit
 import SwiftUI
 
-/// ✏️ 현재 재생 View입니다 (수정중) ✏️
-
 struct NowPlayingView: View {
     
     ///Music Player관련
@@ -12,11 +10,6 @@ struct NowPlayingView: View {
     ///FullScreen Dismiss 관련
     @Environment(\.presentationMode) var presentation
     @GestureState private var dragOffset: CGFloat = 0
-    
-    ///Carousel 인덱스 관련
-    @AppStorage("currentIndex") private var currentIndex: Int = 0
-    
-    @State var idx = -1
     
     var body: some View {
         /// 전체 View 구성
@@ -56,18 +49,18 @@ struct NowPlayingView: View {
         .onAppear {
             /// onAppear시, entries에서의 index와 캐러셀의 index를 일치시켜줘요!
             if let savedEntryIndex = playbackQueue.entries.firstIndex(where: { $0.id == playbackQueue.currentEntry?.id }) {
-                currentIndex = savedEntryIndex
+                musicPlayer.currentMusicIndex = savedEntryIndex
             }
             /// entries에 아무것도 안담겨 있으면 index 0으로 초기화해요!
             else {
-                currentIndex = 0
+                musicPlayer.currentMusicIndex = 0
             }
         }
         /// fullScreen일때, 현재재생곡이 넘어가면 캐러셀이 전환되는 부분입니다!
         .onChange(of: playbackQueue.currentEntry) { _, entry in
             /// 또 전수검사 해줘요..
             if let entry = entry, let newIndex = playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) {
-                currentIndex = newIndex
+                musicPlayer.currentMusicIndex = newIndex
             }
         }
     }
@@ -93,7 +86,7 @@ struct NowPlayingView: View {
                     .listRowBackground(Color.BG.main)
                     .onTapGesture {
                         playbackQueue.currentEntry = playbackQueue.entries[index]
-                        currentIndex = index
+                        musicPlayer.currentMusicIndex = index
                         if !musicPlayer.isPlaying { pausePlay() }
                     }
                 }
@@ -104,18 +97,18 @@ struct NowPlayingView: View {
             ///비활성화되어있을 때 곡이 넘어가도, 켜면 바로 그 곡으로 스크롤되도록!
             .onAppear {
                 if let entry = playbackQueue.currentEntry, let newIndex = playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) {
-                    currentIndex = newIndex
+                    musicPlayer.currentMusicIndex = newIndex
                     withAnimation {
-                        proxy.scrollTo(currentIndex, anchor: .top)
+                        proxy.scrollTo(musicPlayer.currentMusicIndex, anchor: .top)
                     }
                 }
             }
             ///현재재생곡이 넘어가면 list가 스크롤되는 부분입니다!
             .onChange(of: playbackQueue.currentEntry) { _, entry in
                 if let entry = entry, let newIndex = playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) {
-                    currentIndex = newIndex
+                    musicPlayer.currentMusicIndex = newIndex
                     withAnimation {
-                        proxy.scrollTo(currentIndex, anchor: .top)
+                        proxy.scrollTo(musicPlayer.currentMusicIndex, anchor: .top)
                     }
                 }
             }
@@ -136,19 +129,19 @@ struct NowPlayingView: View {
                 VStack {
                     ZStack {
                         if playbackQueue.entries.count > 0 {
-                            let startIndex = max(currentIndex - 2, 0)
-                            let endIndex = min(currentIndex + 2, playbackQueue.entries.count - 1)
+                            let startIndex = max(musicPlayer.currentMusicIndex - 2, 0)
+                            let endIndex = min(musicPlayer.currentMusicIndex + 2, playbackQueue.entries.count - 1)
                             
                             if startIndex <= endIndex {
                                 ForEach(startIndex...endIndex, id: \.self) { index in
                                     
                                     imageContainer(for: playbackQueue.entries[index].artwork)
-                                        .scaleEffect(1.0 - CGFloat(abs(index - currentIndex)) * 0.1)
-                                        .zIndex(1.0 - Double(abs(index - currentIndex)))
-                                        .offset(x: CGFloat(index - currentIndex) * 50 * (1 - CGFloat(abs(index - currentIndex)) * 0.1) + dragOffset, y: 0)
+                                        .scaleEffect(1.0 - CGFloat(abs(index - musicPlayer.currentMusicIndex)) * 0.1)
+                                        .zIndex(1.0 - Double(abs(index - musicPlayer.currentMusicIndex)))
+                                        .offset(x: CGFloat(index - musicPlayer.currentMusicIndex) * 50 * (1 - CGFloat(abs(index - musicPlayer.currentMusicIndex)) * 0.1) + dragOffset, y: 0)
                                         .padding(.top, -20)
                                     
-                                    if index == currentIndex {
+                                    if index == musicPlayer.currentMusicIndex {
                                         VStack(spacing: 0) {
                                             Text(playbackQueue.entries[index].title)
                                                 .font(.system(size: 20, weight: .bold))
@@ -184,15 +177,15 @@ struct NowPlayingView: View {
                     let threshold: CGFloat = 50
                     if value.translation.width > threshold {
                         withAnimation {
-                            currentIndex = max(0, currentIndex - 1)
+                            musicPlayer.currentMusicIndex = max(0, musicPlayer.currentMusicIndex - 1)
                         }
                     } else if value.translation.width < -threshold {
                         withAnimation {
-                            currentIndex = min(playbackQueue.entries.count - 1, currentIndex + 1)
+                            musicPlayer.currentMusicIndex = min(playbackQueue.entries.count - 1, musicPlayer.currentMusicIndex + 1)
                         }
                     }
                     /// 캐러셀 넘기면 currentEntry를 갈아치워요!
-                    playbackQueue.currentEntry = playbackQueue.entries[currentIndex]
+                    playbackQueue.currentEntry = playbackQueue.entries[musicPlayer.currentMusicIndex]
                 }
         )
     }

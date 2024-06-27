@@ -10,6 +10,7 @@ final class MusicPlayerModel: ObservableObject {
     // MARK: - Properties
     @Published var isPlaying = false
     @Published var playbackQueue = ApplicationMusicPlayer.shared.queue
+    @Published var currentMusicIndex: Int = 0
     
     var playbackStateObserver: AnyCancellable?
     
