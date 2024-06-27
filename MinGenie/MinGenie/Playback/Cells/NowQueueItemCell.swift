@@ -27,18 +27,14 @@ struct NowQueueItemCell: View {
     // MARK: - View
     var body: some View {
         HStack {
-            
             if let itemArtwork = artwork {
                 imageContainer(for: itemArtwork)
                     .frame(width: artworkSize, height: artworkSize)
             } else {
-                
                     Image("FlowishGray")
                         .resizable()
                         .frame(width: artworkSize, height: artworkSize)
             }
-            
-            
             
             VStack(alignment: .leading) {
                 Text(title)
