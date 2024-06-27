@@ -3,9 +3,6 @@ import MusicKit
 import SwiftUI
 
 final class MusicPlayerModel: ObservableObject {
-    static let shared = MusicPlayerModel()
-    
-    private init() {}
     
     // MARK: - Properties
     @Published var isPlaying = false

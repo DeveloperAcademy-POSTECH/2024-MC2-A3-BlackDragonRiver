@@ -2,10 +2,7 @@ import MusicKit
 import SwiftUI
 
 struct NowPlayingView: View {
-    
-    ///Music Player관련
-    @ObservedObject var playbackQueue: ApplicationMusicPlayer.Queue
-    @ObservedObject private var musicPlayer = MusicPlayerModel.shared
+    @EnvironmentObject var musicPlayer: MusicPlayerModel
     
     ///FullScreen Dismiss 관련
     @Environment(\.presentationMode) var presentation
@@ -16,7 +13,7 @@ struct NowPlayingView: View {
         NavigationView {
             
             VStack(spacing: 0) {
-                DismissButton { FullScreenDismiss() }
+                DismissButton { fullScreenDismiss() }
                     .padding(.bottom, 10)
                 HStack {
                     Text("Flowish")
@@ -42,13 +39,13 @@ struct NowPlayingView: View {
         .gesture(
             DragGesture().onEnded { value in
                 if value.translation.height > 150 {
-                    FullScreenDismiss()
+                    fullScreenDismiss()
                 }
             }
         )
         .onAppear {
             /// onAppear시, entries에서의 index와 캐러셀의 index를 일치시켜줘요!
-            if let savedEntryIndex = playbackQueue.entries.firstIndex(where: { $0.id == playbackQueue.currentEntry?.id }) {
+            if let savedEntryIndex = musicPlayer.playbackQueue.entries.firstIndex(where: { $0.id == musicPlayer.playbackQueue.currentEntry?.id }) {
                 musicPlayer.currentMusicIndex = savedEntryIndex
             }
             /// entries에 아무것도 안담겨 있으면 index 0으로 초기화해요!
@@ -57,9 +54,9 @@ struct NowPlayingView: View {
             }
         }
         /// fullScreen일때, 현재재생곡이 넘어가면 캐러셀이 전환되는 부분입니다!
-        .onChange(of: playbackQueue.currentEntry) { _, entry in
+        .onChange(of: musicPlayer.playbackQueue.currentEntry) { _, entry in
             /// 또 전수검사 해줘요..
-            if let entry = entry, let newIndex = playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) {
+            if let entry = entry, let newIndex = musicPlayer.playbackQueue.entries.firstIndex(where: { $0.id == entry.id }) {
                 musicPlayer.currentMusicIndex = newIndex
             }
         }
@@ -69,12 +66,12 @@ struct NowPlayingView: View {
     private var QueueView: some View {
         ZStack {
             Color.BG.main.ignoresSafeArea(.all)
-            Queuelist(for: playbackQueue)
+            QueueList(for: musicPlayer.playbackQueue)
         }
     }
     
     @ViewBuilder
-    private func Queuelist(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View {
+    private func QueueList(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View {
         ScrollViewReader { proxy in
             List {
                 ForEach(playbackQueue.entries.indices, id: \.self) { index in
@@ -117,10 +114,11 @@ struct NowPlayingView: View {
     
     @ViewBuilder
     private var CarouselView: some View {
-        Carousellist(for: playbackQueue)
+        CarouselList(for: musicPlayer.playbackQueue)
     }
     
-    private func Carousellist(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View {
+    @ViewBuilder
+     private func CarouselList(for playbackQueue: ApplicationMusicPlayer.Queue) -> some View {
         
         NavigationStack {
             ZStack {
@@ -204,7 +202,7 @@ struct NowPlayingView: View {
         musicPlayer.togglePlaybackStatus()
     }
     
-    private func FullScreenDismiss() {
+    private func fullScreenDismiss() {
         presentation.wrappedValue.dismiss()
     }
     
