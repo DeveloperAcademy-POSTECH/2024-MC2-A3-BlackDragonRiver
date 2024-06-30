@@ -8,32 +8,38 @@
 import SwiftUI
 
 struct OnboardingNextButtonPageView: View {
+    @Binding var currentPage: Int
+    
     let title: String
     let imageName: String
     
-    @Binding var currentPage: Int
-    
     var body: some View {
-        VStack{
-            Text(title)
-                .font(.title)
-                .fontWeight(.bold)
-                .foregroundStyle(Color.Text.blue)
-                .multilineTextAlignment(.center)
-                .lineSpacing(6)
-                .frame(width: 300, height: 120, alignment: .bottom)
-                .padding(EdgeInsets(top: 100, leading: 0, bottom: 40, trailing: 0))
-            GifImage(imageName)
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 361, height: 200)
-            Spacer()
-        }
-        
-        VStack{
+        ZStack {
+            Color.BG.main.ignoresSafeArea()
+            
+            VStack {
+                Text(title)
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundStyle(Color.Text.blue)
+                    .multilineTextAlignment(.center)
+                    .lineSpacing(6)
+                    .frame(width: 300, height: 120, alignment: .bottom)
+                    .padding(EdgeInsets(top: 100, leading: 0, bottom: 40, trailing: 0))
+                
+                GifImage(imageName)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 361, height: 200)
+                
                 Spacer()
+            }
+            
+            VStack {
+                Spacer()
+                
                 Button {
                     currentPage += 1
-
+                    
                 } label: {
                     Text("다음")
                         .fontWeight(.semibold)
@@ -41,8 +47,10 @@ struct OnboardingNextButtonPageView: View {
                         .frame(width: 361, height: 50)
                         .background(Color.Shape.black)
                         .cornerRadius(16)
-                        .padding(.bottom, 160)
                 }
+                .padding(.bottom, 160)
+                
             }
+        }
     }
 }

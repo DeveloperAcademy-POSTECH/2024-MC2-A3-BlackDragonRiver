@@ -16,7 +16,7 @@ struct ContentView: View {
     @StateObject var musicPlayerModel = MusicPlayerModel.shared
     
     @AppStorage("Onboarding") var hasSeenOnboarding = false
-    @AppStorage("BackgroundInfo") var hasSeenBackgroundInfoView = true
+    @AppStorage("BackgroundInfo") var hasSeenBackgroundInfoView = false
     
     var body: some View {
         if hasSeenOnboarding {
@@ -53,13 +53,13 @@ struct ContentView: View {
                 // 백그라운드에서 실행됨을 알리는 설명 화면
                 // 앱 설치하고 처음 진입했을 때만 뜨고 이후로 뜨지 않음.
                 // 온보딩과 동일함.
-                if hasSeenBackgroundInfoView {
+                if !hasSeenBackgroundInfoView {
                     ZStack(alignment: .topTrailing) {
                         Image("BackgroundInfoView")
                             .resizable()
                             .ignoresSafeArea()
                         Button {
-                            hasSeenBackgroundInfoView = false
+                            hasSeenBackgroundInfoView = true
                         } label: {
                             Image(systemName: "xmark")
                                 .foregroundStyle(.white)
@@ -68,15 +68,14 @@ struct ContentView: View {
                         }
                     }
                 }
-
             }
             .ignoresSafeArea(.keyboard)
+
         } else {
             OnboardingTabView(hasSeenOnboarding: $hasSeenOnboarding)
         }
     }
 }
-
 
 #Preview {
     ContentView()
