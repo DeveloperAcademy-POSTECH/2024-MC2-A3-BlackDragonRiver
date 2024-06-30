@@ -14,31 +14,32 @@ struct OnboardingTabView: View {
     
     @StateObject private var shakeDetectionModel = ShakeDetectionModel()
     @StateObject private var musicAuthorizationModel = MusicAuthorizationModel()
+    
     @State private var currentPage = 0
     @State private var cancellables = Set<AnyCancellable>()
     
     var body: some View {
         VStack {
-            ZStack {
+            VStack {
                 if currentPage == 0 {
                     OnboardingPageView(
-                        title: "반갑습니다!\n집중할 수 있는 환경을 \n만들어드릴게요",
+                        title: "반갑습니다!\n집중할 수 있는 환경을\n만들어드릴게요",
                         imageName: "notebook"
                     )
                 } else if currentPage == 1 {
                     OnboardingMusicAuthButtonView(
                         model: musicAuthorizationModel,
+                        currentPage: $currentPage,
                         title: "앱 사용을 위해\n애플 뮤직을 연결할게요",
                         imageName: "iphone",
-                        text: "권한을 허용해야 음악 재생목록이 연결돼요",
-                        currentPage: $currentPage
+                        text: "권한을 허용해야 음악 재생목록이 연결돼요"
                     )
 
                 } else if currentPage == 2 {
                     OnboardingNextButtonPageView(
+                        currentPage: $currentPage,
                         title: "핸드폰을 책상 위에\n놓아주세요",
-                        imageName: "ShakeFloor",
-                        currentPage: $currentPage
+                        imageName: "ShakeFloor"
                     )
                 } else if currentPage == 3 {
                     OnboardingPageView(
@@ -68,6 +69,7 @@ struct OnboardingTabView: View {
             }
             .animation(.default, value: currentPage) // 애니메이션 효과
             .transition(.slide)//스와이프 애니메이션
+            
             HStack(spacing: 6) {//페이지 인디케이터(페이지 확인하는거)
                 ForEach(0..<7) { index in
                     Circle()
@@ -77,7 +79,6 @@ struct OnboardingTabView: View {
             }
             .padding(10)
             .background(Capsule().fill(Color.gray.opacity(0.2)).frame(height: 20))
-            .padding(.horizontal, 50)
         }
         .onAppear {//권한 설정이후 2페이지로 가는 것 확인하는 것
             musicAuthorizationModel.checkMusicAuthorizationStatus(currentPage: $currentPage)
@@ -135,5 +136,6 @@ struct OnboardingTabView: View {
         .onDisappear {
             cancellables.removeAll()
         }
+        .background(Color.BG.main)
     }
 }
