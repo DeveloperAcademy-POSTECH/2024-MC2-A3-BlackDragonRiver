@@ -27,27 +27,27 @@ struct HomeView: View {
         NavigationView {
             // 검색어 없을 때
             if searchTerm.isEmpty {
-                VStack(spacing: 0) {
-                    if let tracks = selectedMusicDataModel.storedTracks {
-                        MusicItemRowView(itemRowTitle: "지난 선곡", tracks: tracks)
-                            .padding(.bottom, 30)
+                Color.BG.main.ignoresSafeArea()
+                    .overlay {
+                        VStack(spacing: 0) {
+                            if let tracks = selectedMusicDataModel.storedTracks {
+                                MusicItemRowView(itemRowTitle: "지난 선곡", tracks: tracks)
+                                    .padding(.bottom, 30)
+                            }
+                            
+                            if let tracks = musicPersonalRecommendationModel.personalRecommendationTracks {
+                                MusicItemRowView(itemRowTitle: "맞춤 랜덤 선곡", tracks: tracks)
+                            }
+                            
+                            Spacer()
+                        }
+                        .navigationTitle("오늘의 첫곡 🎧")
                     }
-                    
-                    if let tracks = musicPersonalRecommendationModel.personalRecommendationTracks {
-                        MusicItemRowView(itemRowTitle: "맞춤 랜덤 선곡", tracks: tracks)
-                    }
-                    
-                    Spacer()
-                }
-                .padding(.top, 20)
-                .navigationTitle("오늘의 첫곡 🎧")
-                .background(Color.BG.main)
             } else {
                 // 검색어 있을 때
                 MusicSearchView(searchTerm: $searchTerm)
             }
         }
-        .background(Color.BG.main)
         .tint(Color.accentColor)
         .searchable(text: $searchTerm, prompt: "아티스트, 노래")
         .onChange(of: storedTrackIDs) {
