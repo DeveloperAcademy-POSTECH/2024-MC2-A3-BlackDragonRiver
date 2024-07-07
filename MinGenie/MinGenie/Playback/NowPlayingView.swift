@@ -76,7 +76,7 @@ struct NowPlayingView: View {
             List {
                 ForEach(playbackQueue.entries.indices, id: \.self) { index in
                     NowQueueItemCell(
-                        artwork: playbackQueue.entries[index].artwork,
+                        artwork: musicPlayer.queueTracks[index].artwork,
                         title: playbackQueue.entries[index].title,
                         subtitle: playbackQueue.entries[index].subtitle
                     )
@@ -133,7 +133,7 @@ struct NowPlayingView: View {
                             if startIndex <= endIndex {
                                 ForEach(startIndex...endIndex, id: \.self) { index in
                                     
-                                    imageContainer(for: playbackQueue.entries[index].artwork)
+                                    imageContainer(for: musicPlayer.queueTracks[index].artwork)
                                         .scaleEffect(1.0 - CGFloat(abs(index - musicPlayer.currentMusicIndex)) * 0.1)
                                         .zIndex(1.0 - Double(abs(index - musicPlayer.currentMusicIndex)))
                                         .offset(x: CGFloat(index - musicPlayer.currentMusicIndex) * 50 * (1 - CGFloat(abs(index - musicPlayer.currentMusicIndex)) * 0.1) + dragOffset, y: 0)

@@ -8,6 +8,8 @@ final class MusicPlayerModel: ObservableObject {
     @Published var isPlaying = false
     @Published var playbackQueue = ApplicationMusicPlayer.shared.queue
     @Published var currentMusicIndex: Int = 0
+    // Track 캐싱을 위한 배열
+    @Published var queueTracks: [Track] = []
     
     var playbackStateObserver: AnyCancellable?
     
@@ -151,8 +153,9 @@ final class MusicPlayerModel: ObservableObject {
     /// - Returns: 필터링된 트랙 배열
     private func filterInstrumentalTracks(from tracks: MusicItemCollection<Track>) -> [Track] {
         return tracks.filter { track in
-            // 대, 소문자 구분 없이 제외
-            return track.title.range(of: "(instrumental)", options: .caseInsensitive) == nil
+            // 대, 소문자 구분 없이 'instrumental' 및 'inst.'를 제외
+            let lowercasedTitle = track.title.lowercased()
+            return !lowercasedTitle.contains("instrumental") && !lowercasedTitle.contains("inst.")
         }
     }
     
@@ -160,6 +163,8 @@ final class MusicPlayerModel: ObservableObject {
     /// - Parameter song: 관련된 노래를 찾을 때 사용할 노래
     func playMusicWithRecommendedList(_ song: Song) {
         let track = fromSongToTrack(song)
+        queueTracks.removeAll()
+        saveTracks(for: [track])
         
         // 개별 곡 재생
         play(track, in: nil, with: nil)
@@ -168,17 +173,20 @@ final class MusicPlayerModel: ObservableObject {
         Task {
             let recommendedList = try await getRelatedSongs(song)
             if let recommendedList {
+                saveTracks(for: recommendedList)
                 try await ApplicationMusicPlayer.shared.queue.insert(recommendedList, position: .tail)
             }
         }
     }
-    
     
     /// 🐯 앨범 전체 재생하고 그 뒤에 추천 플레이리스트 붙여주기
     /// - Parameter tracks: 사용자가 선택한 전체 재생할 앨범에 담긴 트랙
     /// - Parameter album: 관련된 노래를 찾을 때 사용할 앨범
     func playAlbumWithRecommendedList(_ tracks: MusicItemCollection<Track>, album: Album) {
         // ⁉️호랑: 이후에 DetailedAlbumModel에서 진행중인 로직을 여기다가 합칠 지 고민해보기 -> 현재는 앨범을 통해 트랙 배열을 받고 해당 메서드에 파라미터로 사용하는 로직
+        
+        queueTracks.removeAll()
+        saveTracks(for: tracks)
         
         // 앨범 재생
         play(tracks[0], in: tracks, with: nil)
@@ -187,6 +195,7 @@ final class MusicPlayerModel: ObservableObject {
         Task {
             let recommendedList = try await getRelatedSongs(album)
             if let recommendedList {
+                saveTracks(for: recommendedList)
                 try await ApplicationMusicPlayer.shared.queue.insert(recommendedList, position: .tail)
             }
         }
@@ -254,3 +263,14 @@ final class MusicPlayerModel: ObservableObject {
     }
     
 }
+
+
+extension MusicPlayerModel {
+    /// queue에 음악을 넣기 전에 따로 배열에 저장을 해주는 메서드
+    private func saveTracks(for tracks: MusicItemCollection<Track>) {
+        DispatchQueue.main.async {
+            self.queueTracks += tracks
+        }
+    }
+}
+
