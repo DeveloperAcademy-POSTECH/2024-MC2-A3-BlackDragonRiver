@@ -248,7 +248,9 @@ final class MusicPlayerModel: ObservableObject {
     }
     
     private func handlePlaybackStateDidChange() {
-        isPlaying = (musicPlayer.state.playbackStatus == .playing)
+        DispatchQueue.main.async {
+            self.isPlaying = (self.musicPlayer.state.playbackStatus == .playing)
+        }
     }
     
 }
