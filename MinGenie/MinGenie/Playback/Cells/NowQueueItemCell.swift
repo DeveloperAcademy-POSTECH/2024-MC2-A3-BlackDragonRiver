@@ -4,9 +4,9 @@ import SwiftUI
 /// A view that displays information about a music item.
 struct NowQueueItemCell: View {
     // MARK: - Properties
-    private var artworkSize: CGFloat = 51
-    private var artworkCornerRadius: CGFloat = 11
-    private var subtitleVerticalOffset: CGFloat = -8
+    private let artworkSize: CGFloat = 51
+    private let artworkCornerRadius: CGFloat = 11
+    private let subtitleVerticalOffset: CGFloat = -8
     
     let artwork: Artwork?
     let title: String
@@ -27,18 +27,14 @@ struct NowQueueItemCell: View {
     // MARK: - View
     var body: some View {
         HStack {
-            
             if let itemArtwork = artwork {
                 imageContainer(for: itemArtwork)
                     .frame(width: artworkSize, height: artworkSize)
             } else {
-                
                     Image("FlowishGray")
                         .resizable()
                         .frame(width: artworkSize, height: artworkSize)
             }
-            
-            
             
             VStack(alignment: .leading) {
                 Text(title)

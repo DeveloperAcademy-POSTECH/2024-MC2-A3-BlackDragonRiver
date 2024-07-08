@@ -4,14 +4,10 @@ import SwiftUI
 /// ✏️ 하단에 띄워 둘 미니플레이어 View입니다 (완성) ✏️
 
 struct MiniPlayerView: View {
-    
-    /// musicPlayer 관련 변수
-    @ObservedObject private var playbackQueue = ApplicationMusicPlayer.shared.queue
-    @ObservedObject private var musicPlayer = MusicPlayerModel.shared
+    @EnvironmentObject var musicPlayer: MusicPlayerModel
     
     /// fullscreen전환 관련 변수
     @State private var isShowingNowPlaying = false
-    
     
     // MARK: - View
     var body: some View {
@@ -25,13 +21,13 @@ struct MiniPlayerView: View {
                     .shadow(radius: 20)
             )
             .fullScreenCover(isPresented: $isShowingNowPlaying) {
-                NowPlayingView(playbackQueue: playbackQueue)
+                NowPlayingView()
             }
     }
     
     @ViewBuilder
     private var content: some View {
-        if let currentPlayerEntry = playbackQueue.currentEntry {
+        if let currentPlayerEntry = musicPlayer.playbackQueue.currentEntry {
             HStack {
                 VStack(alignment: .leading){
                     Button(action: handleTap) {

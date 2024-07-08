@@ -11,9 +11,9 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.scenePhase) var phase
+    @EnvironmentObject var musicPlayer: MusicPlayerModel
     
     @StateObject var shakeDetectionModel = ShakeDetectionModel()
-    @StateObject var musicPlayerModel = MusicPlayerModel.shared
     
     @AppStorage("Onboarding") var hasSeenOnboarding = false
     @AppStorage("BackgroundInfo") var hasSeenBackgroundInfoView = false
@@ -23,16 +23,16 @@ struct ContentView: View {
             ZStack(alignment: .bottom) {
                 HomeView()
                     .modelContainer(for: StoredTrackID.self)
-                    .environmentObject(musicPlayerModel)
+                    .environmentObject(musicPlayer)
                     .onChange(of: phase) { _, newValue in
-                        if newValue == .background && musicPlayerModel.isPlaying {
+                        if newValue == .background && musicPlayer.isPlaying {
                             shakeDetectionModel.startDetection()
                         } else {
                             shakeDetectionModel.stopDetection()
                         }
                     }
                     .onChange(of: shakeDetectionModel.shakeDetected) { _, newValue in
-                        if newValue && musicPlayerModel.isPlaying {
+                        if newValue && musicPlayer.isPlaying {
                             print("🎧 Music Change")
                             
                             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate) //진동 주기
@@ -40,7 +40,7 @@ struct ContentView: View {
                             // 노래 교체가 끝나면 다시 시작
                             shakeDetectionModel.stopDetection()
                             Task {
-                                await musicPlayerModel.updatePlaylistAfterShaking()
+                                await musicPlayer.updatePlaylistAfterShaking()
                                 if phase == .background {
                                     shakeDetectionModel.startDetection()
                                 }
