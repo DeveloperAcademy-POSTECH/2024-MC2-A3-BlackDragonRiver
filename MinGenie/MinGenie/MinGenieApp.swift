@@ -10,10 +10,12 @@ import SwiftUI
 
 @main
 struct MinGenieApp: App {
-
+    @StateObject var musicPlayerModel = MusicPlayerModel()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(musicPlayerModel)
         }
     }
 }
